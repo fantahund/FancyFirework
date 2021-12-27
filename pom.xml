@@ -13,7 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.encoding>UTF-8</project.encoding>
         <mainClass>${project.groupId}.${project.artifactId}.Fancyfirework</mainClass>
-        <project.author>fanta</project.author>
+        <project.author>fanta, WolfyScript</project.author>
     </properties>
 
     <repositories>

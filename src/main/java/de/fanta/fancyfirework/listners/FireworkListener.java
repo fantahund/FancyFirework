@@ -48,8 +48,10 @@ public class FireworkListener implements Listener {
                 Block block = event.getClickedBlock();
                 assert block != null;
                 AbstractFireWork fireWork = plugin.getRegistry().getAtBlock(block);
+                System.out.println("Testttt: " + fireWork);
                 if (fireWork instanceof BlockFireWork blockFireWork) {
                     blockFireWork.onLit(block, event.getPlayer());
+                    event.setCancelled(true);
                 }
             }
         }

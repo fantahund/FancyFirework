@@ -25,7 +25,7 @@ public class FireWorkBatterySimple extends BlockFireWork {
 
     @Override
     protected ItemStack createItemStack() {
-        ItemStack itemStack = new ItemStack(Material.TNT);
+        ItemStack itemStack = new ItemStack(Material.DRIED_KELP_BLOCK);
         ItemMeta meta = itemStack.getItemMeta();
         meta.setDisplayName(ChatColor.GREEN + "Simple Battery");
         itemStack.setItemMeta(meta);
@@ -42,7 +42,7 @@ public class FireWorkBatterySimple extends BlockFireWork {
         block.getWorld().playSound(block.getLocation(), Sound.ENTITY_CREEPER_PRIMED, 1f, 1f);
         Random rand = new Random();
         Task task = new Task(player, block, 20 * 60, 20 * 5, 10, () -> {
-            Firework firework = (Firework) block.getWorld().spawnEntity(block.getLocation().add(0.5, 0, 0.5), EntityType.FIREWORK);
+            Firework firework = (Firework) block.getWorld().spawnEntity(block.getLocation().add(0.5, 1, 0.5), EntityType.FIREWORK);
             FireworkMeta fireworkMeta = firework.getFireworkMeta();
             FireworkEffect effect = FireworkEffect.builder().with(FireworkEffect.Type.values()[rand.nextInt(FireworkEffect.Type.values().length)]).withColor(randomColor()).withFade(randomColor()).withFlicker().withTrail().build();
             fireworkMeta.addEffect(effect);

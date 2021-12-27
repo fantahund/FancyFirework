@@ -57,7 +57,7 @@ public class FireWorksRegistry {
     }
 
     public AbstractFireWork getAtBlock(Block block) {
-        Collection<Marker> markers = block.getLocation().getNearbyEntitiesByType(Marker.class, 0d);
+        Collection<Marker> markers = block.getLocation().getNearbyEntitiesByType(Marker.class, 0.1d);
         for (Marker marker : markers) {
             for (MetadataValue metadataValue : marker.getMetadata(FIREWORK_META_KEY)) {
                 if (Objects.equals(metadataValue.getOwningPlugin(), plugin)) {

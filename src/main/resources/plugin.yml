@@ -2,7 +2,7 @@ name: FancyFirework
 version: '${project.version}'
 main: de.fanta.fancyfirework.FancyFirework
 api-version: 1.18
-authors: [ fanta ]
+author: ${project.author}
 website: cubeside.de
 commands:
   fancyfirework:

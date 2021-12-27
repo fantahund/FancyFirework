@@ -1,6 +1,7 @@
 package de.fanta.fancyfirework.commands;
 
 import de.fanta.fancyfirework.FancyFirework;
+import de.fanta.fancyfirework.fireworks.AbstractFireWork;
 import de.fanta.fancyfirework.utils.ChatUtil;
 import de.iani.cubesideutils.bukkit.commands.SubCommand;
 import de.iani.cubesideutils.commands.ArgsParser;
@@ -27,8 +28,11 @@ public class FireWorkGiveCommand extends SubCommand {
         if (sender instanceof Player p) {
             if (args.hasNext()) {
                 String key = args.getNext();
-                ItemStack itemStack = plugin.getRegistry().get(NamespacedKey.fromString(key)).getItemStack();
-                p.getInventory().addItem(itemStack); //TODO fertig machen nur test :>
+                AbstractFireWork fireWork = plugin.getRegistry().get(NamespacedKey.fromString(key));
+                if(fireWork != null) {
+                    ItemStack itemStack = fireWork.getItemStack();
+                    p.getInventory().addItem(itemStack); //TODO fertig machen nur test :>
+                }
             }
         }
         return true;
@@ -43,7 +47,7 @@ public class FireWorkGiveCommand extends SubCommand {
         }
         if (i == 1) {
             ArrayList<String> li = new ArrayList<>();
-            plugin.getRegistry().getKeys().forEach((x) -> li.add(x.getKey()));
+            plugin.getRegistry().getKeys().forEach((x) -> li.add(x.asString()));
             return li;
         }
         return new ArrayList<>();
