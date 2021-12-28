@@ -3,23 +3,26 @@ package de.fanta.fancyfirework.listners;
 import de.fanta.fancyfirework.FancyFirework;
 import de.fanta.fancyfirework.fireworks.AbstractFireWork;
 import de.fanta.fancyfirework.fireworks.BlockFireWork;
+import de.iani.cubesideutils.RandomUtil;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.FireworkExplodeEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class FireworkListener implements Listener {
 
@@ -57,6 +60,33 @@ public class FireworkListener implements Listener {
                     ItemStack stack = event.getPlayer().getEquipment().getItem(event.getHand());
                     if (stack.getType().equals(Material.FLINT_AND_STEEL)) {
                         blockFireWork.onLit(stand, event.getPlayer());
+                        if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+                            ItemMeta meta = stack.getItemMeta();
+                            int maxDurability = stack.getType().getMaxDurability();
+                            if (maxDurability > 0) {
+                                int durability = meta.getEnchantLevel(Enchantment.DURABILITY);
+                                if (durability <= 0 || RandomUtil.SHARED_RANDOM.nextInt(durability + 1) == 0) {
+                                    Damageable damageableMeta = (Damageable) meta;
+                                    int damageOld = damageableMeta.getDamage();
+                                    if (damageOld + 1 <= maxDurability) {
+                                        damageableMeta.setDamage(damageOld + 1);
+                                        stack.setItemMeta(meta);
+                                        if (event.getHand() == EquipmentSlot.HAND) {
+                                            event.getPlayer().getInventory().setItemInMainHand(stack);
+                                        } else {
+                                            event.getPlayer().getInventory().setItemInOffHand(stack);
+                                        }
+                                    } else {
+                                        event.getPlayer().getWorld().playSound(event.getPlayer().getLocation().add(0.5, 0.5, 0.5), Sound.ENTITY_ITEM_BREAK, SoundCategory.PLAYERS, 1 + (float) Math.random() * 0.1f, 1 + (float) Math.random() * 0.1f);
+                                        if (event.getHand() == EquipmentSlot.HAND) {
+                                            event.getPlayer().getInventory().setItemInMainHand(null);
+                                        } else {
+                                            event.getPlayer().getInventory().setItemInOffHand(null);
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
                 event.setCancelled(true);

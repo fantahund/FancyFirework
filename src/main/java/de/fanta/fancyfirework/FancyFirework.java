@@ -1,6 +1,7 @@
 package de.fanta.fancyfirework;
 
 import de.fanta.fancyfirework.commands.CommandRegistration;
+import de.fanta.fancyfirework.fireworks.FireWorkBatteryGreen;
 import de.fanta.fancyfirework.fireworks.FireWorkBatterySimple;
 import de.fanta.fancyfirework.listners.EventRegistration;
 import de.fanta.fancyfirework.utils.ChatUtil;
@@ -45,6 +46,7 @@ public final class FancyFirework extends JavaPlugin {
         reloadConfig();
 
         registry.register(new FireWorkBatterySimple());
+        registry.register(new FireWorkBatteryGreen());
 
     }
 
