@@ -19,6 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
 import java.util.Random;
+import java.util.UUID;
 
 public class FireWorkBatterySimple extends BlockFireWork {
 
@@ -28,7 +29,7 @@ public class FireWorkBatterySimple extends BlockFireWork {
 
     @Override
     protected ItemStack createItemStack() {
-        ItemStack itemStack = new ItemStack(Material.DRIED_KELP_BLOCK);
+        ItemStack itemStack = CustomHeads.createHead(UUID.fromString("c27a85e4-cb0b-4366-be42-198122f5058f"), "Firework Rocket White", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWVjMWMxMTFmMzdjMTQ0ZDY4YTJjODlmY2I2MDlhODU1YmE3ZmIxNjkyOGFmYTQxM2M2ZjhjZDE5NDMxNSJ9fX0=");
         ItemMeta meta = itemStack.getItemMeta();
         meta.setDisplayName(ChatColor.GREEN + "Simple Battery");
         itemStack.setItemMeta(meta);
