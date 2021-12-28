@@ -5,13 +5,18 @@ import de.fanta.fancyfirework.fireworks.AbstractFireWork;
 import de.fanta.fancyfirework.fireworks.BlockFireWork;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.FireworkExplodeEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -19,7 +24,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 public class FireworkListener implements Listener {
 
     private final FancyFirework plugin = FancyFirework.getPlugin();
-    private final String FIREWORK_META_KEY = "firework_type";
 
     @EventHandler
     public void onFireworkExplode(FireworkExplodeEvent e) {
@@ -33,31 +37,29 @@ public class FireworkListener implements Listener {
 
     @EventHandler
     public void onFireWorkPlace(BlockPlaceEvent event) {
-        ItemStack stack = event.getItemInHand();
+        ItemStack stack = event.getPlayer().getEquipment().getItem(event.getHand());
         AbstractFireWork fireWork = plugin.getRegistry().getByItemStack(stack);
         if (fireWork instanceof BlockFireWork blockFireWork) {
             Block block = event.getBlockPlaced();
-            Entity entity = block.getWorld().spawnEntity(block.getLocation(), EntityType.ARMOR_STAND);
-            entity.setMetadata(FIREWORK_META_KEY, new FixedMetadataValue(plugin, fireWork.getKey().asString()));
-
-
-
-            blockFireWork.onPlace(block, event.getPlayer());
+            blockFireWork.onPlace(block, blockFireWork.spawnAtBlock(block.getRelative(BlockFace.DOWN)), event.getPlayer());
+            event.setCancelled(true);
+            stack.setAmount(stack.getAmount() - 1);
         }
     }
 
-    @EventHandler
-    public void onInteract(PlayerInteractEvent event) {
-        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-            ItemStack item = event.getItem();
-            if (item != null && item.getType().equals(Material.FLINT_AND_STEEL)) {
-                Block block = event.getClickedBlock();
-                assert block != null;
-                AbstractFireWork fireWork = plugin.getRegistry().getAtBlock(block);
-                if (fireWork instanceof BlockFireWork blockFireWork) {
-                    blockFireWork.onLit(block, event.getPlayer());
-                    event.setCancelled(true);
+    @EventHandler(priority = EventPriority.LOW)
+    public void onInteract(PlayerInteractAtEntityEvent event) {
+        Entity entity = event.getRightClicked();
+        if (entity instanceof ArmorStand stand) {
+            AbstractFireWork fireWork = plugin.getRegistry().getFromArmorStand(stand);
+            if (fireWork instanceof BlockFireWork blockFireWork) {
+                if(!blockFireWork.hasActiveTask(stand)) {
+                    ItemStack stack = event.getPlayer().getEquipment().getItem(event.getHand());
+                    if (stack.getType().equals(Material.FLINT_AND_STEEL)) {
+                        blockFireWork.onLit(stand, event.getPlayer());
+                    }
                 }
+                event.setCancelled(true);
             }
         }
     }

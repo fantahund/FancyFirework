@@ -2,11 +2,8 @@ package de.fanta.fancyfirework.fireworks;
 
 import de.fanta.fancyfirework.FancyFirework;
 import de.fanta.fancyfirework.FireWorksRegistry;
-import org.bukkit.Bukkit;
-import org.bukkit.Keyed;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.block.Block;
+import org.bukkit.*;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Marker;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -16,18 +13,16 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public abstract class AbstractFireWork implements Keyed {
 
+    protected static final Random random = new Random();
+    protected static final String FIREWORK_META_KEY = "firework_type";
     public static final NamespacedKey FIREWORK_ID = new NamespacedKey(FancyFirework.getPlugin(), "firework");
 
     private final NamespacedKey key;
     protected final ItemStack itemStack;
-    private final List<Task> activeTasks = new ArrayList<>();
 
     protected AbstractFireWork(@NotNull NamespacedKey key) {
         this.key = Objects.requireNonNull(key, "Key must not be null!");
@@ -55,79 +50,4 @@ public abstract class AbstractFireWork implements Keyed {
         return key;
     }
 
-    private void addTask(Task task) {
-        if (!activeTasks.contains(task)) {
-            activeTasks.add(task);
-        }
-    }
-
-    private void removeTask(Task task) {
-        activeTasks.remove(task);
-    }
-
-    protected class Task {
-
-        protected final Player player;
-        protected final Block block;
-
-        protected final long duration;
-        protected final int delay;
-        protected final int period;
-
-        protected long tick;
-        protected BukkitTask bukkitTask;
-        protected final Runnable taskToRun;
-
-        public Task(Player player, Block block, long duration, int delay, int period, Runnable taskToRun) {
-            this.player = player;
-            this.block = block;
-            addTask(this);
-            this.duration = duration;
-            this.delay = delay;
-            this.period = period;
-            this.taskToRun = taskToRun;
-
-            this.tick = 0;
-            this.bukkitTask = null;
-        }
-
-        public void start() {
-            this.tick = 0;
-            this.bukkitTask = Bukkit.getScheduler().runTaskTimer(FancyFirework.getPlugin(), () -> {
-                if (tick < duration) {
-                    //Call custom task
-                    taskToRun.run();
-                    tick += period;
-                } else {
-                    stop();
-                }
-            }, delay, period);
-        }
-
-        public void stop() {
-            if(bukkitTask != null) {
-                bukkitTask.cancel();
-                bukkitTask = null;
-                this.tick = 0;
-
-                //Reset task & remove block + marker entity
-                removeTask(this);
-
-                Collection<Marker> markers = block.getLocation().getNearbyEntitiesByType(Marker.class, 0.1d);
-                Marker foundMarker = null;
-                for (Marker marker : markers) {
-                    for (MetadataValue metadataValue : marker.getMetadata(FireWorksRegistry.FIREWORK_META_KEY)) {
-                        if (Objects.equals(metadataValue.getOwningPlugin(), FancyFirework.getPlugin())) {
-                            foundMarker = marker;
-                            break;
-                        }
-                    }
-                }
-                if (foundMarker != null) {
-                    foundMarker.remove();
-                }
-                block.setType(Material.AIR);
-            }
-        }
-    }
 }
