@@ -7,6 +7,7 @@ public record CommandRegistration(FancyFirework plugin) {
 
     public void registerCommands() {
         CommandRouter fancyFireworkRouter = new CommandRouter(plugin.getCommand("fancyfirework"));
+        fancyFireworkRouter.addCommandMapping(new FancyFireWorkCommand(plugin));
         fancyFireworkRouter.addCommandMapping(new EnableToggleCommand(plugin, true), "enable");
         fancyFireworkRouter.addCommandMapping(new EnableToggleCommand(plugin, false), "disable");
         fancyFireworkRouter.addCommandMapping(new SetSpawnRateCommand(plugin), "setSpawnRate");

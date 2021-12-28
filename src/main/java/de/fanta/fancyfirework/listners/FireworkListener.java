@@ -24,7 +24,10 @@ public class FireworkListener implements Listener {
     @EventHandler
     public void onFireworkExplode(FireworkExplodeEvent e) {
         if (plugin.getFireWorkWorks().enabled()) { //TODO Check is fancyfirework firework
-            e.getEntity().getLocation().getWorld().dropItem(e.getEntity().getLocation(), new ItemStack(Material.DIAMOND)); //TODO Spawn random firework item
+            Entity entity = e.getEntity();
+            if (entity.hasMetadata("FancyFirework")) {
+                entity.getLocation().getWorld().dropItem(entity.getLocation(), plugin.getRegistry().getRandomFireWork());
+            }
         }
     }
 
@@ -48,7 +51,6 @@ public class FireworkListener implements Listener {
                 Block block = event.getClickedBlock();
                 assert block != null;
                 AbstractFireWork fireWork = plugin.getRegistry().getAtBlock(block);
-                System.out.println("Testttt: " + fireWork);
                 if (fireWork instanceof BlockFireWork blockFireWork) {
                     blockFireWork.onLit(block, event.getPlayer());
                     event.setCancelled(true);

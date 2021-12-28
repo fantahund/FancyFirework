@@ -13,6 +13,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Random;
@@ -49,10 +50,7 @@ public class FireWorkWorks {
             double chance = getSpawnRate();
             boolean spawn = rand.nextDouble() < chance;
             if (spawn) {
-                long time = System.currentTimeMillis() - lastspawn;
-                ChatUtil.sendDebugMessage(p, StringUtil.formatTimespan(time));
                 spawnFirework(p);
-                lastspawn = System.currentTimeMillis();
             }
         }
     }
@@ -61,13 +59,15 @@ public class FireWorkWorks {
         World world = p.getWorld();
         Location loc = p.getLocation().add(0, 2, 0);
         Location toppos = world.getHighestBlockAt(loc.getBlockX(), loc.getBlockZ(), HeightMap.MOTION_BLOCKING).getLocation();
-        if (loc.getBlockY() > toppos.getBlockY() && p.getGameMode() == GameMode.SURVIVAL) {
+        boolean sky = loc.getBlockY() > toppos.getBlockY();
+        if (sky && p.getGameMode() == GameMode.SURVIVAL) {
             Firework firework = (Firework) world.spawnEntity(loc, EntityType.FIREWORK);
             FireworkMeta fireworkMeta = firework.getFireworkMeta();
             FireworkEffect effect = FireworkEffect.builder().with(FireworkEffect.Type.values()[rand.nextInt(FireworkEffect.Type.values().length)]).withColor(randomColor()).withFade(randomColor()).withFlicker().withTrail().build();
             fireworkMeta.addEffect(effect);
             fireworkMeta.setPower(rand.nextInt(2) + 1);
             firework.setFireworkMeta(fireworkMeta);
+            firework.setMetadata("FancyFirework", new FixedMetadataValue(plugin, "CustomFirework"));
         }
     }
 

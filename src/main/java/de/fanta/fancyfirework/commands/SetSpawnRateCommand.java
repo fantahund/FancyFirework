@@ -17,16 +17,20 @@ public class SetSpawnRateCommand extends SubCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String s1, ArgsParser args) {
+        if (!sender.hasPermission(FancyFirework.ADMIN_PERMISSION)) {
+            ChatUtil.sendErrorMessage(sender, "No Permission!");
+            return true;
+        }
         if (args.hasNext()) {
             double spawnrate = args.getNext(0.0);
             if (spawnrate >= 0.001 && spawnrate < 101) {
                 plugin.getFireWorkWorks().setSpawnRate(spawnrate);
-                ChatUtil.sendNormalMessage(sender, "Spawnrate beträgt nun " + spawnrate + ".");
+                ChatUtil.sendNormalMessage(sender, "Firework spawn rate is now " + spawnrate + ".");
             } else {
-                ChatUtil.sendErrorMessage(sender, "Spawnrate muss höher als 0.001 und kleiner als 100 sein.");
+                ChatUtil.sendErrorMessage(sender, "Spawn rate must be higher than 0.001 and lower than 100.");
             }
         } else {
-            ChatUtil.sendWarningMessage(sender, "/fancyfirework setspawnrate X.X(double)");
+            ChatUtil.sendWarningMessage(sender, "/fancyfirework setspawnrate [amount]");
         }
         return true;
     }

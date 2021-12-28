@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 
 public class FireWorksRegistry {
 
@@ -71,6 +72,14 @@ public class FireWorksRegistry {
 
     public List<NamespacedKey> getKeys() {
         return List.copyOf(fireWorkMap.keySet());
+    }
+
+    public ItemStack getRandomFireWork() {
+        Random rand = new Random();
+        NamespacedKey randomkey = getKeys().get(rand.nextInt(getKeys().size()));
+        AbstractFireWork fireWork = plugin.getRegistry().get(randomkey);
+        assert fireWork != null;
+        return fireWork.getItemStack().clone();
     }
 
 }

@@ -1,0 +1,82 @@
+package de.fanta.fancyfirework.listners;
+
+import de.fanta.fancyfirework.FancyFirework;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.minecart.StorageMinecart;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Random;
+
+public class LootTableListener implements Listener {
+    private final FancyFirework plugin = FancyFirework.getPlugin();
+
+    @EventHandler
+    public void onPlayerUseLootChest(PlayerInteractEvent e) {
+        Block block = e.getClickedBlock();
+        if (block == null) {
+            return;
+        }
+
+        if (!(block.getState() instanceof Chest chest)) {
+            return;
+        }
+
+        if (!chest.hasLootTable()) {
+            return;
+        }
+
+        if (chest.getLootTable() == null) {
+            return;
+        }
+
+        if (plugin.getConfig().getBoolean("loottable.enabled")) {
+            addFireworktoLootChest(chest.getInventory());
+        }
+    }
+
+    @EventHandler
+    public void onPlayerUseEntityLootChest(PlayerInteractEntityEvent e) {
+        Entity entity = e.getRightClicked();
+
+        if (!(entity instanceof StorageMinecart minecart)) {
+            return;
+        }
+
+        if (!minecart.hasLootTable()) {
+            return;
+        }
+
+        if (minecart.getLootTable() == null) {
+            return;
+        }
+
+        if (plugin.getConfig().getBoolean("loottable.enabled")) {
+            addFireworktoLootChest(minecart.getInventory());
+        }
+
+    }
+
+    public void addFireworktoLootChest(Inventory chest) {
+        Random random = new Random();
+        double chance = plugin.getConfig().getDouble("loottable.chance", 0.5);
+        boolean hasFireWork = random.nextDouble() < chance;
+        if (hasFireWork) {
+            ItemStack randomFirework = plugin.getRegistry().getRandomFireWork();
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> chest.setItem(random.nextInt(chest.getSize()), randomFirework), 1L);
+            Location chestlocation = chest.getLocation();
+            if (chestlocation != null) {
+                plugin.getLogger().info(ChatColor.GREEN + "Adding " + randomFirework.getItemMeta().getDisplayName() + ChatColor.GREEN + " to Chest @ " + chestlocation.getWorld().getName() + " " + chestlocation.getBlockX() + "/" + chestlocation.getBlockY() + "/" + chestlocation.getBlockZ());
+            }
+        }
+    }
+}

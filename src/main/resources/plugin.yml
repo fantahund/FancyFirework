@@ -4,5 +4,8 @@ main: de.fanta.fancyfirework.FancyFirework
 api-version: 1.18
 author: ${project.author}
 website: cubeside.de
+softdepend: [Votifier, TreasureChest, PlayerUUIDCache]
 commands:
   fancyfirework:
+    aliases: ff
+    description: FancyFireWork Command

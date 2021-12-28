@@ -1,2 +1,6 @@
 enabled: false
 spawnrate: 1.0
+votereward: false
+loottable:
+  enabled: false
+  chance: 0.5

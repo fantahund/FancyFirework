@@ -9,7 +9,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Steerable;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -25,14 +25,44 @@ public class FireWorkGiveCommand extends SubCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String s1, ArgsParser args) {
-        if (sender instanceof Player p) {
+        if (!(sender instanceof Player p)) {
+            ChatUtil.sendErrorMessage(sender, "You are not a Player :>");
+            return true;
+        }
+        if (!p.hasPermission(FancyFirework.MOD_PERMISSION)) {
+            ChatUtil.sendWarningMessage(p, "No Permission!");
+            return true;
+        }
+
+        if (args.remaining() != 1 && args.remaining() != 2) {
+            ChatUtil.sendWarningMessage(p, "/fancyfirework givefirework [key] <amount>");
+            return true;
+        }
+
+        if (args.hasNext()) {
+            String key = args.getNext();
+            AbstractFireWork fireWork = plugin.getRegistry().get(NamespacedKey.fromString(key));
+            int amount = 1;
             if (args.hasNext()) {
-                String key = args.getNext();
-                AbstractFireWork fireWork = plugin.getRegistry().get(NamespacedKey.fromString(key));
-                if(fireWork != null) {
-                    ItemStack itemStack = fireWork.getItemStack();
-                    p.getInventory().addItem(itemStack); //TODO fertig machen nur test :>
+                int next = args.getNext(1);
+                if (next < 1 || next > 64) {
+                    ChatUtil.sendErrorMessage(p, "Quantity must be between 1-64.");
+                    return true;
                 }
+                amount = next;
+            }
+            if (fireWork != null) {
+                Inventory inv = p.getInventory();
+                ItemStack itemStack = fireWork.getItemStack();
+                itemStack.setAmount(amount);
+                if (inv.firstEmpty() == -1) {
+                    ChatUtil.sendErrorMessage(p, "Item could not be added. Your inventory is full!");
+                } else {
+                    p.getInventory().addItem(itemStack);
+                    ChatUtil.sendNormalMessage(p, amount + "x " + itemStack.getItemMeta().getDisplayName() + ChatUtil.GREEN + " has been added to your inventory");
+                }
+            } else {
+                ChatUtil.sendErrorMessage(p, "Firework " + key + " not available.");
             }
         }
         return true;
