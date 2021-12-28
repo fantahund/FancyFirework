@@ -26,7 +26,7 @@ public class FireworkListener implements Listener {
         if (plugin.getFireWorkWorks().enabled()) { //TODO Check is fancyfirework firework
             Entity entity = e.getEntity();
             if (entity.hasMetadata("FancyFirework")) {
-                entity.getLocation().getWorld().dropItem(entity.getLocation(), plugin.getRegistry().getRandomFireWork());
+                entity.getLocation().getWorld().dropItem(entity.getLocation(), plugin.getRegistry().getRandomFireWorkItem());
             }
         }
     }
@@ -37,8 +37,11 @@ public class FireworkListener implements Listener {
         AbstractFireWork fireWork = plugin.getRegistry().getByItemStack(stack);
         if (fireWork instanceof BlockFireWork blockFireWork) {
             Block block = event.getBlockPlaced();
-            Entity entity = block.getWorld().spawnEntity(block.getLocation(), EntityType.MARKER);
+            Entity entity = block.getWorld().spawnEntity(block.getLocation(), EntityType.ARMOR_STAND);
             entity.setMetadata(FIREWORK_META_KEY, new FixedMetadataValue(plugin, fireWork.getKey().asString()));
+
+
+
             blockFireWork.onPlace(block, event.getPlayer());
         }
     }

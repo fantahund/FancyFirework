@@ -23,7 +23,7 @@ public class CubesideVoteListener implements Listener {
         PlayerUUIDCache playerUUIDCache = (PlayerUUIDCache) Bukkit.getPluginManager().getPlugin("PlayerUUIDCache");
         TreasureChest treasureChest = (TreasureChest) Bukkit.getPluginManager().getPlugin("TreasureChest");
         Vote vote = e.getVote();
-        ItemStack customfirework = plugin.getRegistry().getRandomFireWork();
+        ItemStack customfirework = plugin.getRegistry().getRandomFireWorkItem();
         if (!plugin.getConfig().getBoolean("votereward")) {
             return;
         }

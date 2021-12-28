@@ -112,6 +112,7 @@ public abstract class AbstractFireWork implements Keyed {
 
                 //Reset task & remove block + marker entity
                 removeTask(this);
+
                 Collection<Marker> markers = block.getLocation().getNearbyEntitiesByType(Marker.class, 0.1d);
                 Marker foundMarker = null;
                 for (Marker marker : markers) {

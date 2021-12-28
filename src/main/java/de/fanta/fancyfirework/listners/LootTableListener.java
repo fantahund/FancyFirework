@@ -71,7 +71,7 @@ public class LootTableListener implements Listener {
         double chance = plugin.getConfig().getDouble("loottable.chance", 0.5);
         boolean hasFireWork = random.nextDouble() < chance;
         if (hasFireWork) {
-            ItemStack randomFirework = plugin.getRegistry().getRandomFireWork();
+            ItemStack randomFirework = plugin.getRegistry().getRandomFireWorkItem();
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> chest.setItem(random.nextInt(chest.getSize()), randomFirework), 1L);
             Location chestlocation = chest.getLocation();
             if (chestlocation != null) {

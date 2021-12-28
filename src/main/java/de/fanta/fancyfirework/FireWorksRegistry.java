@@ -74,10 +74,10 @@ public class FireWorksRegistry {
         return List.copyOf(fireWorkMap.keySet());
     }
 
-    public ItemStack getRandomFireWork() {
+    public ItemStack getRandomFireWorkItem() {
         Random rand = new Random();
         NamespacedKey randomkey = getKeys().get(rand.nextInt(getKeys().size()));
-        AbstractFireWork fireWork = plugin.getRegistry().get(randomkey);
+        AbstractFireWork fireWork = get(randomkey);
         assert fireWork != null;
         return fireWork.getItemStack().clone();
     }

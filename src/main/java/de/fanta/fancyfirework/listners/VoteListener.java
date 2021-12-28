@@ -18,7 +18,7 @@ public class VoteListener implements Listener {
     public void onPlayerVote(VotifierEvent e) {
         Vote vote = e.getVote();
         Player p = Bukkit.getPlayer(vote.getUsername());
-        ItemStack customfirework = plugin.getRegistry().getRandomFireWork();
+        ItemStack customfirework = plugin.getRegistry().getRandomFireWorkItem();
         if (!plugin.getConfig().getBoolean("votereward")) {
             return;
         }

@@ -60,13 +60,14 @@ public class FireWorkWorks {
         Location loc = p.getLocation().add(0, 2, 0);
         Location toppos = world.getHighestBlockAt(loc.getBlockX(), loc.getBlockZ(), HeightMap.MOTION_BLOCKING).getLocation();
         boolean sky = loc.getBlockY() > toppos.getBlockY();
-        if (sky && p.getGameMode() == GameMode.SURVIVAL) {
+        if (sky && p.getGameMode() == GameMode.SURVIVAL && !FancyFirework.getPlugin().isVanish(p)) {
             Firework firework = (Firework) world.spawnEntity(loc, EntityType.FIREWORK);
             FireworkMeta fireworkMeta = firework.getFireworkMeta();
             FireworkEffect effect = FireworkEffect.builder().with(FireworkEffect.Type.values()[rand.nextInt(FireworkEffect.Type.values().length)]).withColor(randomColor()).withFade(randomColor()).withFlicker().withTrail().build();
             fireworkMeta.addEffect(effect);
             fireworkMeta.setPower(rand.nextInt(2) + 1);
             firework.setFireworkMeta(fireworkMeta);
+            firework.setRotation(rand.nextInt(20), rand.nextInt(20));
             firework.setMetadata("FancyFirework", new FixedMetadataValue(plugin, "CustomFirework"));
         }
     }

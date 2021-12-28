@@ -72,6 +72,12 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/nuvotifier.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>org.kitteh</groupId>
+            <artifactId>VanishNoPacket</artifactId>
+            <version>3.20.1</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>

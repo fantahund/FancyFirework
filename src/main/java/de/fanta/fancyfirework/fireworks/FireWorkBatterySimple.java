@@ -41,7 +41,7 @@ public class FireWorkBatterySimple extends BlockFireWork {
     public void onLit(Block block, Player player) {
         block.getWorld().playSound(block.getLocation(), Sound.ENTITY_CREEPER_PRIMED, 1f, 1f);
         Random rand = new Random();
-        Task task = new Task(player, block, 20 * 60, 20 * 5, 10, () -> {
+        Task task = new Task(player, block, 20 * 60, 20 * 5, 20, () -> {
             Firework firework = (Firework) block.getWorld().spawnEntity(block.getLocation().add(0.5, 1, 0.5), EntityType.FIREWORK);
             FireworkMeta fireworkMeta = firework.getFireworkMeta();
             FireworkEffect effect = FireworkEffect.builder().with(FireworkEffect.Type.values()[rand.nextInt(FireworkEffect.Type.values().length)]).withColor(randomColor()).withFade(randomColor()).withFlicker().withTrail().build();
