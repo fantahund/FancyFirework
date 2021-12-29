@@ -61,7 +61,7 @@ public class FireWorkWorks {
         boolean sky = loc.getBlockY() > toppos.getBlockY();
         if (sky && p.getGameMode() == GameMode.SURVIVAL && !FancyFirework.getPlugin().isVanish(p)) {
             Firework firework = (Firework) world.spawnEntity(loc, EntityType.FIREWORK);
-            firework.setVelocity(new Vector((rand.nextBoolean() ? 1 : -1) * rand.nextDouble(0.06), rand.nextDouble(0.5, 1), (rand.nextBoolean() ? 1 : -1) * rand.nextDouble(0.06)));
+            firework.setVelocity(new Vector((rand.nextBoolean() ? 1 : -1) * rand.nextDouble(0.01), rand.nextDouble(0.5, 1.5), (rand.nextBoolean() ? 1 : -1) * rand.nextDouble(0.01)));
             FireworkMeta fireworkMeta = firework.getFireworkMeta();
             FireworkEffect effect = FireworkEffect.builder().with(FireworkEffect.Type.values()[rand.nextInt(FireworkEffect.Type.values().length)]).withColor(randomColor()).withFade(randomColor()).withFlicker().withTrail().build();
             fireworkMeta.addEffect(effect);

@@ -14,7 +14,14 @@ import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryRed;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatterySimple;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryYellow;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkFountain;
+import de.fanta.fancyfirework.fireworks.defaults.FireWorkFountainBlue;
+import de.fanta.fancyfirework.fireworks.defaults.FireWorkFountainGreen;
+import de.fanta.fancyfirework.fireworks.defaults.FireWorkFountainOrange;
+import de.fanta.fancyfirework.fireworks.defaults.FireWorkFountainPink;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkFountainPride;
+import de.fanta.fancyfirework.fireworks.defaults.FireWorkFountainPurple;
+import de.fanta.fancyfirework.fireworks.defaults.FireWorkFountainRainbow;
+import de.fanta.fancyfirework.fireworks.defaults.FireWorkFountainRed;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkFountainWhite;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkFountainYellow;
 
@@ -36,6 +43,14 @@ public record FireWorkRegistration(FancyFirework plugin) {
         registry.register(new FireWorkFountainPride());
         registry.register(new FireWorkFountainWhite());
         registry.register(new FireWorkFountainYellow());
+        registry.register(new FireWorkFountainBlue());
+        registry.register(new FireWorkFountainGreen());
+        registry.register(new FireWorkFountainOrange());
+        registry.register(new FireWorkFountainPink());
+        registry.register(new FireWorkFountainPurple());
+        registry.register(new FireWorkFountainRainbow());
+        registry.register(new FireWorkFountainRed());
+
         registry.register(new BangSnap());
     }
 }

@@ -35,7 +35,7 @@ public class FireWorkFountainPride extends FireWorkFountain {
 
     @Override
     protected ItemStack createItemStack() {
-        ItemStack itemStack = CustomHeads.createHead(UUID.fromString("67e8c714-b4f1-4feb-8034-4a693723fdae"), "Easter Egg (rainbow)", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2JlNzU0NTI5N2RmZDYyNjZiYmFhMjA1MTgyNWU4ODc5Y2JmYTQyYzdlN2UyNGU1MDc5NmYyN2NhNmExOCJ9fX0=");
+        ItemStack itemStack = CustomHeads.createHead(UUID.fromString("92da8066-af3c-408e-a7c1-ffe11a0de82a"), "Candle (rainbow)", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTNhYmM4MjM3MWZlN2U3Njc5YzBlODhkMWUzZjc1MGRlYjUwYmQwZjVmMzE3N2Y1N2I4NWMyNzg5MzllNDc0MiJ9fX0=");
         ItemMeta meta = itemStack.getItemMeta();
         meta.setDisplayName(ChatColor.of("#eb000c") + "P" + ChatColor.of("#f24206") + "r" + ChatColor.of("#fa8500") + "i" + ChatColor.of("#f7ac00") + "d" + ChatColor.of("#f5d400") + "e" + ChatColor.of("#7ae920") + " F" + ChatColor.of("#00ff40") + "ou" + ChatColor.of("#00aa9f") + "ta" + ChatColor.of("#0055ff") + "i" + ChatColor.of("#a600ff") + "n");
         itemStack.setItemMeta(meta);

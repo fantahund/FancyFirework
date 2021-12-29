@@ -10,26 +10,26 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.UUID;
 
-public class FireWorkFountainYellow extends FireWorkFountain {
+public class FireWorkFountainRed extends FireWorkFountain {
 
     private final FancyFirework plugin = FancyFirework.getPlugin();
 
-    public FireWorkFountainYellow() {
-        super(new NamespacedKey(FancyFirework.getPlugin(), "fountain_yellow"));
+    public FireWorkFountainRed() {
+        super(new NamespacedKey(FancyFirework.getPlugin(), "fountain_red"));
     }
 
     @Override
     protected ItemStack createItemStack() {
-        ItemStack itemStack = CustomHeads.createHead(UUID.fromString("f561d139-2636-4cfb-a63f-e931080f8924"), "Firework Rocket (black / yellow)", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjM0ZWIzNTZiNTc1MjEyYTkyMWFiNzg2MTY4MzIxZmVhNDc2ZTRiYmQzYzFiNmE2N2Y1YTRiYTA5MTM1M2EifX19");
+        ItemStack itemStack = CustomHeads.createHead(UUID.fromString("7880715e-910e-4d5e-b582-e523f49d8b0b"), "Firework Rocket (black / red)", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY0MTM2MjBmYWNjMmE3MWYxMzc2ZGE4ZTk4MzkwMjlkNjM5YjQ3ZTgyZTA1ZjZiZWM5NjJkNmNkNzZjY2Q5In19fQ==");
         ItemMeta meta = itemStack.getItemMeta();
-        meta.setDisplayName(ChatColor.of("#ffeb14") + "Yellow Fountain");
+        meta.setDisplayName(ChatColor.RED + "Red Fountain");
         itemStack.setItemMeta(meta);
         return itemStack;
     }
 
     @Override
     public Color randomColor() {
-        java.awt.Color color = java.awt.Color.getHSBColor(0.16f, random.nextFloat(0.5f, 1), random.nextFloat(0.3f, 1));
+        java.awt.Color color = java.awt.Color.getHSBColor(1f, random.nextFloat(0.5f, 1), random.nextFloat(0.3f, 1));
         return Color.fromRGB(color.getRed(), color.getGreen(), color.getBlue());
     }
 
