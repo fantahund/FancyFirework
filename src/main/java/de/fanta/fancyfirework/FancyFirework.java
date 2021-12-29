@@ -1,8 +1,8 @@
 package de.fanta.fancyfirework;
 
 import de.fanta.fancyfirework.commands.CommandRegistration;
-import de.fanta.fancyfirework.fireworks.FireWorkBatteryGreen;
-import de.fanta.fancyfirework.fireworks.FireWorkBatterySimple;
+import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryGreen;
+import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatterySimple;
 import de.fanta.fancyfirework.listners.EventRegistration;
 import de.fanta.fancyfirework.utils.ChatUtil;
 import org.bukkit.entity.Player;
