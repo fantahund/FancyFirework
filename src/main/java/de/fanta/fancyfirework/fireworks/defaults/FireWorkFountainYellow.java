@@ -29,7 +29,7 @@ public class FireWorkFountainYellow extends FireWorkFountain {
 
     @Override
     public Color randomColor() {
-        java.awt.Color color = java.awt.Color.getHSBColor(0.16f, random.nextFloat(0.5f, 1), random.nextFloat(0.3f, 1));
+        java.awt.Color color = java.awt.Color.getHSBColor(0.16f, random.nextFloat(0.8f, 1), random.nextFloat(0.3f, 1));
         return Color.fromRGB(color.getRed(), color.getGreen(), color.getBlue());
     }
 

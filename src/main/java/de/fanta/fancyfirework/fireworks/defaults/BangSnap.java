@@ -12,7 +12,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.event.player.PlayerEggThrowEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -28,6 +27,7 @@ public class BangSnap extends ItemFireWork {
         ItemMeta meta = stack.getItemMeta();
         if (meta != null) {
             meta.setDisplayName("" + ChatColor.of("#d07016") + ChatColor.BOLD + "Bang Snap");
+            meta.setLore(FancyFirework.getPlugin().getConfig().getStringList("itemlore"));
             stack.setItemMeta(meta);
         }
         return stack;

@@ -23,6 +23,7 @@ public class FireWorkFountainWhite extends FireWorkFountain {
         ItemStack itemStack = CustomHeads.createHead(UUID.fromString("1fe10433-a49e-4607-8ca3-8021e93a72c2"), "Firework Rocket (black / white)", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWNkZGJkMzMxYmQzOTdhMmVhZTFlOGEwZDg2NTEwMjAzY2MyZmJhNzJjZjc2NTIwZjA5ZjVjMjQ0MjVkMTcifX19");
         ItemMeta meta = itemStack.getItemMeta();
         meta.setDisplayName(ChatColor.WHITE + "White fountain");
+        meta.setLore(FancyFirework.getPlugin().getConfig().getStringList("itemlore"));
         itemStack.setItemMeta(meta);
         return itemStack;
     }

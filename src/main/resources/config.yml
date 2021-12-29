@@ -4,3 +4,6 @@ votereward: false
 loottable:
   enabled: false
   chance: 0.5
+itemlore:
+  - '§aThe fireworks can be placed'
+  - '§aand lit with a firework'

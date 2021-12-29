@@ -23,6 +23,7 @@ public class FireWorkFountainRed extends FireWorkFountain {
         ItemStack itemStack = CustomHeads.createHead(UUID.fromString("7880715e-910e-4d5e-b582-e523f49d8b0b"), "Firework Rocket (black / red)", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY0MTM2MjBmYWNjMmE3MWYxMzc2ZGE4ZTk4MzkwMjlkNjM5YjQ3ZTgyZTA1ZjZiZWM5NjJkNmNkNzZjY2Q5In19fQ==");
         ItemMeta meta = itemStack.getItemMeta();
         meta.setDisplayName(ChatColor.RED + "Red Fountain");
+        meta.setLore(FancyFirework.getPlugin().getConfig().getStringList("itemlore"));
         itemStack.setItemMeta(meta);
         return itemStack;
     }

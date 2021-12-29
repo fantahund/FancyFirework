@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.kitteh.vanish.VanishPlugin;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 public final class FancyFirework extends JavaPlugin {

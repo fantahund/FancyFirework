@@ -1,7 +1,12 @@
 package de.fanta.fancyfirework.fireworks.defaults;
 
 import de.fanta.fancyfirework.fireworks.BlockFireWork;
-import org.bukkit.*;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
@@ -10,11 +15,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.util.Vector;
 
-import java.util.*;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public abstract class FireWorkBattery extends BlockFireWork {
 
