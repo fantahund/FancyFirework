@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
@@ -34,7 +35,7 @@ public abstract class FireWorkBattery extends BlockFireWork {
 
     @Override
     public void onLit(ArmorStand stand, Player player) {
-        stand.getWorld().playSound(stand.getLocation(), Sound.ENTITY_CREEPER_PRIMED, 1f, 1f);
+        stand.getWorld().playSound(stand.getLocation(), Sound.ENTITY_CREEPER_PRIMED, SoundCategory.AMBIENT, 1f, 1f);
 
         BatteryTask batteryTask = new BatteryTask(player, stand, 20 * 60, 20 * 5, 20, random.nextInt(20 * 5, 20 * 13));
         batteryTask.setSpawnFireworkTask(task -> spawnRandomFirework(stand.getLocation()));
@@ -43,7 +44,7 @@ public abstract class FireWorkBattery extends BlockFireWork {
             Fountain fountain = new Fountain(random.nextInt(20 * 6, 20 * 8), random.nextInt(5, 10));
             fountain.setCreateEffects(() -> {
                 //Create next fountain effect/s
-                stand.getWorld().playSound(stand.getLocation(), Sound.ENTITY_GHAST_SCREAM, 1f, 1.5f);
+                stand.getWorld().playSound(stand.getLocation(), Sound.ENTITY_GHAST_SCREAM, SoundCategory.AMBIENT, 2f, 1.5f);
 
                 FountainEffect effect = new FountainEffect(random.nextInt(6, 20), random.nextDouble(0.4, 1), random.nextDouble(359), random.nextDouble(6));
                 effect.setSpawnParticle(location -> location.getWorld().spawnParticle(Particle.REDSTONE, location, 6, new Particle.DustOptions(randomColor(), 1.5f)));

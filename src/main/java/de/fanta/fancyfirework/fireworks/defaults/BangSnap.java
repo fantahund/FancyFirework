@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -42,7 +43,7 @@ public class BangSnap extends ItemFireWork {
     public void onHit(Player player, ProjectileHitEvent event) {
         Location loc = event.getEntity().getLocation();
         World world = loc.getWorld();
-        world.playSound(loc, Sound.BLOCK_ANCIENT_DEBRIS_BREAK, 4f, 2f);
+        world.playSound(loc, Sound.BLOCK_ANCIENT_DEBRIS_BREAK, SoundCategory.AMBIENT, 2f, 2f);
         world.spawnParticle(Particle.FLAME, loc, 6, 0, 0, 0, 0.025);
     }
 }
