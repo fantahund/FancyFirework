@@ -25,4 +25,4 @@ jobs:
           prerelease: false
           title: "Release"
           files: |
-            build/libs/fancyfirework.jar
+            target/fancyfirework.jar
