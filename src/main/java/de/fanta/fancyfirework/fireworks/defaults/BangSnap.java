@@ -43,7 +43,7 @@ public class BangSnap extends ItemFireWork {
     public void onHit(Player player, ProjectileHitEvent event) {
         Location loc = event.getEntity().getLocation();
         World world = loc.getWorld();
-        world.playSound(loc, Sound.BLOCK_ANCIENT_DEBRIS_BREAK, SoundCategory.AMBIENT, 2f, 2f);
+        world.playSound(loc, Sound.ENTITY_FIREWORK_ROCKET_BLAST, SoundCategory.AMBIENT, 1f, 2f);
         world.spawnParticle(Particle.FLAME, loc, 6, 0, 0, 0, 0.025);
     }
 }
