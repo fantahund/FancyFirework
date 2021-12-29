@@ -3,8 +3,12 @@ package de.fanta.fancyfirework.listners;
 import de.fanta.fancyfirework.FancyFirework;
 import de.fanta.fancyfirework.fireworks.AbstractFireWork;
 import de.fanta.fancyfirework.fireworks.BlockFireWork;
+import de.fanta.fancyfirework.utils.ChatUtil;
 import de.iani.cubesideutils.RandomUtil;
-import org.bukkit.*;
+import org.bukkit.GameMode;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
@@ -22,8 +26,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.ArrayList;
 
 public class FireworkListener implements Listener {
 
@@ -43,6 +45,9 @@ public class FireworkListener implements Listener {
     public void onFireWorkPlace(BlockPlaceEvent event) {
         ItemStack stack = event.getPlayer().getEquipment().getItem(event.getHand());
         AbstractFireWork fireWork = plugin.getRegistry().getByItemStack(stack);
+        if (!plugin.canBuild(event.getPlayer(), event.getBlock().getLocation())) {
+            return;
+        }
         if (fireWork instanceof BlockFireWork blockFireWork) {
             Block block = event.getBlockPlaced();
             blockFireWork.onPlace(block, blockFireWork.spawnAtBlock(block.getRelative(BlockFace.DOWN)), event.getPlayer());
@@ -97,7 +102,7 @@ public class FireworkListener implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent e) {
-        if (!(e.getDamager() instanceof Player)) {
+        if (!(e.getDamager() instanceof Player player)) {
             return;
         }
         if (!(e.getEntity() instanceof ArmorStand stand)) {
@@ -105,6 +110,10 @@ public class FireworkListener implements Listener {
         }
         AbstractFireWork fireWork = plugin.getRegistry().getFromArmorStand(stand);
         if (fireWork instanceof BlockFireWork blockFireWork) {
+            if (!plugin.canBuild(player, stand.getLocation())) {
+                ChatUtil.sendErrorMessage(player, "You can not build here");
+                return;
+            }
             if (!blockFireWork.hasActiveTask(stand)) {
                 ItemStack stack = blockFireWork.getItemStack();
                 stand.getWorld().dropItem(stand.getLocation().add(0, 1.5, 0), stack);

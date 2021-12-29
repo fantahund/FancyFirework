@@ -11,6 +11,7 @@ import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryPurple;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryRainbow;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryRed;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatterySimple;
+import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryYellow;
 
 public record FireWorkRegistration(FancyFirework plugin) {
 
@@ -25,5 +26,6 @@ public record FireWorkRegistration(FancyFirework plugin) {
         registry.register(new FireWorkBatteryPride());
         registry.register(new FireWorkBatteryPurple());
         registry.register(new FireWorkBatteryPink());
+        registry.register(new FireWorkBatteryYellow());
     }
 }

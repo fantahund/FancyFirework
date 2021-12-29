@@ -1,5 +1,7 @@
 package de.fanta.fancyfirework;
 
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import de.fanta.fancyfirework.commands.CommandRegistration;
 import de.fanta.fancyfirework.fireworks.FireWorkRegistration;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryBlue;
@@ -10,6 +12,8 @@ import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryRed;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatterySimple;
 import de.fanta.fancyfirework.listners.EventRegistration;
 import de.fanta.fancyfirework.utils.ChatUtil;
+import de.fanta.fancyfirework.utils.WorldGuardHelper;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.kitteh.vanish.VanishPlugin;
@@ -26,6 +30,7 @@ public final class FancyFirework extends JavaPlugin {
     private FireWorkWorks fireWorkWorks;
     private FireWorksRegistry registry;
     private VanishPlugin vanish;
+    private WorldGuardHelper worldGuardHelper;
 
     private long time;
     private int taskId;
@@ -39,6 +44,10 @@ public final class FancyFirework extends JavaPlugin {
 
         if (plugin.getServer().getPluginManager().getPlugin("VanishNoPacket") != null) {
             vanish = (VanishPlugin) plugin.getServer().getPluginManager().getPlugin("VanishNoPacket");
+        }
+
+        if (plugin.getServer().getPluginManager().getPlugin("WorldGuard") != null) {
+            worldGuardHelper = new WorldGuardHelper(getServer().getPluginManager().getPlugin("WorldGuard"));
         }
 
 
@@ -94,5 +103,13 @@ public final class FancyFirework extends JavaPlugin {
 
     public long getTime() {
         return this.time;
+    }
+
+    public boolean canBuild(Player player, Location loc) {
+        if (worldGuardHelper == null) {
+            return true;
+        } else {
+            return worldGuardHelper.canBuild(player, loc);
+        }
     }
 }

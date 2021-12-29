@@ -29,7 +29,7 @@ public abstract class FireWorkBattery extends BlockFireWork {
         batteryTask.setSpawnFireworkTask(task -> spawnRandomFirework(stand.getLocation()));
         batteryTask.setSpawnFountainTask(task -> {
             //Create fountain
-            Fountain fountain = new Fountain(random.nextInt(20 * 6, 20 * 8), random.nextInt(10, 20));
+            Fountain fountain = new Fountain(random.nextInt(20 * 6, 20 * 8), random.nextInt(5, 10));
             fountain.setCreateEffects(() -> {
                 //Create next fountain effect/s
                 stand.getWorld().playSound(stand.getLocation(), Sound.ENTITY_GHAST_SCREAM, 1f, 1.5f);
@@ -51,7 +51,7 @@ public abstract class FireWorkBattery extends BlockFireWork {
 
         if (task instanceof BatteryTask batteryTask) {
             if (batteryTask.fountainCounter == 0) {
-                batteryTask.fountainCooldown = random.nextInt(20 * 5, 20 * 13);
+                batteryTask.fountainCooldown = random.nextInt(20 * 4, 20 * 8);
             }
         }
     }
