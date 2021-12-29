@@ -92,7 +92,7 @@ public class FireworkListener implements Listener {
                                             event.getPlayer().getInventory().setItemInOffHand(stack);
                                         }
                                     } else {
-                                        event.getPlayer().getWorld().playSound(event.getPlayer().getLocation().add(0.5, 0.5, 0.5), Sound.ENTITY_ITEM_BREAK, SoundCategory.AMBIENT, 1 + (float) Math.random() * 0.1f, 1 + (float) Math.random() * 0.1f);
+                                        event.getPlayer().getWorld().playSound(event.getPlayer().getLocation().add(0.5, 0.5, 0.5), Sound.ENTITY_ITEM_BREAK, SoundCategory.PLAYERS, 1 + (float) Math.random() * 0.1f, 1 + (float) Math.random() * 0.1f);
                                         if (event.getHand() == EquipmentSlot.HAND) {
                                             event.getPlayer().getInventory().setItemInMainHand(null);
                                         } else {
