@@ -3,7 +3,7 @@ package de.fanta.fancyfirework.fireworks;
 import de.fanta.fancyfirework.FancyFirework;
 import de.fanta.fancyfirework.FireWorksRegistry;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryBlue;
-import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryColorSwitch;
+import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryPride;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryGreen;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryOrange;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryRainbow;
@@ -20,6 +20,6 @@ public record FireWorkRegistration(FancyFirework plugin) {
         registry.register(new FireWorkBatteryBlue());
         registry.register(new FireWorkBatteryOrange());
         registry.register(new FireWorkBatteryRainbow());
-        registry.register(new FireWorkBatteryColorSwitch());
+        registry.register(new FireWorkBatteryPride());
     }
 }

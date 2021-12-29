@@ -49,7 +49,6 @@ public final class FancyFirework extends JavaPlugin {
 
         new CommandRegistration(this).registerCommands();
         new EventRegistration(this).registerEvents();
-        new EventRegistration(this).registerEvents();
         new FireWorkRegistration(this).registerFirework();
 
         saveDefaultConfig();

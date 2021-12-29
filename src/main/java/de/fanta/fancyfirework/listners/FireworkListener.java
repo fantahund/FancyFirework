@@ -43,7 +43,6 @@ public class FireworkListener implements Listener {
     public void onFireWorkPlace(BlockPlaceEvent event) {
         ItemStack stack = event.getPlayer().getEquipment().getItem(event.getHand());
         AbstractFireWork fireWork = plugin.getRegistry().getByItemStack(stack);
-        System.out.println(event.getHand()); //TODO Warum wird der bums 2 mal ausgeführt?
         if (fireWork instanceof BlockFireWork blockFireWork) {
             Block block = event.getBlockPlaced();
             blockFireWork.onPlace(block, blockFireWork.spawnAtBlock(block.getRelative(BlockFace.DOWN)), event.getPlayer());
@@ -98,7 +97,7 @@ public class FireworkListener implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent e) {
-        if (!(e.getDamager() instanceof Player p)) {
+        if (!(e.getDamager() instanceof Player)) {
             return;
         }
         if (!(e.getEntity() instanceof ArmorStand stand)) {
