@@ -52,8 +52,12 @@ public class FireWorksRegistry {
         return null;
     }
 
-    public AbstractFireWork getFromArmorStand(ArmorStand armorStand) {
-        return getByItemStack(armorStand.getEquipment().getHelmet());
+    public AbstractFireWork getFromArmorStand(@NotNull ArmorStand armorStand) {
+        String keyString = armorStand.getPersistentDataContainer().get(AbstractFireWork.FIREWORK_ID, PersistentDataType.STRING);
+        if (keyString != null) {
+            return get(NamespacedKey.fromString(keyString));
+        }
+        return null;
     }
 
     public List<NamespacedKey> getKeys() {

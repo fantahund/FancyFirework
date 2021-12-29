@@ -10,6 +10,7 @@ import org.bukkit.block.data.type.Snow;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.EulerAngle;
 import org.jetbrains.annotations.NotNull;
@@ -58,6 +59,7 @@ public abstract class BlockFireWork extends AbstractFireWork {
                 t.setVisible(false);
                 t.setGravity(false);
                 t.setHeadPose(new EulerAngle(0, random.nextDouble() * Math.PI * 2, 0));
+                t.getPersistentDataContainer().set(FIREWORK_ID, PersistentDataType.STRING, getKey().asString());
                 t.setHelmet(itemStack);
             });
         }
