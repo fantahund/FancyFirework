@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public class WorldGuardHelper {
-    private WorldGuardPlugin worldGuard;
+    private final WorldGuardPlugin worldGuard;
 
     public WorldGuardHelper(Plugin worldGuard) {
         this.worldGuard = (WorldGuardPlugin) worldGuard;

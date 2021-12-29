@@ -1,15 +1,7 @@
 package de.fanta.fancyfirework;
 
-import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import de.fanta.fancyfirework.commands.CommandRegistration;
 import de.fanta.fancyfirework.fireworks.FireWorkRegistration;
-import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryBlue;
-import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryGreen;
-import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryOrange;
-import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryRainbow;
-import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryRed;
-import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatterySimple;
 import de.fanta.fancyfirework.listners.EventRegistration;
 import de.fanta.fancyfirework.utils.ChatUtil;
 import de.fanta.fancyfirework.utils.WorldGuardHelper;
@@ -51,7 +43,6 @@ public final class FancyFirework extends JavaPlugin {
             worldGuardHelper = new WorldGuardHelper(getServer().getPluginManager().getPlugin("WorldGuard"));
         }
 
-
         new bStats(this).registerbStats();
 
         fireWorkWorks = new FireWorkWorks();
@@ -67,7 +58,6 @@ public final class FancyFirework extends JavaPlugin {
         this.taskId = -1;
         this.time = 0;
         this.restartTask(1);
-
     }
 
     @Override

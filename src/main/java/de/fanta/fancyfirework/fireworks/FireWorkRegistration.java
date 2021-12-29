@@ -13,7 +13,6 @@ import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryRainbow;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryRed;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatterySimple;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryYellow;
-import de.fanta.fancyfirework.fireworks.defaults.FireWorkFountain;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkFountainBlue;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkFountainGreen;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkFountainOrange;

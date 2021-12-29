@@ -35,7 +35,7 @@ public class FireWorkGiveCommand extends SubCommand {
         }
 
         if (args.remaining() != 1 && args.remaining() != 2) {
-            ChatUtil.sendWarningMessage(p, "/fancyfirework givefirework [key] <amount>");
+            ChatUtil.sendWarningMessage(p, "/fancyfirework give [key] <amount>");
             return true;
         }
 

@@ -14,8 +14,6 @@ import java.util.*;
 
 public class FireWorksRegistry {
 
-    public static final String FIREWORK_META_KEY = "firework_type";
-
     private final Map<NamespacedKey, AbstractFireWork> fireWorkMap;
 
     private final FancyFirework plugin;

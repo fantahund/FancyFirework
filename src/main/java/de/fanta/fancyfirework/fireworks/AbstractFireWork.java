@@ -1,24 +1,29 @@
 package de.fanta.fancyfirework.fireworks;
 
 import de.fanta.fancyfirework.FancyFirework;
-import de.fanta.fancyfirework.FireWorksRegistry;
 import org.bukkit.*;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Marker;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.metadata.MetadataValue;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+/**
+ * The base firework class that contains all necessary methods to create a firework.<br>
+ * For a pre-defined implementation use:
+ * <ul>
+ *     <li>{@link BlockFireWork} - A firework that can be placed in the world.</li>
+ *     <li>{@link ItemFireWork} - A firework that uses a projectile thrown by a player.</li>
+ * </ul>
+ *
+ */
 public abstract class AbstractFireWork implements Keyed {
 
     protected static final Random random = new Random();
-    protected static final String FIREWORK_META_KEY = "firework_type";
+    /**
+     * This key is used to identify the {@link AbstractFireWork} an ItemStack, Entity might contain.
+     */
     public static final NamespacedKey FIREWORK_ID = new NamespacedKey(FancyFirework.getPlugin(), "firework");
 
     private final NamespacedKey key;

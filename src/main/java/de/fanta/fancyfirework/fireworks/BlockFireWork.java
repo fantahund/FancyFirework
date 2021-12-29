@@ -17,6 +17,18 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+/**
+ * This firework can be placed into the world and lit by players using flint and steel.<br>
+ * If placed on a block it will spawn an ArmorStand with a persistent tag to mark it as a firework. <br>
+ * The ArmorStand will then be equipped with a helmet that is the {@link org.bukkit.inventory.ItemStack} from the firework (See {@link #createItemStack()}).<br>
+ * <br>
+ * There are a couple of methods that will be called on interactions or updates.
+ * <ul>
+ *     <li>{@link #onPlace(Block, ArmorStand, Player)} - Called when a player places the firework.</li>
+ *     <li>{@link #onLit(ArmorStand, Player)} - Called when the firework is lit by a player using flint and steel.</li>
+ *     <li>{@link #onTick(Task, boolean)} - Called when a task of this firework executes a tick.</li>
+ * </ul>
+ */
 public abstract class BlockFireWork extends AbstractFireWork {
 
     private final Map<UUID, Task> activeTasks = new HashMap<>();
@@ -25,12 +37,37 @@ public abstract class BlockFireWork extends AbstractFireWork {
         super(key);
     }
 
+    /**
+     * Called when a player places the firework.
+     *
+     * @param block The placed block.
+     * @param stand The spawned ArmorStand of the firework.
+     * @param player The player that placed the firework.
+     */
     public abstract void onPlace(Block block, ArmorStand stand, Player player);
 
+    /**
+     * Called when the firework is lit by a player using flint and steel.
+     *
+     * @param stand The ArmorStand of the firework, that was lit.
+     * @param player The player that lit the firework.
+     */
     public abstract void onLit(ArmorStand stand, Player player);
 
+    /**
+     * Called when a task of this firework executes a tick.
+     *
+     * @param task The task that executed the tick.
+     * @param active If the delay has passed and the task is actively running.
+     */
     public abstract void onTick(Task task, boolean active);
 
+    /**
+     * Spawns the {@link ArmorStand} of this firework at the block.
+     *
+     * @param block The block to place the firework at.
+     * @return The spawned ArmorStand, that contains the info about the firework.
+     */
     public ArmorStand spawnAtBlock(Block block) {
         World world = block.getWorld();
         double y = block.getY();
@@ -60,12 +97,18 @@ public abstract class BlockFireWork extends AbstractFireWork {
                 t.setGravity(false);
                 t.setHeadPose(new EulerAngle(0, random.nextDouble() * Math.PI * 2, 0));
                 t.getPersistentDataContainer().set(FIREWORK_ID, PersistentDataType.STRING, getKey().asString());
-                t.setHelmet(itemStack);
+                t.getEquipment().setHelmet(itemStack);
             });
         }
         return null;
     }
 
+    /**
+     * Checks if the {@link ArmorStand} has an active task already running.
+     *
+     * @param stand The ArmorStand to check for a task.
+     * @return True if there is already a task running; False otherwise.
+     */
     public boolean hasActiveTask(ArmorStand stand) {
         return activeTasks.containsKey(stand.getUniqueId());
     }
@@ -82,6 +125,13 @@ public abstract class BlockFireWork extends AbstractFireWork {
         activeTasks.remove(task.armorStand.getUniqueId());
     }
 
+    /**
+     * This task can be created to run a specific task in intervals.
+     * Like spawning particles or fireworks, etc.<br>
+     * This default implementation has one {@link Runnable} that runs once everytime a period passes.
+     * <br>
+     * Once the duration has been reached the task will stop and removes the {@link ArmorStand} from the world.
+     */
     public class Task {
 
         protected final Player player;
@@ -97,6 +147,16 @@ public abstract class BlockFireWork extends AbstractFireWork {
 
         protected final Runnable taskToRun;
 
+        /**
+         * Creates a new Task that runs for a specified duration after the specified delay has passed.
+         *
+         * @param player The player that executed the task.
+         * @param armorStand The ArmorStand at which the task runs at.
+         * @param duration The duration in ticks.
+         * @param delay The delay in ticks.
+         * @param period The period between each task.
+         * @param taskToRun The task to run each period.
+         */
         public Task(Player player, ArmorStand armorStand, long duration, int delay, int period, Runnable taskToRun) {
             this.player = player;
             this.armorStand = armorStand;
@@ -110,6 +170,12 @@ public abstract class BlockFireWork extends AbstractFireWork {
             this.bukkitTask = null;
         }
 
+        /**
+         * This method is called each tick, even while the delay hasn't passed yet.
+         * Therefor the amount of times this method will be called is equal to <pre>duration + delay</pre>
+         *
+         * To check if the delay is over use {@link #isActive()}!
+         */
         protected void onTick() {
             boolean active = isActive();
             BlockFireWork.this.onTick(this, active);
@@ -125,6 +191,10 @@ public abstract class BlockFireWork extends AbstractFireWork {
             }
         }
 
+        /**
+         * Starts the task and initialises the internal scheduler.
+         * Tick and counter are reset.
+         */
         public void start() {
             this.tick = 0;
             this.counter = 0;
@@ -138,6 +208,11 @@ public abstract class BlockFireWork extends AbstractFireWork {
             }, 0, 1);
         }
 
+        /**
+         * Stops the internal scheduler if it exists.
+         * <br>
+         * This removes the ArmorStand entity from the world!
+         */
         public void stop() {
             if(bukkitTask != null) {
                 bukkitTask.cancel();
@@ -174,10 +249,20 @@ public abstract class BlockFireWork extends AbstractFireWork {
             return player;
         }
 
+        /**
+         * Checks if the task is active (The delay is over).
+         *
+         * @return True if the delay is over; else false.
+         */
         public boolean isActive() {
             return tick >= delay;
         }
 
+        /**
+         * Gets the firework this task belongs to.
+         *
+         * @return The firework of this task.
+         */
         public BlockFireWork getFirework() {
             return BlockFireWork.this;
         }

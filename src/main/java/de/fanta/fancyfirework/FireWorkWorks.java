@@ -1,7 +1,5 @@
 package de.fanta.fancyfirework;
 
-import de.fanta.fancyfirework.utils.ChatUtil;
-import de.iani.cubesideutils.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -25,14 +23,12 @@ public class FireWorkWorks {
     private boolean enabled;
     private int taskID;
     private Random rand;
-    private long lastspawn;
 
     public FireWorkWorks() {
         enabled = plugin.getConfig().getBoolean("enabled");
         if (enabled) {
             enableTask();
         }
-
     }
 
     public void enableTask() {
