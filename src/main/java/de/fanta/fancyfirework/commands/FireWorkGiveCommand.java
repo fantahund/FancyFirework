@@ -30,7 +30,7 @@ public class FireWorkGiveCommand extends SubCommand {
             return true;
         }
         if (!p.hasPermission(FancyFirework.MOD_PERMISSION)) {
-            ChatUtil.sendWarningMessage(p, "No Permission!");
+            ChatUtil.sendErrorMessage(p, "No Permission!");
             return true;
         }
 
@@ -41,7 +41,7 @@ public class FireWorkGiveCommand extends SubCommand {
 
         if (args.hasNext()) {
             String key = args.getNext();
-            AbstractFireWork fireWork = plugin.getRegistry().get(NamespacedKey.fromString(key));
+            AbstractFireWork fireWork = plugin.getRegistry().get(NamespacedKey.fromString("fancyfirework:" + key));
             int amount = 1;
             if (args.hasNext()) {
                 int next = args.getNext(1);
@@ -70,16 +70,19 @@ public class FireWorkGiveCommand extends SubCommand {
 
     @Override
     public ArrayList<String> onTabComplete(CommandSender sender, Command command, String alias, ArgsParser args) {
-        int i = 0;
-        while (args.hasNext()) {
-            args.next();
-            i++;
+        if (sender.hasPermission(FancyFirework.MOD_PERMISSION)) {
+            int i = 0;
+            while (args.hasNext()) {
+                args.next();
+                i++;
+            }
+            if (i == 1) {
+                ArrayList<String> li = new ArrayList<>();
+                plugin.getRegistry().getKeys().forEach((x) -> li.add(x.getKey()));
+                return li;
+            }
+            return new ArrayList<>();
         }
-        if (i == 1) {
-            ArrayList<String> li = new ArrayList<>();
-            plugin.getRegistry().getKeys().forEach((x) -> li.add(x.asString()));
-            return li;
-        }
-        return new ArrayList<>();
+        return null;
     }
 }

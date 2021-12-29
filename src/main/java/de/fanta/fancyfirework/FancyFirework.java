@@ -1,7 +1,12 @@
 package de.fanta.fancyfirework;
 
 import de.fanta.fancyfirework.commands.CommandRegistration;
+import de.fanta.fancyfirework.fireworks.FireWorkRegistration;
+import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryBlue;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryGreen;
+import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryOrange;
+import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryRainbow;
+import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryRed;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatterySimple;
 import de.fanta.fancyfirework.listners.EventRegistration;
 import de.fanta.fancyfirework.utils.ChatUtil;
@@ -22,6 +27,9 @@ public final class FancyFirework extends JavaPlugin {
     private FireWorksRegistry registry;
     private VanishPlugin vanish;
 
+    private long time;
+    private int taskId;
+
     private static FancyFirework plugin;
 
     @Override
@@ -41,12 +49,15 @@ public final class FancyFirework extends JavaPlugin {
 
         new CommandRegistration(this).registerCommands();
         new EventRegistration(this).registerEvents();
+        new EventRegistration(this).registerEvents();
+        new FireWorkRegistration(this).registerFirework();
 
         saveDefaultConfig();
         reloadConfig();
 
-        registry.register(new FireWorkBatterySimple());
-        registry.register(new FireWorkBatteryGreen());
+        this.taskId = -1;
+        this.time = 0;
+        this.restartTask(1);
 
     }
 
@@ -73,5 +84,24 @@ public final class FancyFirework extends JavaPlugin {
         } else {
             return false;
         }
+    }
+
+    public void restartTask(long l) {
+        if (this.taskId != -1) {
+            this.getServer().getScheduler().cancelTask(this.taskId);
+        }
+
+        this.taskId = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+
+            @Override
+            public void run() {
+                FancyFirework.this.time++;
+            }
+
+        }, 0L, l);
+    }
+
+    public long getTime() {
+        return this.time;
     }
 }

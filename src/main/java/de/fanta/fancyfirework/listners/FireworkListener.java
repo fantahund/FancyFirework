@@ -10,10 +10,12 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.FireworkExplodeEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -21,13 +23,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+
 public class FireworkListener implements Listener {
 
     private final FancyFirework plugin = FancyFirework.getPlugin();
 
     @EventHandler
     public void onFireworkExplode(FireworkExplodeEvent e) {
-        if (plugin.getFireWorkWorks().enabled()) { //TODO Check is fancyfirework firework
+        if (plugin.getFireWorkWorks().enabled()) {
             Entity entity = e.getEntity();
             if (entity.hasMetadata("FancyFirework")) {
                 entity.getLocation().getWorld().dropItem(entity.getLocation(), plugin.getRegistry().getRandomFireWorkItem());
@@ -39,6 +43,7 @@ public class FireworkListener implements Listener {
     public void onFireWorkPlace(BlockPlaceEvent event) {
         ItemStack stack = event.getPlayer().getEquipment().getItem(event.getHand());
         AbstractFireWork fireWork = plugin.getRegistry().getByItemStack(stack);
+        System.out.println(event.getHand()); //TODO Warum wird der bums 2 mal ausgeführt?
         if (fireWork instanceof BlockFireWork blockFireWork) {
             Block block = event.getBlockPlaced();
             blockFireWork.onPlace(block, blockFireWork.spawnAtBlock(block.getRelative(BlockFace.DOWN)), event.getPlayer());
@@ -53,7 +58,7 @@ public class FireworkListener implements Listener {
         if (entity instanceof ArmorStand stand) {
             AbstractFireWork fireWork = plugin.getRegistry().getFromArmorStand(stand);
             if (fireWork instanceof BlockFireWork blockFireWork) {
-                if(!blockFireWork.hasActiveTask(stand)) {
+                if (!blockFireWork.hasActiveTask(stand)) {
                     ItemStack stack = event.getPlayer().getEquipment().getItem(event.getHand());
                     if (stack.getType().equals(Material.FLINT_AND_STEEL)) {
                         blockFireWork.onLit(stand, event.getPlayer());
@@ -87,6 +92,25 @@ public class FireworkListener implements Listener {
                     }
                 }
                 event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onDamage(EntityDamageByEntityEvent e) {
+        if (!(e.getDamager() instanceof Player p)) {
+            return;
+        }
+        if (!(e.getEntity() instanceof ArmorStand stand)) {
+            return;
+        }
+        AbstractFireWork fireWork = plugin.getRegistry().getFromArmorStand(stand);
+        if (fireWork instanceof BlockFireWork blockFireWork) {
+            if (!blockFireWork.hasActiveTask(stand)) {
+                ItemStack stack = blockFireWork.getItemStack();
+                stand.getWorld().dropItem(stand.getLocation().add(0, 1.5, 0), stack);
+                stand.getEquipment().clear();
+                stand.remove();
             }
         }
     }
