@@ -65,6 +65,9 @@ public class FireworkListener implements Listener {
                 if (!blockFireWork.hasActiveTask(stand)) {
                     ItemStack stack = event.getPlayer().getEquipment().getItem(event.getHand());
                     if (stack.getType().equals(Material.FLINT_AND_STEEL)) {
+                        if (!plugin.canBuild(event.getPlayer(), stand.getLocation())) {
+                            return;
+                        }
                         blockFireWork.onLit(stand, event.getPlayer());
                         if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
                             ItemMeta meta = stack.getItemMeta();
