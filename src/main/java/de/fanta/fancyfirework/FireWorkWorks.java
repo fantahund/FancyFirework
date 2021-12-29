@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Vector;
 
 import java.util.Random;
 import java.util.logging.Level;
@@ -62,6 +63,7 @@ public class FireWorkWorks {
         boolean sky = loc.getBlockY() > toppos.getBlockY();
         if (sky && p.getGameMode() == GameMode.SURVIVAL && !FancyFirework.getPlugin().isVanish(p)) {
             Firework firework = (Firework) world.spawnEntity(loc, EntityType.FIREWORK);
+            firework.setVelocity(new Vector((rand.nextBoolean() ? 1 : -1) * rand.nextDouble(0.01), rand.nextDouble(0.8, 1.5), (rand.nextBoolean() ? 1 : -1) * rand.nextDouble(0.01)));
             FireworkMeta fireworkMeta = firework.getFireworkMeta();
             FireworkEffect effect = FireworkEffect.builder().with(FireworkEffect.Type.values()[rand.nextInt(FireworkEffect.Type.values().length)]).withColor(randomColor()).withFade(randomColor()).withFlicker().withTrail().build();
             fireworkMeta.addEffect(effect);
