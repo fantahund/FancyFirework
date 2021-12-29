@@ -1,5 +1,5 @@
 enabled: false
-spawnrate: 1.0
+spawnrate: 1
 votereward: false
 loottable:
   enabled: false

@@ -2,6 +2,7 @@ package de.fanta.fancyfirework.fireworks.defaults;
 
 import de.fanta.fancyfirework.fireworks.BlockFireWork;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
@@ -19,6 +20,11 @@ public abstract class FireWorkBattery extends BlockFireWork {
 
     protected FireWorkBattery(NamespacedKey namespacedKey) {
         super(namespacedKey);
+    }
+
+    @Override
+    public void onPlace(Block block, ArmorStand stand, Player player) {
+        //Nothing
     }
 
     @Override
@@ -94,12 +100,28 @@ public abstract class FireWorkBattery extends BlockFireWork {
             return FireWorkBattery.this;
         }
 
+        public int getFireworkCooldown() {
+            return fireworkCooldown;
+        }
+
+        public int getFireworkCounter() {
+            return fireworkCounter;
+        }
+
         public void setFireworkCooldown(int fireworkCooldown) {
             this.fireworkCooldown = fireworkCooldown;
         }
 
+        public int getFountainCooldown() {
+            return fountainCooldown;
+        }
+
         public void setFountainCooldown(int fountainCooldown) {
             this.fountainCooldown = fountainCooldown;
+        }
+
+        public int getFountainCounter() {
+            return fountainCounter;
         }
 
         public void setSpawnFireworkTask(Consumer<Task> spawnFirework) {

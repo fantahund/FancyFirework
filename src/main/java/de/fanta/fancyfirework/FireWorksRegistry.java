@@ -3,10 +3,9 @@ package de.fanta.fancyfirework;
 import com.google.common.base.Preconditions;
 import de.fanta.fancyfirework.fireworks.AbstractFireWork;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.metadata.MetadataValue;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -40,7 +39,7 @@ public class FireWorksRegistry {
 
     @Nullable
     public AbstractFireWork getByItemStack(ItemStack itemStack) {
-        if (itemStack != null) {
+        if (itemStack != null && !itemStack.getType().isAir()) {
             ItemMeta meta = itemStack.getItemMeta();
             if (meta != null) {
                 String keyString = meta.getPersistentDataContainer().get(AbstractFireWork.FIREWORK_ID, PersistentDataType.STRING);
@@ -52,7 +51,7 @@ public class FireWorksRegistry {
         return null;
     }
 
-    public AbstractFireWork getFromArmorStand(@NotNull ArmorStand armorStand) {
+    public AbstractFireWork getByEntity(@NotNull Entity armorStand) {
         String keyString = armorStand.getPersistentDataContainer().get(AbstractFireWork.FIREWORK_ID, PersistentDataType.STRING);
         if (keyString != null) {
             return get(NamespacedKey.fromString(keyString));

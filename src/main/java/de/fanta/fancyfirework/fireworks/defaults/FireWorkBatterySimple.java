@@ -30,11 +30,6 @@ public class FireWorkBatterySimple extends FireWorkBattery {
     }
 
     @Override
-    public void onPlace(Block block, ArmorStand stand, Player player) {
-
-    }
-
-    @Override
     public void onLit(ArmorStand stand, Player player) {
         stand.getWorld().playSound(stand.getLocation(), Sound.ENTITY_CREEPER_PRIMED, 1f, 1f);
         Task task = new Task(player, stand, 20 * 60, 20 * 5, 20, () -> spawnRandomFirework(stand.getLocation()));

@@ -48,9 +48,7 @@ public class FireWorkWorks {
 
     public void randomFireworkRun() {
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            double chance = getSpawnRate();
-            boolean spawn = rand.nextDouble() < chance;
-            if (spawn) {
+            if (rand.nextInt(getSpawnRate()) == 0) {
                 spawnFirework(p);
             }
         }
@@ -63,7 +61,7 @@ public class FireWorkWorks {
         boolean sky = loc.getBlockY() > toppos.getBlockY();
         if (sky && p.getGameMode() == GameMode.SURVIVAL && !FancyFirework.getPlugin().isVanish(p)) {
             Firework firework = (Firework) world.spawnEntity(loc, EntityType.FIREWORK);
-            firework.setVelocity(new Vector((rand.nextBoolean() ? 1 : -1) * rand.nextDouble(0.1), rand.nextDouble(0.5, 1), (rand.nextBoolean() ? 1 : -1) * rand.nextDouble(0.01)));
+            firework.setVelocity(new Vector((rand.nextBoolean() ? 1 : -1) * rand.nextDouble(0.06), rand.nextDouble(0.5, 1), (rand.nextBoolean() ? 1 : -1) * rand.nextDouble(0.06)));
             FireworkMeta fireworkMeta = firework.getFireworkMeta();
             FireworkEffect effect = FireworkEffect.builder().with(FireworkEffect.Type.values()[rand.nextInt(FireworkEffect.Type.values().length)]).withColor(randomColor()).withFade(randomColor()).withFlicker().withTrail().build();
             fireworkMeta.addEffect(effect);
@@ -91,8 +89,8 @@ public class FireWorkWorks {
         plugin.saveConfig();
     }
 
-    public double getSpawnRate() {
-        return plugin.getConfig().getDouble("spawnrate", 1) / 100;
+    public int getSpawnRate() {
+        return plugin.getConfig().getInt("spawnrate", 1);
     }
 
     public void setSpawnRate(double spawnRate) {

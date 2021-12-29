@@ -1,8 +1,10 @@
 package de.fanta.fancyfirework.listners;
 
+import com.destroystokyo.paper.event.entity.ThrownEggHatchEvent;
 import de.fanta.fancyfirework.FancyFirework;
 import de.fanta.fancyfirework.fireworks.AbstractFireWork;
 import de.fanta.fancyfirework.fireworks.BlockFireWork;
+import de.fanta.fancyfirework.fireworks.ItemFireWork;
 import de.fanta.fancyfirework.utils.ChatUtil;
 import de.iani.cubesideutils.RandomUtil;
 import org.bukkit.GameMode;
@@ -15,17 +17,22 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.FireworkExplodeEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.player.PlayerEggThrowEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 public class FireworkListener implements Listener {
 
@@ -60,7 +67,7 @@ public class FireworkListener implements Listener {
     public void onInteract(PlayerInteractAtEntityEvent event) {
         Entity entity = event.getRightClicked();
         if (entity instanceof ArmorStand stand) {
-            AbstractFireWork fireWork = plugin.getRegistry().getFromArmorStand(stand);
+            AbstractFireWork fireWork = plugin.getRegistry().getByEntity(stand);
             if (fireWork instanceof BlockFireWork blockFireWork) {
                 if (!blockFireWork.hasActiveTask(stand)) {
                     ItemStack stack = event.getPlayer().getEquipment().getItem(event.getHand());
@@ -111,7 +118,7 @@ public class FireworkListener implements Listener {
         if (!(e.getEntity() instanceof ArmorStand stand)) {
             return;
         }
-        AbstractFireWork fireWork = plugin.getRegistry().getFromArmorStand(stand);
+        AbstractFireWork fireWork = plugin.getRegistry().getByEntity(stand);
         if (fireWork instanceof BlockFireWork blockFireWork) {
             if (!plugin.canBuild(player, stand.getLocation())) {
                 ChatUtil.sendErrorMessage(player, "You can not build here");
@@ -123,6 +130,41 @@ public class FireworkListener implements Listener {
                 stand.getEquipment().clear();
                 stand.remove();
             }
+        }
+    }
+
+    @EventHandler
+    public void onItemFireworkLaunch(ProjectileLaunchEvent event) {
+        Projectile entity = event.getEntity();
+        if (entity.getShooter() instanceof Player player) {
+            ItemStack hand = player.getEquipment().getItemInMainHand();
+            AbstractFireWork fireWork = plugin.getRegistry().getByItemStack(hand);
+            if (!(fireWork instanceof ItemFireWork)) {
+                fireWork = plugin.getRegistry().getByItemStack(player.getEquipment().getItemInOffHand());
+            }
+            if (fireWork instanceof ItemFireWork itemFireWork) {
+                entity.getPersistentDataContainer().set(AbstractFireWork.FIREWORK_ID, PersistentDataType.STRING, fireWork.getKey().asString());
+                itemFireWork.onLaunch(player, entity);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onItemFireworkHit(ProjectileHitEvent event) {
+        Projectile entity = event.getEntity();
+        if (entity.getShooter() instanceof Player player) {
+            AbstractFireWork fireWork = plugin.getRegistry().getByEntity(entity);
+            if (fireWork instanceof ItemFireWork itemFireWork) {
+                itemFireWork.onHit(player, event);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onItemFireworkHit(ThrownEggHatchEvent event) {
+        AbstractFireWork fireWork = plugin.getRegistry().getByEntity(event.getEgg());
+        if (fireWork instanceof ItemFireWork) {
+            event.setHatching(false);
         }
     }
 }

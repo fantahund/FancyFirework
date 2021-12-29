@@ -26,11 +26,6 @@ public class FireWorkBatteryGreen extends FireWorkBattery {
     }
 
     @Override
-    public void onPlace(Block block, ArmorStand stand, Player player) {
-        //Nothing
-    }
-
-    @Override
     public Color randomColor() {
         int red = (int) (Math.random() * 20);
         int green = (int) (Math.random() * 256);

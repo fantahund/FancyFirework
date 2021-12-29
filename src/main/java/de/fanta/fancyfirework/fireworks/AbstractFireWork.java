@@ -46,7 +46,7 @@ public abstract class AbstractFireWork implements Keyed {
 
     @NotNull
     @Override
-    public NamespacedKey getKey() {
+    public final NamespacedKey getKey() {
         return key;
     }
 

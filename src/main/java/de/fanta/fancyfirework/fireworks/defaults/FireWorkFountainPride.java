@@ -5,29 +5,39 @@ import de.fanta.fancyfirework.utils.ColorUtils;
 import de.iani.cubesideutils.bukkit.items.CustomHeads;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.Vector;
 
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
-public class FireWorkBatteryPride extends FireWorkBattery {
+public class FireWorkFountainPride extends FireWorkFountain {
 
     private final FancyFirework plugin = FancyFirework.getPlugin();
 
-    public FireWorkBatteryPride() {
-        super(new NamespacedKey(FancyFirework.getPlugin(), "battery_pride"));
+    public FireWorkFountainPride() {
+        super(new NamespacedKey(FancyFirework.getPlugin(), "fountain_pride"));
     }
 
     @Override
     protected ItemStack createItemStack() {
         ItemStack itemStack = CustomHeads.createHead(UUID.fromString("67e8c714-b4f1-4feb-8034-4a693723fdae"), "Easter Egg (rainbow)", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2JlNzU0NTI5N2RmZDYyNjZiYmFhMjA1MTgyNWU4ODc5Y2JmYTQyYzdlN2UyNGU1MDc5NmYyN2NhNmExOCJ9fX0=");
         ItemMeta meta = itemStack.getItemMeta();
-        meta.setDisplayName(ChatColor.of("#eb000c") + "P" + ChatColor.of("#f24206") + "r" + ChatColor.of("#fa8500") + "i" + ChatColor.of("#f7ac00") + "d" + ChatColor.of("#f5d400") + "e" + ChatColor.of("#7ae920") + " B" + ChatColor.of("#00ff40") + "at" + ChatColor.of("#00aa9f") + "te" + ChatColor.of("#0055ff") + "r" + ChatColor.of("#a600ff") + "y");
+        meta.setDisplayName(ChatColor.of("#eb000c") + "P" + ChatColor.of("#f24206") + "r" + ChatColor.of("#fa8500") + "i" + ChatColor.of("#f7ac00") + "d" + ChatColor.of("#f5d400") + "e" + ChatColor.of("#7ae920") + " F" + ChatColor.of("#00ff40") + "ou" + ChatColor.of("#00aa9f") + "ta" + ChatColor.of("#0055ff") + "i" + ChatColor.of("#a600ff") + "n");
         itemStack.setItemMeta(meta);
         return itemStack;
     }
@@ -36,6 +46,7 @@ public class FireWorkBatteryPride extends FireWorkBattery {
     public Color randomColor() {
         return ColorUtils.getColor(plugin.getTime(), 2);
     }
+
 }
 
 

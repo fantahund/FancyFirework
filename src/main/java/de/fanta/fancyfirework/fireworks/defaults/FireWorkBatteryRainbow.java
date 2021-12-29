@@ -33,11 +33,6 @@ public class FireWorkBatteryRainbow extends FireWorkBattery {
     }
 
     @Override
-    public void onPlace(Block block, ArmorStand stand, Player player) {
-        //Nothing
-    }
-
-    @Override
     public Color randomColor() {
         return ColorUtils.getColor(plugin.getTime(), 0.1);
     }
