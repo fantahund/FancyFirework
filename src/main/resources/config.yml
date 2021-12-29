@@ -7,3 +7,5 @@ loottable:
 itemlore:
   - '§aThe fireworks can be placed'
   - '§aand lit with a firework'
+itemlorebangsnap:
+  - '§aThrow them on the floor for fun'
