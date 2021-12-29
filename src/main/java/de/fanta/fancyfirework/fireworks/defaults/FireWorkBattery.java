@@ -11,7 +11,9 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public abstract class FireWorkBattery extends BlockFireWork {
 
@@ -22,12 +24,36 @@ public abstract class FireWorkBattery extends BlockFireWork {
     @Override
     public void onLit(ArmorStand stand, Player player) {
         stand.getWorld().playSound(stand.getLocation(), Sound.ENTITY_CREEPER_PRIMED, 1f, 1f);
+
+        BatteryTask batteryTask = new BatteryTask(player, stand, 20 * 60, 20 * 5, 20, random.nextInt(20 * 5, 20 * 13));
+        batteryTask.setSpawnFireworkTask(task -> spawnRandomFirework(stand.getLocation()));
+        batteryTask.setSpawnFountainTask(task -> {
+            //Create fountain
+            Fountain fountain = new Fountain(random.nextInt(20 * 6, 20 * 8), random.nextInt(10, 20));
+            fountain.setCreateEffects(() -> {
+                //Create next fountain effect/s
+                stand.getWorld().playSound(stand.getLocation(), Sound.ENTITY_GHAST_SCREAM, 1f, 1.5f);
+
+                FountainEffect effect = new FountainEffect(random.nextInt(6, 20), random.nextDouble(0.4, 1), random.nextDouble(359), random.nextDouble(6));
+                effect.setSpawnParticle(location -> location.getWorld().spawnParticle(Particle.REDSTONE, location, 6, new Particle.DustOptions(randomColor(), 1.5f)));
+
+                return List.of(effect);
+            });
+            return fountain;
+        });
+        batteryTask.start();
     }
 
     @Override
     public void onTick(Task task, boolean active) {
         Location loc = task.getArmorStand().getLocation().add(0, 1.5, 0);
         loc.getWorld().spawnParticle(Particle.FLAME, loc, 1, 0, 0, 0, 0.025);
+
+        if (task instanceof BatteryTask batteryTask) {
+            if (batteryTask.fountainCounter == 0) {
+                batteryTask.fountainCooldown = random.nextInt(20 * 5, 20 * 13);
+            }
+        }
     }
 
     protected abstract Color randomColor();
@@ -45,55 +71,64 @@ public abstract class FireWorkBattery extends BlockFireWork {
 
     public class BatteryTask extends Task {
 
-        private final List<FountainEffect> fountainEffects = new LinkedList<>();
-        private Function<BatteryTask, List<FountainEffect>> fountainFunction;
+        private Consumer<Task> spawnFirework;
+        private Function<Task, Fountain> spawnFountain;
+        private Fountain fountain = null;
         private int fireworkCounter;
+        private int fireworkCooldown;
         private int fountainCounter;
-        private int fireworkInterval;
-        private int fountainInterval;
+        private int fountainCooldown;
 
-        public BatteryTask(Player player, ArmorStand stand, long duration, int delay, int period, Runnable taskToRun) {
-            super(player, stand, duration, delay, period, taskToRun);
-            this.fireworkInterval = 20;
-            this.fountainInterval = 10;
+        public BatteryTask(Player player, ArmorStand stand, long duration, int delay, int fireworkCooldown, int fountainCooldown) {
+            super(player, stand, duration, delay, 0, null);
+            this.fireworkCooldown = fireworkCooldown;
+            this.fountainCooldown = fountainCooldown;
             this.fireworkCounter = 0;
             this.fountainCounter = 0;
-            this.fountainFunction = batteryTask -> List.of();
+            this.spawnFountain = task -> new Fountain(40, 10);
+            this.spawnFirework = task -> {};
         }
 
-        public void setFireworkInterval(int fireworkInterval) {
-            this.fireworkInterval = fireworkInterval;
+        @Override
+        public FireWorkBattery getFirework() {
+            return FireWorkBattery.this;
         }
 
-        public void setFountainInterval(int fountainInterval) {
-            this.fountainInterval = fountainInterval;
+        public void setFireworkCooldown(int fireworkCooldown) {
+            this.fireworkCooldown = fireworkCooldown;
         }
 
-        public void setFountainFunction(Function<BatteryTask, List<FountainEffect>> fountainFunction) {
-            this.fountainFunction = fountainFunction;
+        public void setFountainCooldown(int fountainCooldown) {
+            this.fountainCooldown = fountainCooldown;
+        }
+
+        public void setSpawnFireworkTask(Consumer<Task> spawnFirework) {
+            this.spawnFirework = spawnFirework;
+        }
+
+        public void setSpawnFountainTask(Function<Task, Fountain> fountainSupplier) {
+            this.spawnFountain = fountainSupplier;
         }
 
         @Override
         protected void onTick() {
             boolean active = isActive();
             if (active) {
-                if (fountainCounter >= fountainInterval) {
-                    fountainEffects.addAll(fountainFunction.apply(this)); //Add fountain effects
-                    fountainCounter = 0;
+                if (fountainCounter >= fountainCooldown) {
+                    if(fountain == null) {
+                        this.fountain = spawnFountain.apply(this);
+                    } else {
+                        fountain.onTick(this);
+                        if (fountain.isDone()) {
+                            fountainCounter = 0;
+                            fountain = null;
+                        }
+                    }
                 } else {
                     fountainCounter++;
                 }
-                //Spawn fountain effects
-                Iterator<FountainEffect> fountainEffectIterator = fountainEffects.iterator();
-                while (fountainEffectIterator.hasNext()) {
-                    FountainEffect effect = fountainEffectIterator.next();
-                    effect.spawn(FireWorkBattery.this, this);
-                    if (effect.isDone()) {
-                        fountainEffectIterator.remove();
-                    }
-                }
-                if (fireworkCounter >= fireworkInterval) {
-                    taskToRun.run(); //Spawn firework
+                if (fireworkCounter >= fireworkCooldown) {
+                    spawnFirework.accept(this); //Spawn firework
                     fireworkCounter = 0;
                 } else {
                     fireworkCounter++;

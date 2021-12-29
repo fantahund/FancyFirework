@@ -89,15 +89,7 @@ public final class FancyFirework extends JavaPlugin {
         if (this.taskId != -1) {
             this.getServer().getScheduler().cancelTask(this.taskId);
         }
-
-        this.taskId = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-
-            @Override
-            public void run() {
-                FancyFirework.this.time++;
-            }
-
-        }, 0L, l);
+        this.taskId = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> FancyFirework.this.time++, 0L, l);
     }
 
     public long getTime() {

@@ -175,6 +175,10 @@ public abstract class BlockFireWork extends AbstractFireWork {
         public boolean isActive() {
             return tick >= delay;
         }
+
+        public BlockFireWork getFirework() {
+            return BlockFireWork.this;
+        }
     }
 
 }

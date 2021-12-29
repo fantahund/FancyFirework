@@ -41,7 +41,7 @@ public class FireWorkGiveCommand extends SubCommand {
 
         if (args.hasNext()) {
             String key = args.getNext();
-            AbstractFireWork fireWork = plugin.getRegistry().get(NamespacedKey.fromString("fancyfirework:" + key));
+            AbstractFireWork fireWork = plugin.getRegistry().get(NamespacedKey.fromString(key));
             int amount = 1;
             if (args.hasNext()) {
                 int next = args.getNext(1);
@@ -78,7 +78,7 @@ public class FireWorkGiveCommand extends SubCommand {
             }
             if (i == 1) {
                 ArrayList<String> li = new ArrayList<>();
-                plugin.getRegistry().getKeys().forEach((x) -> li.add(x.getKey()));
+                plugin.getRegistry().getKeys().forEach((x) -> li.add(x.asString()));
                 return li;
             }
             return new ArrayList<>();

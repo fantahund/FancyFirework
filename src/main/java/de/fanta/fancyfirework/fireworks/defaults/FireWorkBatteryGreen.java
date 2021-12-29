@@ -31,14 +31,6 @@ public class FireWorkBatteryGreen extends FireWorkBattery {
     }
 
     @Override
-    public void onLit(ArmorStand stand, Player player) {
-        super.onLit(stand, player);
-        BatteryTask task = new BatteryTask(player, stand, 20 * 60, 20 * 5, 20, () -> spawnRandomFirework(stand.getLocation()));
-        task.setFountainFunction(batteryTask -> List.of(new FountainEffect(random.nextInt(6, 20), random.nextDouble(0.4, 1), random.nextDouble(359))));
-        task.start();
-    }
-
-    @Override
     public Color randomColor() {
         int red = (int) (Math.random() * 20);
         int green = (int) (Math.random() * 256);
