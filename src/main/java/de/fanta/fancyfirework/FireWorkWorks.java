@@ -64,7 +64,7 @@ public class FireWorkWorks {
             fireworkMeta.setPower(rand.nextInt(2) + 1);
             firework.setFireworkMeta(fireworkMeta);
             firework.setRotation(rand.nextInt(20), rand.nextInt(20));
-            firework.setMetadata("FancyFirework", new FixedMetadataValue(plugin, "CustomFirework"));
+            firework.setCustomName("FancyFirework");
         }
     }
 

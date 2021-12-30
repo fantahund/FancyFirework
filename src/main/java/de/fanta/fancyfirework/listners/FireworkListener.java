@@ -41,7 +41,7 @@ public class FireworkListener implements Listener {
     public void onFireworkExplode(FireworkExplodeEvent e) {
         if (plugin.getFireWorkWorks().enabled()) {
             Entity entity = e.getEntity();
-            if (entity.hasMetadata("FancyFirework")) {
+            if (entity.getCustomName() != null && entity.getCustomName().equals("FancyFirework")) {
                 entity.getLocation().getWorld().dropItem(entity.getLocation(), plugin.getRegistry().getRandomFireWorkItem());
             }
         }
