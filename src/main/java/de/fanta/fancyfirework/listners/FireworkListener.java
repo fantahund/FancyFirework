@@ -8,6 +8,7 @@ import de.fanta.fancyfirework.fireworks.ItemFireWork;
 import de.fanta.fancyfirework.utils.ChatUtil;
 import de.iani.cubesideutils.RandomUtil;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -119,13 +120,14 @@ public class FireworkListener implements Listener {
         }
         AbstractFireWork fireWork = plugin.getRegistry().getByEntity(stand);
         if (fireWork instanceof BlockFireWork blockFireWork) {
-            if (!plugin.canBuild(player, stand.getLocation())) {
+            Location loc = stand.getLocation().add(0, 1.5, 0);
+            if (!plugin.canBuild(player, loc)) {
                 ChatUtil.sendErrorMessage(player, "You can not build here");
                 return;
             }
             if (!blockFireWork.hasActiveTask(stand)) {
                 ItemStack stack = blockFireWork.getItemStack();
-                stand.getWorld().dropItem(stand.getLocation().add(0, 1.5, 0), stack);
+                stand.getWorld().dropItem(loc, stack);
                 stand.getEquipment().clear();
                 stand.remove();
             }
