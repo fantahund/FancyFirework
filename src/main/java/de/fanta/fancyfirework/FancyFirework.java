@@ -5,12 +5,12 @@ import de.fanta.fancyfirework.fireworks.FireWorkRegistration;
 import de.fanta.fancyfirework.listners.EventRegistration;
 import de.fanta.fancyfirework.utils.ChatUtil;
 import de.fanta.fancyfirework.utils.WorldGuardHelper;
+import de.myzelyam.supervanish.SuperVanishPlugin;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.kitteh.vanish.VanishPlugin;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 public final class FancyFirework extends JavaPlugin {
@@ -22,7 +22,8 @@ public final class FancyFirework extends JavaPlugin {
 
     private FireWorkWorks fireWorkWorks;
     private FireWorksRegistry registry;
-    private VanishPlugin vanish;
+    private VanishPlugin vanishNoPacketPlugin;
+    private SuperVanishPlugin superVanishPlugin;
     private WorldGuardHelper worldGuardHelper;
 
     private long time;
@@ -36,7 +37,15 @@ public final class FancyFirework extends JavaPlugin {
         plugin = this;
 
         if (plugin.getServer().getPluginManager().getPlugin("VanishNoPacket") != null) {
-            vanish = (VanishPlugin) plugin.getServer().getPluginManager().getPlugin("VanishNoPacket");
+            vanishNoPacketPlugin = (VanishPlugin) plugin.getServer().getPluginManager().getPlugin("VanishNoPacket");
+        }
+
+        //Super Vanish and Premium Vanish has not tested!
+        if (plugin.getServer().getPluginManager().getPlugin("SuperVanish") != null) {
+            superVanishPlugin = (SuperVanishPlugin) plugin.getServer().getPluginManager().getPlugin("SuperVanish");
+        }
+        if (plugin.getServer().getPluginManager().getPlugin("PremiumVanish") != null) {
+            superVanishPlugin = (SuperVanishPlugin) plugin.getServer().getPluginManager().getPlugin("PremiumVanish");
         }
 
         if (plugin.getServer().getPluginManager().getPlugin("WorldGuard") != null) {
@@ -78,8 +87,10 @@ public final class FancyFirework extends JavaPlugin {
     }
 
     public boolean isVanish(Player p) {
-        if (vanish != null) {
-            return vanish.getManager().isVanished(p);
+        if (vanishNoPacketPlugin != null) {
+            return vanishNoPacketPlugin.getManager().isVanished(p);
+        } else if (superVanishPlugin != null) {
+            return superVanishPlugin.getVanishStateMgr().isVanished(p.getUniqueId());
         } else {
             return false;
         }
