@@ -2,8 +2,6 @@ package de.fanta.fancyfirework.listners;
 
 import de.fanta.fancyfirework.FancyFirework;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Entity;
@@ -73,10 +71,6 @@ public class LootTableListener implements Listener {
         if (hasFireWork) {
             ItemStack randomFirework = plugin.getRegistry().getRandomFireWorkItem();
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> chest.setItem(random.nextInt(chest.getSize()), randomFirework), 1L);
-            Location chestlocation = chest.getLocation();
-            if (chestlocation != null) {
-                plugin.getLogger().info(ChatColor.GREEN + "Adding " + randomFirework.getItemMeta().getDisplayName() + ChatColor.GREEN + " to Chest @ " + chestlocation.getWorld().getName() + " " + chestlocation.getBlockX() + "/" + chestlocation.getBlockY() + "/" + chestlocation.getBlockZ());
-            }
         }
     }
 }
