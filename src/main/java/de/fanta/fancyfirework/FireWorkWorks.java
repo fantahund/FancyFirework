@@ -89,7 +89,7 @@ public class FireWorkWorks {
         return plugin.getConfig().getInt("spawnrate", 1);
     }
 
-    public void setSpawnRate(double spawnRate) {
+    public void setSpawnRate(int spawnRate) {
         plugin.getConfig().set("spawnrate", spawnRate);
         plugin.saveConfig();
     }
