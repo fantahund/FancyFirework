@@ -8,7 +8,7 @@
 A simple plugin that adds custom fireworks to your server.  
 Implements support for vote rewards using NuVotifier and loot table customization to acquire firework items.  
 
-# ! WARNING! This plugin requires Paper!  
+# We recommend to use paper!  
 
 
 # Default Fireworks  
