@@ -6,6 +6,6 @@ loottable:
   chance: 0.5
 itemlore:
   - '§aThe fireworks can be placed'
-  - '§aand lit with a firework'
+  - '§aand lit with a flint and steel'
 itemlorebangsnap:
   - '§aThrow them on the floor for fun'
