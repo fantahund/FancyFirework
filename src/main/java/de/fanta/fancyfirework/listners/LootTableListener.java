@@ -29,10 +29,6 @@ public class LootTableListener implements Listener {
             return;
         }
 
-        if (!chest.hasLootTable()) {
-            return;
-        }
-
         if (chest.getLootTable() == null) {
             return;
         }
@@ -47,10 +43,6 @@ public class LootTableListener implements Listener {
         Entity entity = e.getRightClicked();
 
         if (!(entity instanceof StorageMinecart minecart)) {
-            return;
-        }
-
-        if (!minecart.hasLootTable()) {
             return;
         }
 

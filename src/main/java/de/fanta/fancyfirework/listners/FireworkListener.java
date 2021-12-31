@@ -1,6 +1,5 @@
 package de.fanta.fancyfirework.listners;
 
-import com.destroystokyo.paper.event.entity.ThrownEggHatchEvent;
 import de.fanta.fancyfirework.FancyFirework;
 import de.fanta.fancyfirework.fireworks.AbstractFireWork;
 import de.fanta.fancyfirework.fireworks.BlockFireWork;
@@ -27,6 +26,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.FireworkExplodeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.player.PlayerEggThrowEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -144,7 +144,7 @@ public class FireworkListener implements Listener {
                 fireWork = plugin.getRegistry().getByItemStack(player.getEquipment().getItemInOffHand());
             }
             if (fireWork instanceof ItemFireWork itemFireWork) {
-                entity.getPersistentDataContainer().set(AbstractFireWork.FIREWORK_ID, PersistentDataType.STRING, fireWork.getKey().asString());
+                entity.getPersistentDataContainer().set(AbstractFireWork.FIREWORK_ID, PersistentDataType.STRING, fireWork.getKey().toString());
                 itemFireWork.onLaunch(player, entity);
             }
         }
@@ -162,7 +162,7 @@ public class FireworkListener implements Listener {
     }
 
     @EventHandler
-    public void onItemFireworkHit(ThrownEggHatchEvent event) {
+    public void onItemFireworkHit(PlayerEggThrowEvent event) {
         AbstractFireWork fireWork = plugin.getRegistry().getByEntity(event.getEgg());
         if (fireWork instanceof ItemFireWork) {
             event.setHatching(false);

@@ -4,14 +4,15 @@ import com.vexsoftware.votifier.model.Vote;
 import com.vexsoftware.votifier.model.VotifierEvent;
 import de.fanta.fancyfirework.FancyFirework;
 import de.fanta.fancyfirework.utils.ChatUtil;
-import java.util.HashMap;
-import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.HashMap;
+import java.util.UUID;
 
 public class VoteListener implements Listener {
     private final FancyFirework plugin = FancyFirework.getPlugin();

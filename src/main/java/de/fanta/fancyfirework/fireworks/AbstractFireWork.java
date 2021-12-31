@@ -1,13 +1,15 @@
 package de.fanta.fancyfirework.fireworks;
 
 import de.fanta.fancyfirework.FancyFirework;
-import org.bukkit.*;
+import org.antlr.v4.runtime.misc.NotNull;
+import org.bukkit.Keyed;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Objects;
+import java.util.Random;
 
 /**
  * The base firework class that contains all necessary methods to create a firework.<br>
@@ -39,7 +41,7 @@ public abstract class AbstractFireWork implements Keyed {
     private ItemStack initItemStack(ItemStack itemStack) {
         ItemMeta meta = itemStack.getItemMeta();
         if (meta != null) {
-            meta.getPersistentDataContainer().set(FIREWORK_ID, PersistentDataType.STRING, key.asString());
+            meta.getPersistentDataContainer().set(FIREWORK_ID, PersistentDataType.STRING, key.toString());
             itemStack.setItemMeta(meta);
         }
         return itemStack;

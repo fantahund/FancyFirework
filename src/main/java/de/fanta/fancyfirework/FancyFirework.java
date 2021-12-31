@@ -8,9 +8,11 @@ import de.fanta.fancyfirework.utils.WorldGuardHelper;
 import de.myzelyam.supervanish.SuperVanishPlugin;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.kitteh.vanish.VanishPlugin;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public final class FancyFirework extends JavaPlugin {
@@ -19,17 +21,20 @@ public final class FancyFirework extends JavaPlugin {
     public static final String ADMIN_PERMISSION = "fancyfirework.admin";
     public static final String MOD_PERMISSION = "fancyfirework.mod";
     public static Logger LOGGER;
-
+    private static FancyFirework plugin;
     private FireWorkWorks fireWorkWorks;
     private FireWorksRegistry registry;
     private VanishPlugin vanishNoPacketPlugin;
     private SuperVanishPlugin superVanishPlugin;
     private WorldGuardHelper worldGuardHelper;
-
     private long time;
     private int taskId;
 
-    private static FancyFirework plugin;
+    private boolean HAS_PLAYER_PROFILE_API;
+
+    public static FancyFirework getPlugin() {
+        return plugin;
+    }
 
     @Override
     public void onEnable() {
@@ -52,6 +57,14 @@ public final class FancyFirework extends JavaPlugin {
             worldGuardHelper = new WorldGuardHelper(getServer().getPluginManager().getPlugin("WorldGuard"));
         }
 
+        try {
+            SkullMeta.class.getDeclaredMethod("getPlayerProfile");
+            setPlayerProfileAPI(true);
+        } catch (Exception e) {
+            getLogger().log(Level.INFO, "Server version spigot. We recommend to use Paper.");
+            setPlayerProfileAPI(false);
+        }
+
         new bStats(this).registerbStats();
 
         fireWorkWorks = new FireWorkWorks();
@@ -72,10 +85,6 @@ public final class FancyFirework extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-    }
-
-    public static FancyFirework getPlugin() {
-        return plugin;
     }
 
     public FireWorkWorks getFireWorkWorks() {
@@ -113,5 +122,13 @@ public final class FancyFirework extends JavaPlugin {
         } else {
             return worldGuardHelper.canBuild(player, loc);
         }
+    }
+
+    public boolean hasPlayerProfileAPI() {
+        return HAS_PLAYER_PROFILE_API;
+    }
+
+    public void setPlayerProfileAPI(boolean HAS_PLAYER_PROFILE_API) {
+        this.HAS_PLAYER_PROFILE_API = HAS_PLAYER_PROFILE_API;
     }
 }

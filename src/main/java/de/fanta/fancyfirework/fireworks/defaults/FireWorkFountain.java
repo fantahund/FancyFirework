@@ -1,29 +1,21 @@
 package de.fanta.fancyfirework.fireworks.defaults;
 
 import de.fanta.fancyfirework.FancyFirework;
-import de.fanta.fancyfirework.utils.ColorUtils;
-import de.iani.cubesideutils.bukkit.items.CustomHeads;
-import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
-import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class FireWorkFountain extends FireWorkBattery {

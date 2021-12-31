@@ -7,8 +7,6 @@ import de.fanta.fancyfirework.utils.ChatUtil;
 import de.iani.playerUUIDCache.CachedPlayer;
 import de.iani.playerUUIDCache.PlayerUUIDCache;
 import de.iani.treasurechest.TreasureChest;
-import java.util.HashMap;
-import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -16,6 +14,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.HashMap;
+import java.util.UUID;
 
 public class CubesideVoteListener implements Listener {
     private final FancyFirework plugin = FancyFirework.getPlugin();

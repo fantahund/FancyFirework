@@ -78,7 +78,7 @@ public class FireWorkGiveCommand extends SubCommand {
             }
             if (i == 1) {
                 ArrayList<String> li = new ArrayList<>();
-                plugin.getRegistry().getKeys().forEach((x) -> li.add(x.asString()));
+                plugin.getRegistry().getKeys().forEach((x) -> li.add(x.toString()));
                 return li;
             }
             return new ArrayList<>();

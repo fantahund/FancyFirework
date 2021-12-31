@@ -7,8 +7,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -23,19 +21,17 @@ public class FireWorksRegistry {
         this.plugin = plugin;
     }
 
-    public void register(@NotNull AbstractFireWork fireWork) {
+    public void register(AbstractFireWork fireWork) {
         Preconditions.checkArgument(fireWork != null, "Firework cannot be null!");
         NamespacedKey key = fireWork.getKey();
-        Preconditions.checkArgument(!fireWorkMap.containsKey(key), "A firework with the key " + key.toString() + " has already been registered!");
+        Preconditions.checkArgument(!fireWorkMap.containsKey(key), "A firework with the key " + key + " has already been registered!");
         fireWorkMap.put(key, fireWork);
     }
 
-    @Nullable
     public AbstractFireWork get(NamespacedKey key) {
         return fireWorkMap.get(key);
     }
 
-    @Nullable
     public AbstractFireWork getByItemStack(ItemStack itemStack) {
         if (itemStack != null && !itemStack.getType().isAir()) {
             ItemMeta meta = itemStack.getItemMeta();
@@ -49,7 +45,7 @@ public class FireWorksRegistry {
         return null;
     }
 
-    public AbstractFireWork getByEntity(@NotNull Entity armorStand) {
+    public AbstractFireWork getByEntity(Entity armorStand) {
         String keyString = armorStand.getPersistentDataContainer().get(AbstractFireWork.FIREWORK_ID, PersistentDataType.STRING);
         if (keyString != null) {
             return get(NamespacedKey.fromString(keyString));

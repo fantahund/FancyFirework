@@ -4,7 +4,6 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.ProjectileHitEvent;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * This firework can be any kind of projectile (Egg, Snowball, etc.) and can be thrown by players.<br>
@@ -19,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class ItemFireWork extends AbstractFireWork {
 
-    protected ItemFireWork(@NotNull NamespacedKey key) {
+    protected ItemFireWork(NamespacedKey key) {
         super(key);
     }
 

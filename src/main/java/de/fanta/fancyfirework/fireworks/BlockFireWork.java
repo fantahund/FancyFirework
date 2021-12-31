@@ -1,21 +1,25 @@
 package de.fanta.fancyfirework.fireworks;
 
 import de.fanta.fancyfirework.FancyFirework;
-import de.fanta.fancyfirework.fireworks.defaults.FountainEffect;
 import de.iani.cubesideutils.bukkit.items.ItemGroups;
-import org.bukkit.*;
+import org.antlr.v4.runtime.misc.NotNull;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.Snow;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.EulerAngle;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * This firework can be placed into the world and lit by players using flint and steel.<br>
@@ -33,7 +37,7 @@ public abstract class BlockFireWork extends AbstractFireWork {
 
     private final Map<UUID, Task> activeTasks = new HashMap<>();
 
-    protected BlockFireWork(@NotNull NamespacedKey key) {
+    protected BlockFireWork(NamespacedKey key) {
         super(key);
     }
 
@@ -96,7 +100,7 @@ public abstract class BlockFireWork extends AbstractFireWork {
                 t.setVisible(false);
                 t.setGravity(false);
                 t.setHeadPose(new EulerAngle(0, random.nextDouble() * Math.PI * 2, 0));
-                t.getPersistentDataContainer().set(FIREWORK_ID, PersistentDataType.STRING, getKey().asString());
+                t.getPersistentDataContainer().set(FIREWORK_ID, PersistentDataType.STRING, getKey().toString());
                 t.getEquipment().setHelmet(itemStack);
             });
         }
