@@ -34,7 +34,7 @@ public class VoteListener implements Listener {
                 votes.put(p.getUniqueId(), lastVotes);
             }
             Long lastTime = lastVotes.get(vote.getServiceName());
-            if (lastTime != null & lastTime + TWELVE_HOURS_IN_MILLIS > System.currentTimeMillis()) {
+            if (lastTime != null && lastTime + TWELVE_HOURS_IN_MILLIS > System.currentTimeMillis()) {
                 return;
             }
             lastVotes.put(vote.getServiceName(), System.currentTimeMillis());

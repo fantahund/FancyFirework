@@ -47,7 +47,7 @@ public class CubesideVoteListener implements Listener {
                 votes.put(cp.getUniqueId(), lastVotes);
             }
             Long lastTime = lastVotes.get(vote.getServiceName());
-            if (lastTime != null & lastTime + TWELVE_HOURS_IN_MILLIS > System.currentTimeMillis()) {
+            if (lastTime != null && lastTime + TWELVE_HOURS_IN_MILLIS > System.currentTimeMillis()) {
                 return;
             }
             lastVotes.put(vote.getServiceName(), System.currentTimeMillis());
