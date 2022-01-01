@@ -6,6 +6,7 @@ import de.fanta.fancyfirework.fireworks.BlockFireWork;
 import de.fanta.fancyfirework.fireworks.ItemFireWork;
 import de.fanta.fancyfirework.utils.ChatUtil;
 import de.iani.cubesideutils.RandomUtil;
+import de.iani.cubesideutils.bukkit.StringUtilBukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,12 +20,14 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.WanderingTrader;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.FireworkExplodeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
@@ -32,11 +35,15 @@ import org.bukkit.event.player.PlayerEggThrowEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Random;
 
 public class FireworkListener implements Listener {
 
@@ -184,18 +191,48 @@ public class FireworkListener implements Listener {
         if (world == null) {
             return;
         }
-            Collection<Entity> entitys = world.getNearbyEntities(loc.add(0.5, 0.5, 0.5), 1.5, 1, 1.5);
-            for (Entity entity : entitys) {
-                if (entity instanceof ArmorStand stand) {
-                    AbstractFireWork fireWork = plugin.getRegistry().getByEntity(stand);
-                    if (fireWork instanceof BlockFireWork blockFireWork) {
-                        if (!blockFireWork.hasActiveTask(stand)) {
-                            if (e.getNewCurrent() > e.getOldCurrent()) {
-                                blockFireWork.onLit(stand, null);
-                            }
+        Collection<Entity> entitys = world.getNearbyEntities(loc.add(0.5, 0.5, 0.5), 1.5, 1, 1.5);
+        for (Entity entity : entitys) {
+            if (entity instanceof ArmorStand stand) {
+                AbstractFireWork fireWork = plugin.getRegistry().getByEntity(stand);
+                if (fireWork instanceof BlockFireWork blockFireWork) {
+                    if (!blockFireWork.hasActiveTask(stand)) {
+                        if (e.getNewCurrent() > e.getOldCurrent()) {
+                            blockFireWork.onLit(stand, null);
                         }
                     }
                 }
             }
+        }
+    }
+
+    @EventHandler
+    public void onWanderingTraderSpawn(EntitySpawnEvent e) {
+        if (!(e.getEntity() instanceof WanderingTrader trader)) {
+            return;
+        }
+
+        if (!plugin.getConfig().getBoolean("loottable.wanderingtrader.enabled")) {
+            return;
+        }
+
+        Random random = new Random();
+        double fireworkChance = plugin.getConfig().getDouble("loottable.wanderingtrader.chance", 0.3);
+        boolean hasFirework = random.nextDouble() < fireworkChance;
+
+        if (!hasFirework) {
+            return;
+        }
+
+        List<MerchantRecipe> recipes = new ArrayList<>(trader.getRecipes());
+
+        int minprice = plugin.getConfig().getInt("loottable.wanderingtrader.minprice");
+        int maxprice = plugin.getConfig().getInt("loottable.wanderingtrader.maxprice");
+        int maxuse = plugin.getConfig().getInt("loottable.wanderingtrader.maxuse");
+
+        MerchantRecipe recipe = new MerchantRecipe(plugin.getRegistry().getRandomFireWorkItem(), 0, maxuse, true);
+        recipe.addIngredient(new ItemStack(Material.EMERALD, minprice + random.nextInt(maxprice - minprice)));
+        recipes.add(random.nextInt(recipes.size() + 1), recipe);
+        trader.setRecipes(recipes);
     }
 }

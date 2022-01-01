@@ -12,6 +12,7 @@ public record bStats(FancyFirework plugin) {
         metrics.addCustomChart(new SimplePie("vote_reward", () -> String.valueOf(plugin.getConfig().getBoolean("votereward"))));
         metrics.addCustomChart(new SimplePie("loottable", () -> String.valueOf(plugin.getConfig().getBoolean("loottable.enabled"))));
         metrics.addCustomChart(new SimplePie("redstone_mode", () -> String.valueOf(plugin.getConfig().getBoolean("redstonemode"))));
+        metrics.addCustomChart(new SimplePie("wandering_trader", () -> String.valueOf(plugin.getConfig().getBoolean("loottable.wanderingtrader.enabled"))));
     }
 }
 

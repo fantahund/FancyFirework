@@ -5,6 +5,12 @@ redstonemode: false
 loottable:
   enabled: false
   chance: 0.5
+  wanderingtrader:
+    enabled: false
+    chance: 0.3
+    minprice: 8
+    maxprice: 32
+    maxuse: 4
 itemlore:
   - '§aThe fireworks can be placed'
   - '§aand lit with a flint and steel'
