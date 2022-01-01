@@ -7,6 +7,7 @@ import de.fanta.fancyfirework.utils.ChatUtil;
 import de.fanta.fancyfirework.utils.WorldGuardHelper;
 import de.myzelyam.supervanish.SuperVanishPlugin;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -74,8 +75,8 @@ public final class FancyFirework extends JavaPlugin {
         new EventRegistration(this).registerEvents();
         new FireWorkRegistration(this).registerFirework();
 
-        saveDefaultConfig();
-        reloadConfig();
+        loadConfig();
+        saveConfig();
 
         this.taskId = -1;
         this.time = 0;
@@ -130,5 +131,10 @@ public final class FancyFirework extends JavaPlugin {
 
     public void setPlayerProfileAPI(boolean HAS_PLAYER_PROFILE_API) {
         this.HAS_PLAYER_PROFILE_API = HAS_PLAYER_PROFILE_API;
+    }
+
+    public void loadConfig() {
+        FileConfiguration cfg = getConfig();
+        cfg.options().copyDefaults(true);
     }
 }

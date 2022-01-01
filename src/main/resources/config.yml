@@ -1,6 +1,7 @@
 enabled: false
 spawnrate: 100
 votereward: false
+redstonemode: false
 loottable:
   enabled: false
   chance: 0.5

@@ -17,6 +17,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.EulerAngle;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -56,7 +57,7 @@ public abstract class BlockFireWork extends AbstractFireWork {
      * @param stand The ArmorStand of the firework, that was lit.
      * @param player The player that lit the firework.
      */
-    public abstract void onLit(ArmorStand stand, Player player);
+    public abstract void onLit(ArmorStand stand, @Nullable Player player);
 
     /**
      * Called when a task of this firework executes a tick.

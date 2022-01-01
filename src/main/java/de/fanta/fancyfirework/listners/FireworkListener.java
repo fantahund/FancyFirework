@@ -11,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
@@ -22,6 +23,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.FireworkExplodeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
@@ -33,6 +35,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+
+import java.util.Collection;
 
 public class FireworkListener implements Listener {
 
@@ -167,5 +171,31 @@ public class FireworkListener implements Listener {
         if (fireWork instanceof ItemFireWork) {
             event.setHatching(false);
         }
+    }
+
+    @EventHandler
+    public void onRedstoneSignal(BlockRedstoneEvent e) {
+        Block block = e.getBlock();
+        Location loc = block.getLocation();
+        World world = loc.getWorld();
+        if (!plugin.getConfig().getBoolean("redstonemode")) {
+            return;
+        }
+        if (world == null) {
+            return;
+        }
+            Collection<Entity> entitys = world.getNearbyEntities(loc.add(0.5, 0.5, 0.5), 1.5, 1, 1.5);
+            for (Entity entity : entitys) {
+                if (entity instanceof ArmorStand stand) {
+                    AbstractFireWork fireWork = plugin.getRegistry().getByEntity(stand);
+                    if (fireWork instanceof BlockFireWork blockFireWork) {
+                        if (!blockFireWork.hasActiveTask(stand)) {
+                            if (e.getNewCurrent() > e.getOldCurrent()) {
+                                blockFireWork.onLit(stand, null);
+                            }
+                        }
+                    }
+                }
+            }
     }
 }
