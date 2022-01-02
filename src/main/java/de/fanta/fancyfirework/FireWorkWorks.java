@@ -1,5 +1,6 @@
 package de.fanta.fancyfirework;
 
+import de.fanta.fancyfirework.listners.AFKListener;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -55,7 +56,8 @@ public class FireWorkWorks {
         Location loc = p.getLocation().add(0, 2, 0);
         Location toppos = world.getHighestBlockAt(loc.getBlockX(), loc.getBlockZ(), HeightMap.MOTION_BLOCKING).getLocation();
         boolean sky = loc.getBlockY() > toppos.getBlockY();
-        if (sky && p.getGameMode() == GameMode.SURVIVAL && !FancyFirework.getPlugin().isVanish(p)) {
+        PlayerInfo playerInfo = AFKListener.playerTimes.get(p);
+        if (sky && p.getGameMode() == GameMode.SURVIVAL && !FancyFirework.getPlugin().isVanish(p) && !playerInfo.afk) {
             Firework firework = (Firework) world.spawnEntity(loc, EntityType.FIREWORK);
             firework.setVelocity(new Vector((rand.nextBoolean() ? 1 : -1) * rand.nextDouble(0.01), rand.nextDouble(0.5, 1.5), (rand.nextBoolean() ? 1 : -1) * rand.nextDouble(0.01)));
             FireworkMeta fireworkMeta = firework.getFireworkMeta();

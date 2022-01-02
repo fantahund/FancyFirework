@@ -2,6 +2,7 @@ package de.fanta.fancyfirework;
 
 import de.fanta.fancyfirework.commands.CommandRegistration;
 import de.fanta.fancyfirework.fireworks.FireWorkRegistration;
+import de.fanta.fancyfirework.listners.AFKListener;
 import de.fanta.fancyfirework.listners.EventRegistration;
 import de.fanta.fancyfirework.utils.ChatUtil;
 import de.fanta.fancyfirework.utils.WorldGuardHelper;
@@ -81,6 +82,15 @@ public final class FancyFirework extends JavaPlugin {
         this.taskId = -1;
         this.time = 0;
         this.restartTask(1);
+
+        //AFK
+        AFKListener.maxIdleTime = Math.max(plugin.getConfig().getInt("maxAFKTime"), 2) * 1000;
+
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, AFKListener::onTimer, 2 * 20, 10);
+
+        for (Player p : getServer().getOnlinePlayers()) {
+            AFKListener.handleJoin(p);
+        }
     }
 
     @Override

@@ -2,6 +2,8 @@ enabled: false
 spawnrate: 100
 votereward: false
 redstonemode: false
+#nach X sekunden ist der Spieler afk (Default: 120 Sec = 2 Min)
+maxAFKTime: 120
 loottable:
   enabled: false
   chance: 0.5
