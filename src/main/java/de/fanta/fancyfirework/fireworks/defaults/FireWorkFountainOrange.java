@@ -2,6 +2,7 @@ package de.fanta.fancyfirework.fireworks.defaults;
 
 import de.fanta.fancyfirework.FancyFirework;
 import de.fanta.fancyfirework.utils.CustomFireworkHeads;
+import java.util.UUID;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
@@ -18,7 +19,8 @@ public class FireWorkFountainOrange extends FireWorkFountain {
 
     @Override
     protected ItemStack createItemStack() {
-        ItemStack itemStack = CustomFireworkHeads.getCustomTextureHead("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVmZDRhMmI0NzY4NmRhZTgyYTNiZWVlOTRhMzI1NGFjYTJlODQyMzdmZGY2ZjgyMDQzZTU3YWE3OGMzYzYyIn19fQ==");
+        ItemStack itemStack = CustomFireworkHeads.getCustomTextureHead(UUID.fromString("24f265b4-119d-4a1e-a72c-01e34150bf44"), "Firework Rocket (black / orange)",
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzVmZDRhMmI0NzY4NmRhZTgyYTNiZWVlOTRhMzI1NGFjYTJlODQyMzdmZGY2ZjgyMDQzZTU3YWE3OGMzYzYyIn19fQ==");
         ItemMeta meta = itemStack.getItemMeta();
         meta.setDisplayName(ChatColor.of("#fe8a06") + "Orange Fountain");
         meta.setLore(FancyFirework.getPlugin().getConfig().getStringList("itemlore"));

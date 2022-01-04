@@ -13,11 +13,11 @@ import java.util.UUID;
 
 public class CustomFireworkHeads {
 
-    public static ItemStack getCustomTextureHead(String value) {
+    public static ItemStack getCustomTextureHead(UUID uuid, String name, String value) {
         if (!FancyFirework.getPlugin().hasPlayerProfileAPI()) {
             ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1);
             SkullMeta meta = (SkullMeta) head.getItemMeta();
-            GameProfile profile = new GameProfile(UUID.randomUUID(), "");
+            GameProfile profile = new GameProfile(uuid, "");
             profile.getProperties().put("textures", new Property("textures", value));
             Field profileField;
             try {
@@ -30,7 +30,7 @@ public class CustomFireworkHeads {
             head.setItemMeta(meta);
             return head;
         } else {
-            return CustomHeads.createHead(UUID.randomUUID(), "FancyFireWork", value);
+            return CustomHeads.createHead(uuid, name, value);
         }
     }
 }

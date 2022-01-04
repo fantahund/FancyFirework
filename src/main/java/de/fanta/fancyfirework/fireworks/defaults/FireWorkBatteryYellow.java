@@ -2,6 +2,7 @@ package de.fanta.fancyfirework.fireworks.defaults;
 
 import de.fanta.fancyfirework.FancyFirework;
 import de.fanta.fancyfirework.utils.CustomFireworkHeads;
+import java.util.UUID;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
@@ -16,7 +17,8 @@ public class FireWorkBatteryYellow extends FireWorkBattery {
 
     @Override
     protected ItemStack createItemStack() {
-        ItemStack itemStack = CustomFireworkHeads.getCustomTextureHead("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmQ1NmE1NmFiYWZjYzlkNzk1NzNjZjI4MWQ1MTk0MDczNzFlOWQ0NDkyOTRmNjhhM2Q5MTliOTZjNzVhMyJ9fX0=");
+        ItemStack itemStack = CustomFireworkHeads.getCustomTextureHead(UUID.fromString("c187fe06-c1e4-48f4-ae53-4abb6002c134"), "Firework Rocket Yellow",
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmQ1NmE1NmFiYWZjYzlkNzk1NzNjZjI4MWQ1MTk0MDczNzFlOWQ0NDkyOTRmNjhhM2Q5MTliOTZjNzVhMyJ9fX0=");
         ItemMeta meta = itemStack.getItemMeta();
         meta.setDisplayName(ChatColor.of("#ffeb14") + "Yellow Battery");
         meta.setLore(FancyFirework.getPlugin().getConfig().getStringList("itemlore"));
