@@ -182,12 +182,12 @@ public class FireworkListener implements Listener {
 
     @EventHandler
     public void onRedstoneSignal(BlockRedstoneEvent e) {
+        if (!plugin.isRedstonemode()) {
+            return;
+        }
         Block block = e.getBlock();
         Location loc = block.getLocation();
         World world = loc.getWorld();
-        if (!plugin.getConfig().getBoolean("redstonemode")) {
-            return;
-        }
         if (world == null) {
             return;
         }

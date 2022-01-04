@@ -31,6 +31,7 @@ public final class FancyFirework extends JavaPlugin {
     private WorldGuardHelper worldGuardHelper;
     private long time;
     private int taskId;
+    private boolean redstonemode;
 
     private boolean HAS_PLAYER_PROFILE_API;
 
@@ -146,5 +147,10 @@ public final class FancyFirework extends JavaPlugin {
     public void loadConfig() {
         FileConfiguration cfg = getConfig();
         cfg.options().copyDefaults(true);
+        redstonemode = cfg.getBoolean("redstonemode");
+    }
+
+    public boolean isRedstonemode() {
+        return redstonemode;
     }
 }
