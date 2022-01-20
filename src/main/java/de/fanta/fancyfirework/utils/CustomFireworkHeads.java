@@ -1,10 +1,12 @@
 package de.fanta.fancyfirework.utils;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
+import com.destroystokyo.paper.profile.PlayerProfile;
+import com.destroystokyo.paper.profile.ProfileProperty;
 import de.fanta.fancyfirework.FancyFirework;
 import de.iani.cubesideutils.bukkit.items.CustomHeads;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
@@ -17,8 +19,10 @@ public class CustomFireworkHeads {
         if (!FancyFirework.getPlugin().hasPlayerProfileAPI()) {
             ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1);
             SkullMeta meta = (SkullMeta) head.getItemMeta();
-            GameProfile profile = new GameProfile(uuid, "");
-            profile.getProperties().put("textures", new Property("textures", value));
+            Player player = Bukkit.getPlayer(uuid);
+            PlayerProfile profile = player.getPlayerProfile();
+            ProfileProperty property = new ProfileProperty("textures", value);
+            profile.setProperty(property);
             Field profileField;
             try {
                 profileField = meta.getClass().getDeclaredField("profile");
