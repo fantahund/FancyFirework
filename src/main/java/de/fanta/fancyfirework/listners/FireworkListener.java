@@ -154,7 +154,7 @@ public class FireworkListener implements Listener {
                 fireWork = plugin.getRegistry().getByItemStack(player.getEquipment().getItemInOffHand());
             }
             if (fireWork instanceof ItemFireWork itemFireWork) {
-                entity.getPersistentDataContainer().set(AbstractFireWork.FIREWORK_ID, PersistentDataType.STRING, fireWork.getKey().toString());
+                fireWork.applyToEntity(entity);
                 itemFireWork.onLaunch(player, entity);
             }
         }

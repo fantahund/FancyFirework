@@ -79,6 +79,7 @@ public abstract class FireWorkBattery extends BlockFireWork {
         fireworkMeta.addEffect(effect);
         fireworkMeta.setPower(rand.nextInt(2) + 1);
         firework.setFireworkMeta(fireworkMeta);
+        this.applyToEntity(firework);
     }
 
     public class BatteryTask extends Task {

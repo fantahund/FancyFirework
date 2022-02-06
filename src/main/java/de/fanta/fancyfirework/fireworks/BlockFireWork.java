@@ -98,10 +98,10 @@ public abstract class BlockFireWork extends AbstractFireWork {
         }
         if (!Double.isNaN(placeableY)) {
             return world.spawn(new Location(world, block.getX() + 0.5, placeableY, block.getZ() + 0.5), ArmorStand.class, t -> {
+                this.applyToEntity(t);
                 t.setVisible(false);
                 t.setGravity(false);
                 t.setHeadPose(new EulerAngle(0, random.nextDouble() * Math.PI * 2, 0));
-                t.getPersistentDataContainer().set(FIREWORK_ID, PersistentDataType.STRING, getKey().toString());
                 t.getEquipment().setHelmet(itemStack);
             });
         }

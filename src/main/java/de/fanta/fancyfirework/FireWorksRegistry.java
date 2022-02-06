@@ -45,8 +45,8 @@ public class FireWorksRegistry {
         return null;
     }
 
-    public AbstractFireWork getByEntity(Entity armorStand) {
-        String keyString = armorStand.getPersistentDataContainer().get(AbstractFireWork.FIREWORK_ID, PersistentDataType.STRING);
+    public AbstractFireWork getByEntity(Entity entity) {
+        String keyString = entity.getPersistentDataContainer().get(AbstractFireWork.FIREWORK_ID, PersistentDataType.STRING);
         if (keyString != null) {
             return get(NamespacedKey.fromString(keyString));
         }
