@@ -6,7 +6,6 @@ import de.fanta.fancyfirework.fireworks.BlockFireWork;
 import de.fanta.fancyfirework.fireworks.ItemFireWork;
 import de.fanta.fancyfirework.utils.ChatUtil;
 import de.iani.cubesideutils.RandomUtil;
-import de.iani.cubesideutils.bukkit.StringUtilBukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;

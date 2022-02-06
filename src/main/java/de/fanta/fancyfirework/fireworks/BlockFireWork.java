@@ -2,7 +2,6 @@ package de.fanta.fancyfirework.fireworks;
 
 import de.fanta.fancyfirework.FancyFirework;
 import de.iani.cubesideutils.bukkit.items.ItemGroups;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,6 +11,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.Snow;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitTask;
