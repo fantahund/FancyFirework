@@ -1,14 +1,36 @@
 package de.fanta.fancyfirework.fireworks.defaults;
 
+import com.google.common.util.concurrent.AtomicDouble;
 import de.fanta.fancyfirework.FancyFirework;
+import de.fanta.fancyfirework.fireworks.BlockFireWork;
+import de.fanta.fancyfirework.particle_effects.ISpawnParticle;
+import de.fanta.fancyfirework.particle_effects.ParticleEffect;
+import de.fanta.fancyfirework.particle_effects.Shape;
+import de.fanta.fancyfirework.particle_effects.ShapeHeart;
 import de.fanta.fancyfirework.utils.CustomFireworkHeads;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.Vector;
 
+import java.util.List;
+import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class FireWorkBatteryValentine extends FireWorkBattery {
 
@@ -27,10 +49,75 @@ public class FireWorkBatteryValentine extends FireWorkBattery {
     }
 
     @Override
+    public void onLit(ArmorStand stand, Player player) {
+        stand.getWorld().playSound(stand.getLocation(), Sound.ENTITY_CREEPER_PRIMED, SoundCategory.AMBIENT, 1f, 1f);
+
+        BatteryTask batteryTask = new BatteryTask(player, stand, 20 * 60, 20 * 5, 20, random.nextInt(20 * 5, 20 * 13));
+        batteryTask.setSpawnFireworkTask(task -> spawnRandomFirework(stand.getLocation()));
+        batteryTask.setSpawnFountainTask(task -> {
+            //Create fountain
+            Fountain fountain = new Fountain(random.nextInt(20 * 6, 20 * 8), random.nextInt(5, 10));
+            fountain.setCreateEffects(() -> {
+                //Create next fountain effect/s
+                stand.getWorld().playSound(stand.getLocation(), Sound.ENTITY_GHAST_SCREAM, SoundCategory.AMBIENT, 2f, 1.5f);
+
+                FountainEffect effect = new FountainEffect(random.nextInt(6, 20), random.nextDouble(0.4, 1), random.nextDouble(359), random.nextDouble(6));
+                effect.setSpawnParticle(location -> location.getWorld().spawnParticle(Particle.HEART, location, 6));
+
+                return List.of(effect);
+            });
+            return fountain;
+        });
+        batteryTask.start();
+    }
+
+    @Override
+    public void onExplode(Firework firework) {
+        Location location = firework.getLocation();
+        spawn(location);
+        location.getWorld().playSound(location, Sound.ENTITY_FIREWORK_ROCKET_BLAST_FAR, SoundCategory.AMBIENT, 8, 1);
+        location.getWorld().playSound(location, Sound.ENTITY_FIREWORK_ROCKET_TWINKLE_FAR, SoundCategory.AMBIENT,8, 1);
+    }
+
+    @Override
+    protected void spawnRandomFirework(Location location) {
+        Random rand = ThreadLocalRandom.current();
+        Firework firework = (Firework) location.getWorld().spawnEntity(location.add(0, 1.5, 0), EntityType.FIREWORK);
+        firework.setVelocity(new Vector((rand.nextBoolean() ? 1 : -1) * rand.nextDouble(0.02), rand.nextDouble(0.5, 1.5), (rand.nextBoolean() ? 1 : -1) * rand.nextDouble(0.02)));
+        FireworkMeta fireworkMeta = firework.getFireworkMeta();
+        fireworkMeta.setPower(rand.nextInt(2) + 1);
+        firework.setFireworkMeta(fireworkMeta);
+        this.applyToEntity(firework);
+    }
+
+    @Override
     public Color randomColor() {
-        java.awt.Color color = java.awt.Color.getHSBColor(0.83f, random.nextFloat(0.5f, 1), random.nextFloat(0.5f, 1));
+        java.awt.Color color = java.awt.Color.getHSBColor(random.nextFloat(0.83f, 1), random.nextFloat(0.8f, 1), random.nextFloat(0.8f, 1));
         return Color.fromRGB(color.getRed(), color.getGreen(), color.getBlue());
     }
+
+    public void spawn(Location origin) {
+        Color color = randomColor();
+        Vector rotation = new Vector(0, random.nextDouble(90), 0);
+        ISpawnParticle spawnParticle = location -> location.getWorld().spawnParticle(Particle.REDSTONE, location, 2, 0.2, 0.2, 0.2, 0, new Particle.DustOptions(color, 2), true);
+
+        double maxSize = random.nextDouble(0.15, 0.5);
+        AtomicDouble size = new AtomicDouble(0.05);
+        AtomicInteger counter = new AtomicInteger();
+        Bukkit.getScheduler().runTaskTimer(FancyFirework.getPlugin(), bukkitTask -> {
+            if (counter.getAndIncrement() < 10) {
+                double currentSize = size.get();
+                if (currentSize < maxSize) {
+                    size.getAndAdd(0.07);
+                }
+                ParticleEffect effect = new ParticleEffect(origin, rotation, new ShapeHeart(currentSize), spawnParticle);
+                effect.draw();
+            } else {
+                bukkitTask.cancel();
+            }
+        }, 1, 1);
+    }
+
 }
 
 

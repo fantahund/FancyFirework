@@ -17,6 +17,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.WanderingTrader;
@@ -50,8 +51,12 @@ public class FireworkListener implements Listener {
 
     @EventHandler
     public void onFireworkExplode(FireworkExplodeEvent e) {
+        Firework entity = e.getEntity();
+        AbstractFireWork fireWork = plugin.getRegistry().getByEntity(entity);
+        if (fireWork != null) {
+            fireWork.onExplode(e.getEntity());
+        }
         if (plugin.getFireWorkWorks().enabled()) {
-            Entity entity = e.getEntity();
             if (entity.getCustomName() != null && entity.getCustomName().equals("FancyFirework")) {
                 entity.getLocation().getWorld().dropItem(entity.getLocation(), plugin.getRegistry().getRandomFireWorkItem());
             }
