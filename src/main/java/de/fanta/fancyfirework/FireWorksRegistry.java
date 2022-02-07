@@ -13,11 +13,13 @@ import java.util.*;
 public class FireWorksRegistry {
 
     private final Map<NamespacedKey, AbstractFireWork> fireWorkMap;
+    private final Map<NamespacedKey, AbstractFireWork> valentinefireWorkMap;
 
     private final FancyFirework plugin;
 
     FireWorksRegistry(FancyFirework plugin) {
         this.fireWorkMap = new HashMap<>();
+        this.valentinefireWorkMap = new HashMap<>();
         this.plugin = plugin;
     }
 
@@ -26,6 +28,9 @@ public class FireWorksRegistry {
         NamespacedKey key = fireWork.getKey();
         Preconditions.checkArgument(!fireWorkMap.containsKey(key), "A firework with the key " + key + " has already been registered!");
         fireWorkMap.put(key, fireWork);
+        if (key.toString().contains("valentine")) {
+            valentinefireWorkMap.put(key, fireWork);
+        }
     }
 
     public AbstractFireWork get(NamespacedKey key) {
@@ -60,6 +65,15 @@ public class FireWorksRegistry {
     public ItemStack getRandomFireWorkItem() {
         Random rand = new Random();
         NamespacedKey randomkey = getKeys().get(rand.nextInt(getKeys().size()));
+        AbstractFireWork fireWork = get(randomkey);
+        assert fireWork != null;
+        return fireWork.getItemStack().clone();
+    }
+
+    public ItemStack getRandomValentineFireWorkItem() {
+        Random rand = new Random();
+        List<NamespacedKey> list = List.copyOf(valentinefireWorkMap.keySet());
+        NamespacedKey randomkey = list.get(rand.nextInt(list.size()));
         AbstractFireWork fireWork = get(randomkey);
         assert fireWork != null;
         return fireWork.getItemStack().clone();
