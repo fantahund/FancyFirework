@@ -49,29 +49,6 @@ public class FireWorkBatteryValentine extends FireWorkBattery {
     }
 
     @Override
-    public void onLit(ArmorStand stand, Player player) {
-        stand.getWorld().playSound(stand.getLocation(), Sound.ENTITY_CREEPER_PRIMED, SoundCategory.AMBIENT, 1f, 1f);
-
-        BatteryTask batteryTask = new BatteryTask(player, stand, 20 * 60, 20 * 5, 20, random.nextInt(20 * 5, 20 * 13));
-        batteryTask.setSpawnFireworkTask(task -> spawnRandomFirework(stand.getLocation()));
-        batteryTask.setSpawnFountainTask(task -> {
-            //Create fountain
-            Fountain fountain = new Fountain(random.nextInt(20 * 6, 20 * 8), random.nextInt(5, 10));
-            fountain.setCreateEffects(() -> {
-                //Create next fountain effect/s
-                stand.getWorld().playSound(stand.getLocation(), Sound.ENTITY_GHAST_SCREAM, SoundCategory.AMBIENT, 2f, 1.5f);
-
-                FountainEffect effect = new FountainEffect(random.nextInt(6, 20), random.nextDouble(0.4, 1), random.nextDouble(359), random.nextDouble(6));
-                effect.setSpawnParticle(location -> location.getWorld().spawnParticle(Particle.HEART, location, 6));
-
-                return List.of(effect);
-            });
-            return fountain;
-        });
-        batteryTask.start();
-    }
-
-    @Override
     public void onExplode(Firework firework) {
         Location location = firework.getLocation();
         spawn(location);

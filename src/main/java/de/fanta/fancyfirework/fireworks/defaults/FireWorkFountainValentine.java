@@ -1,6 +1,8 @@
 package de.fanta.fancyfirework.fireworks.defaults;
 
+import com.google.common.util.concurrent.AtomicDouble;
 import de.fanta.fancyfirework.FancyFirework;
+import de.fanta.fancyfirework.particle_effects.ISpawnParticle;
 import de.fanta.fancyfirework.particle_effects.ParticleEffect;
 import de.fanta.fancyfirework.particle_effects.ShapeHeart;
 import de.fanta.fancyfirework.utils.CustomFireworkHeads;
@@ -91,17 +93,25 @@ public class FireWorkFountainValentine extends FireWorkFountain {
 
     @Override
     public Color randomColor() {
-        java.awt.Color color = java.awt.Color.getHSBColor(0.955f, random.nextFloat(0.3f, 1), random.nextFloat(0.3f, 1));
+        java.awt.Color color = java.awt.Color.getHSBColor(random.nextFloat(0.83f, 1), random.nextFloat(0.8f, 1), random.nextFloat(0.8f, 1));
         return Color.fromRGB(color.getRed(), color.getGreen(), color.getBlue());
     }
 
     public void spawn(Location origin) {
         Color color = randomColor();
-        ParticleEffect effect = new ParticleEffect(origin, new Vector(0, random.nextDouble(90), 0), new ShapeHeart(random.nextDouble(0.15, 0.5)), location -> location.getWorld().spawnParticle(Particle.REDSTONE, location, 3, 0.2, 0.2, 0.2, 0, new Particle.DustOptions(color, 3), true));
+        Vector rotation = new Vector(0, random.nextDouble(90), 0);
+        ISpawnParticle spawnParticle = location -> location.getWorld().spawnParticle(Particle.REDSTONE, location, 2, 0.2, 0.2, 0.2, 0, new Particle.DustOptions(color, 2), true);
 
+        double maxSize = random.nextDouble(0.15, 0.5);
+        AtomicDouble size = new AtomicDouble(0.05);
         AtomicInteger counter = new AtomicInteger();
         Bukkit.getScheduler().runTaskTimer(FancyFirework.getPlugin(), bukkitTask -> {
-            if (counter.getAndIncrement() < 4) {
+            if (counter.getAndIncrement() < 10) {
+                double currentSize = size.get();
+                if (currentSize < maxSize) {
+                    size.getAndAdd(0.07);
+                }
+                ParticleEffect effect = new ParticleEffect(origin, rotation, new ShapeHeart(currentSize), spawnParticle);
                 effect.draw();
             } else {
                 bukkitTask.cancel();
