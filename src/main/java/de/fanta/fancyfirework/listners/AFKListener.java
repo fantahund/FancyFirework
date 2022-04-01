@@ -1,8 +1,6 @@
 package de.fanta.fancyfirework.listners;
 
-import de.fanta.fancyfirework.FancyFirework;
 import de.fanta.fancyfirework.PlayerInfo;
-import de.fanta.fancyfirework.utils.ChatUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
