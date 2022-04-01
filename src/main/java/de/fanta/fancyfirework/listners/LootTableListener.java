@@ -13,6 +13,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class LootTableListener implements Listener {
@@ -62,7 +64,15 @@ public class LootTableListener implements Listener {
         boolean hasFireWork = random.nextDouble() < chance;
         if (hasFireWork) {
             ItemStack randomFirework = plugin.getRegistry().getRandomFireWorkItem();
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> chest.setItem(random.nextInt(chest.getSize()), randomFirework), 1L);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                List<Integer> freeSlots = new ArrayList<>();
+                for (int i = 0; i < chest.getSize(); i++) {
+                    if (chest.getItem(i) == null) {
+                        freeSlots.add(i);
+                    }
+                }
+                chest.setItem(freeSlots.get(random.nextInt(freeSlots.size())), randomFirework);
+            }, 1L);
         }
     }
 }
