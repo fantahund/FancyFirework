@@ -16,10 +16,10 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class BangSnap extends ItemFireWork {
+public class FlashBomb extends ItemFireWork {
 
-    public BangSnap() {
-        super(new NamespacedKey(FancyFirework.getPlugin(), "bang_snap"));
+    public FlashBomb() {
+        super(new NamespacedKey(FancyFirework.getPlugin(), "flash_bomb"));
     }
 
     @Override
@@ -27,9 +27,9 @@ public class BangSnap extends ItemFireWork {
         ItemStack stack = new ItemStack(Material.EGG, 16);
         ItemMeta meta = stack.getItemMeta();
         if (meta != null) {
-            meta.setDisplayName("" + ChatColor.of("#d07016") + ChatColor.BOLD + "Bang Snap");
+            meta.setDisplayName("" + ChatColor.of("#d1fdff") + ChatColor.BOLD + "Flash Bomb");
             meta.setLore(FancyFirework.getPlugin().getConfig().getStringList("itemlorebangsnap"));
-            meta.setCustomModelData(1286028928);
+            meta.setCustomModelData(12156465);
             stack.setItemMeta(meta);
         }
         return stack;
@@ -44,7 +44,7 @@ public class BangSnap extends ItemFireWork {
     public void onHit(Player player, ProjectileHitEvent event) {
         Location loc = event.getEntity().getLocation();
         World world = loc.getWorld();
-        world.playSound(loc, Sound.ENTITY_FIREWORK_ROCKET_BLAST, SoundCategory.AMBIENT, 1f, 2f);
-        world.spawnParticle(Particle.FLAME, loc, 6, 0, 0, 0, 0.025, null, true);
+        world.playSound(loc, Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.AMBIENT, 2f, 1f);
+        world.spawnParticle(Particle.FLASH, loc, 15, 1.5, 1, 1.5, 0, null, true);
     }
 }

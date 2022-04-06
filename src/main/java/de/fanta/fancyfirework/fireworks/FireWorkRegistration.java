@@ -25,6 +25,8 @@ import de.fanta.fancyfirework.fireworks.defaults.FireWorkFountainRed;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkFountainValentine;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkFountainWhite;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkFountainYellow;
+import de.fanta.fancyfirework.fireworks.defaults.FlashBomb;
+import de.fanta.fancyfirework.fireworks.defaults.SmokeBomb;
 
 public record FireWorkRegistration(FancyFirework plugin) {
 
@@ -55,5 +57,7 @@ public record FireWorkRegistration(FancyFirework plugin) {
         registry.register(new FireWorkFountainValentine()); //Not ready
 
         registry.register(new BangSnap());
+        registry.register(new SmokeBomb());
+        registry.register(new FlashBomb());
     }
 }
