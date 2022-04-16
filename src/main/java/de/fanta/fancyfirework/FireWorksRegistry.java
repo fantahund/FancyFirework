@@ -62,6 +62,10 @@ public class FireWorksRegistry {
         return List.copyOf(fireWorkMap.keySet());
     }
 
+    public Collection<AbstractFireWork> getValues() {
+        return Collections.unmodifiableCollection(fireWorkMap.values());
+    }
+
     public ItemStack getRandomFireWorkItem() {
         Random rand = new Random();
         NamespacedKey randomkey = getKeys().get(rand.nextInt(getKeys().size()));

@@ -26,6 +26,7 @@ public final class FancyFirework extends JavaPlugin {
     private static FancyFirework plugin;
     private FireWorkWorks fireWorkWorks;
     private FireWorksRegistry registry;
+    private ConfigManager configManager;
     private VanishPlugin vanishNoPacketPlugin;
     private SuperVanishPlugin superVanishPlugin;
     private WorldGuardHelper worldGuardHelper;
@@ -72,6 +73,8 @@ public final class FancyFirework extends JavaPlugin {
 
         fireWorkWorks = new FireWorkWorks();
         this.registry = new FireWorksRegistry(this);
+        this.configManager = new ConfigManager(this);
+        this.configManager.init();
 
         new CommandRegistration(this).registerCommands();
         new EventRegistration(this).registerEvents();
@@ -145,6 +148,7 @@ public final class FancyFirework extends JavaPlugin {
     }
 
     public void loadConfig() {
+        this.configManager.load();
         FileConfiguration cfg = getConfig();
         cfg.options().copyDefaults(true);
         redstonemode = cfg.getBoolean("redstonemode");
@@ -152,5 +156,9 @@ public final class FancyFirework extends JavaPlugin {
 
     public boolean isRedstonemode() {
         return redstonemode;
+    }
+
+    public ConfigManager getConfigManager() {
+        return configManager;
     }
 }

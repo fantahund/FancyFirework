@@ -4,6 +4,7 @@ import de.fanta.fancyfirework.FancyFirework;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Firework;
 import org.bukkit.inventory.ItemStack;
@@ -11,6 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.io.InputStream;
 import java.util.Objects;
 import java.util.Random;
 
@@ -32,14 +34,20 @@ public abstract class AbstractFireWork implements Keyed {
     public static final NamespacedKey FIREWORK_ID = new NamespacedKey(FancyFirework.getPlugin(), "firework");
 
     private final NamespacedKey key;
-    protected final ItemStack itemStack;
 
     protected AbstractFireWork(@NotNull NamespacedKey key) {
         this.key = Objects.requireNonNull(key, "Key must not be null!");
-        this.itemStack = initItemStack(Objects.requireNonNull(createItemStack(), "ItemStack must not be null!"));
     }
 
     protected abstract ItemStack createItemStack();
+
+    protected YamlConfiguration getConfig() {
+        return FancyFirework.getPlugin().getConfigManager().getConfig(key);
+    }
+
+    public InputStream getDefaultResource() {
+        return FancyFirework.getPlugin().getResource("fireworks/"+key.getKey()+".yml");
+    }
 
     /**
      * Called when a minecraft firework, that includes the key of this Firework, explodes.
@@ -47,10 +55,6 @@ public abstract class AbstractFireWork implements Keyed {
      * @param firework The minecraft firework that exploded.
      */
     public void onExplode(Firework firework) { /* Called when a firework explodes */ }
-
-    public void onInteract() {
-
-    }
 
     public void applyToEntity(Entity entity) {
         applyToPersistentDataContainer(entity.getPersistentDataContainer());
@@ -70,7 +74,7 @@ public abstract class AbstractFireWork implements Keyed {
     }
 
     public ItemStack getItemStack() {
-        return itemStack.clone();
+        return initItemStack(Objects.requireNonNull(createItemStack(), "ItemStack must not be null!"));
     }
 
     @NotNull
