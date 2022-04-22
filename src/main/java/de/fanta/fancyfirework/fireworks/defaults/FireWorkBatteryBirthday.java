@@ -6,6 +6,7 @@ import de.fanta.fancyfirework.particle_effects.ISpawnParticle;
 import de.fanta.fancyfirework.particle_effects.ParticleEffect;
 import de.fanta.fancyfirework.particle_effects.ShapeBloon;
 import de.fanta.fancyfirework.particle_effects.ShapeHeart;
+import de.fanta.fancyfirework.utils.ColorUtils;
 import de.fanta.fancyfirework.utils.CustomFireworkHeads;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -29,15 +30,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class FireWorkBatteryBirthday extends FireWorkBattery {
 
+    private final FancyFirework plugin = FancyFirework.getPlugin();
+
     public FireWorkBatteryBirthday() {
         super(new NamespacedKey(FancyFirework.getPlugin(), "battery_birthday"));
     }
 
     @Override
     protected ItemStack createItemStack() {
-        ItemStack itemStack = CustomFireworkHeads.getCustomTextureHead(UUID.fromString("eecce1f7-01ce-4e89-b98c-62417243bd08"), "Hearts", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmM4ZmI2MzdkNmUxYTdiYThmYTk3ZWU5ZDI5MTVlODQzZThlYzc5MGQ4YjdiZjYwNDhiZTYyMWVlNGQ1OWZiYSJ9fX0=");
+        ItemStack itemStack = CustomFireworkHeads.getCustomTextureHead(UUID.fromString("f49adfe4-15dd-4672-8457-7963474b0c3d"), "Balloons", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTFiZTQ0ZTg0ZjAxMmY0M2ZhODExNzI3ZDJkNzQ2YTEwYjc1ZGQ5MjQzNzZkZDgwZmJjYjE3NzY4M2QzNTNjZSJ9fX0=");
         ItemMeta meta = itemStack.getItemMeta();
-        meta.setDisplayName(ChatColor.of("#ff5cc3") + "Birthday Battery");
+        meta.setDisplayName(ChatColor.of("#cffe4d") + "Birthday Battery");
         meta.setLore(FancyFirework.getPlugin().getConfig().getStringList("itemlore"));
         itemStack.setItemMeta(meta);
         return itemStack;
@@ -69,7 +72,7 @@ public class FireWorkBatteryBirthday extends FireWorkBattery {
     }
 
     public void spawn(Location origin) {
-        Color color = randomColor();
+        Color color = ColorUtils.getColor(plugin.getTime(), 0.2);
         Vector rotation = new Vector(0, random.nextDouble(90), 0);
         ISpawnParticle spawnParticle = location -> location.getWorld().spawnParticle(Particle.REDSTONE, location, 2, 0.2, 0.2, 0.2, 0, new Particle.DustOptions(color, 2), true);
 
