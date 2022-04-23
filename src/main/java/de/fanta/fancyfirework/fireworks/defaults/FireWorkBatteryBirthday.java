@@ -5,9 +5,13 @@ import de.fanta.fancyfirework.FancyFirework;
 import de.fanta.fancyfirework.particle_effects.ISpawnParticle;
 import de.fanta.fancyfirework.particle_effects.ParticleEffect;
 import de.fanta.fancyfirework.particle_effects.ShapeBloon;
-import de.fanta.fancyfirework.particle_effects.ShapeHeart;
+import de.fanta.fancyfirework.particle_effects.ShapeBloonRibbon;
 import de.fanta.fancyfirework.utils.ColorUtils;
 import de.fanta.fancyfirework.utils.CustomFireworkHeads;
+import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicInteger;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -22,11 +26,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
-
-import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class FireWorkBatteryBirthday extends FireWorkBattery {
 
@@ -75,6 +74,7 @@ public class FireWorkBatteryBirthday extends FireWorkBattery {
         Color color = ColorUtils.getColor(plugin.getTime(), 0.2);
         Vector rotation = new Vector(0, random.nextDouble(90), 0);
         ISpawnParticle spawnParticle = location -> location.getWorld().spawnParticle(Particle.REDSTONE, location, 2, 0.2, 0.2, 0.2, 0, new Particle.DustOptions(color, 2), true);
+        ISpawnParticle spawnParticleWhite = location -> location.getWorld().spawnParticle(Particle.REDSTONE, location, 2, 0.2, 0.2, 0.2, 0, new Particle.DustOptions(Color.WHITE, 2), true);
 
         double maxSize = random.nextDouble(0.15, 0.5);
         AtomicDouble size = new AtomicDouble(0.05);
@@ -82,11 +82,18 @@ public class FireWorkBatteryBirthday extends FireWorkBattery {
         Bukkit.getScheduler().runTaskTimer(FancyFirework.getPlugin(), bukkitTask -> {
             if (counter.getAndIncrement() < 10) {
                 double currentSize = size.get();
+                boolean maxSizeReached = false;
                 if (currentSize < maxSize) {
                     size.getAndAdd(0.07);
+                } else {
+                    maxSizeReached = true;
                 }
                 ParticleEffect effect = new ParticleEffect(origin, rotation, new ShapeBloon(currentSize), spawnParticle);
                 effect.draw();
+                if (maxSizeReached) {
+                    effect = new ParticleEffect(origin, rotation, new ShapeBloonRibbon(currentSize), spawnParticleWhite);
+                    effect.draw();
+                }
             } else {
                 bukkitTask.cancel();
             }

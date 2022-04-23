@@ -5,10 +5,10 @@ import de.fanta.fancyfirework.FireWorksRegistry;
 import de.fanta.fancyfirework.fireworks.defaults.BangSnap;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryBirthday;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryBlue;
-import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryPink;
-import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryPride;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryGreen;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryOrange;
+import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryPink;
+import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryPride;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryPurple;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryRainbow;
 import de.fanta.fancyfirework.fireworks.defaults.FireWorkBatteryRed;
@@ -45,7 +45,7 @@ public record FireWorkRegistration(FancyFirework plugin) {
         registry.register(new FireWorkBatteryPink());
         registry.register(new FireWorkBatteryYellow());
         registry.register(new FireWorkBatteryValentine());
-        registry.register(new FireWorkBatteryBirthday()); //Not ready
+        registry.register(new FireWorkBatteryBirthday());
 
         registry.register(new FireWorkFountainPride());
         registry.register(new FireWorkFountainWhite());
