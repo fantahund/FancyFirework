@@ -1,6 +1,7 @@
 package de.fanta.fancyfirework.listners;
 
 import de.fanta.fancyfirework.FancyFirework;
+import de.fanta.fancyfirework.events.FireworkDeathEvent;
 import de.fanta.fancyfirework.fireworks.AbstractFireWork;
 import de.fanta.fancyfirework.fireworks.BlockFireWork;
 import de.fanta.fancyfirework.fireworks.ItemFireWork;
@@ -38,7 +39,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -127,21 +127,35 @@ public class FireworkListener implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent e) {
-        if (!(e.getDamager() instanceof Player player)) {
-            return;
-        }
         if (!(e.getEntity() instanceof ArmorStand stand)) {
             return;
         }
+
         AbstractFireWork fireWork = plugin.getRegistry().getByEntity(stand);
         if (fireWork instanceof BlockFireWork blockFireWork) {
+
+            if (!(e.getDamager() instanceof Player player)) {
+                e.setCancelled(true);
+                return;
+            }
+
             Location loc = stand.getLocation().add(0, 1.5, 0);
             if (!plugin.canBuild(player, loc)) {
                 ChatUtil.sendErrorMessage(player, "You can not build here");
                 return;
             }
+
             if (!blockFireWork.hasActiveTask(stand)) {
                 ItemStack stack = blockFireWork.getItemStack();
+                List<ItemStack> stackList = new ArrayList<>();
+                stackList.add(stack);
+                stand.setLastDamageCause(e);
+                FireworkDeathEvent fireworkDeathEvent = new FireworkDeathEvent(stand, stackList);
+                player.getServer().getPluginManager().callEvent(fireworkDeathEvent);
+                if (fireworkDeathEvent.isCancelled()) {
+                    e.setCancelled(true);
+                    return;
+                }
                 stand.getWorld().dropItem(loc, stack);
                 stand.getEquipment().clear();
                 stand.remove();
