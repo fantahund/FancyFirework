@@ -17,10 +17,6 @@ public class SetSpawnRateCommand extends SubCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String s1, ArgsParser args) {
-        if (!sender.hasPermission(FancyFirework.ADMIN_PERMISSION)) {
-            ChatUtil.sendErrorMessage(sender, "No Permission!");
-            return true;
-        }
         if (args.hasNext()) {
             int spawnrate = args.getNext(1);
             if (spawnrate != 0) {
@@ -33,5 +29,10 @@ public class SetSpawnRateCommand extends SubCommand {
             ChatUtil.sendWarningMessage(sender, "/fancyfirework setspawnrate [amount]");
         }
         return true;
+    }
+
+    @Override
+    public String getRequiredPermission() {
+        return FancyFirework.ADMIN_PERMISSION;
     }
 }

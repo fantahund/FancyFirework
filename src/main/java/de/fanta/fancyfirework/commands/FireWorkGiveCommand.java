@@ -25,12 +25,8 @@ public class FireWorkGiveCommand extends SubCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String s1, ArgsParser args) {
-        if (!(sender instanceof Player p)) { //TODO Use Utils Check hasPlayer
+        if (!(sender instanceof Player p)) {
             ChatUtil.sendErrorMessage(sender, "You are not a Player :>");
-            return true;
-        }
-        if (!p.hasPermission(FancyFirework.MOD_PERMISSION)) {
-            ChatUtil.sendErrorMessage(p, "No Permission!"); //TODO Use Utils Check hasPermission
             return true;
         }
 
@@ -80,5 +76,10 @@ public class FireWorkGiveCommand extends SubCommand {
             return new ArrayList<>();
         }
         return null;
+    }
+
+    @Override
+    public String getRequiredPermission() {
+        return FancyFirework.MOD_PERMISSION;
     }
 }

@@ -20,29 +20,34 @@ public class EnableToggleCommand extends SubCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String alias, String commandString, ArgsParser args) {
-        Player p = (Player) sender;
-        if (!p.hasPermission(FancyFirework.ADMIN_PERMISSION)) {
-            ChatUtil.sendErrorMessage(p, "No Permission!");
+        if (!(sender instanceof Player player)) {
+            ChatUtil.sendErrorMessage(sender, "You are not a Player :>");
             return true;
         }
+
         if (enable) {
             if (!plugin.getFireWorkWorks().enabled()) {
                 plugin.getFireWorkWorks().setEnabled(true);
-                ChatUtil.sendNormalMessage(p, "Fireworks spawning was turned on.");
+                ChatUtil.sendNormalMessage(player, "Fireworks spawning was turned on.");
             } else {
-                ChatUtil.sendErrorMessage(p, "Fireworks spawning is already turned on.");
+                ChatUtil.sendErrorMessage(player, "Fireworks spawning is already turned on.");
                 return true;
             }
         } else {
             if (plugin.getFireWorkWorks().enabled()) {
                 plugin.getFireWorkWorks().setEnabled(false);
-                ChatUtil.sendNormalMessage(p, "Fireworks spawning was turned off.");
+                ChatUtil.sendNormalMessage(player, "Fireworks spawning was turned off.");
             } else {
-                ChatUtil.sendErrorMessage(p, "Fireworks spawning is already turned off.");
+                ChatUtil.sendErrorMessage(player, "Fireworks spawning is already turned off.");
                 return true;
             }
         }
         return true;
+    }
+
+    @Override
+    public String getRequiredPermission() {
+        return FancyFirework.ADMIN_PERMISSION;
     }
 }
 
