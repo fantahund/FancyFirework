@@ -12,7 +12,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
@@ -33,7 +32,6 @@ public class FireWorkWorks {
     }
 
     public void enableTask() {
-        rand = new Random();
         taskID = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, this::randomFireworkRun, 1L, 1L);
         plugin.getLogger().log(Level.INFO, "Started spawning random firework.");
     }

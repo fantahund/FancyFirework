@@ -71,11 +71,7 @@ public class FireWorkGiveCommand extends SubCommand {
     @Override
     public ArrayList<String> onTabComplete(CommandSender sender, Command command, String alias, ArgsParser args) {
         if (sender.hasPermission(FancyFirework.MOD_PERMISSION)) {
-            int i = 0;
-            while (args.hasNext()) {
-                args.next();
-                i++;
-            }
+            int i = args.remaining();
             if (i == 1) {
                 ArrayList<String> li = new ArrayList<>();
                 plugin.getRegistry().getKeys().forEach((x) -> li.add(x.toString()));
