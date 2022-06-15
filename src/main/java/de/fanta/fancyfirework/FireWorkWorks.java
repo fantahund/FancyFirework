@@ -32,6 +32,7 @@ public class FireWorkWorks {
     }
 
     public void enableTask() {
+        rand = new Random();
         taskID = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, this::randomFireworkRun, 1L, 1L);
         plugin.getLogger().log(Level.INFO, "Started spawning random firework.");
     }
