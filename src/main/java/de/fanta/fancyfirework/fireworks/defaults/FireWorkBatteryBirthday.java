@@ -31,7 +31,7 @@ import org.bukkit.util.Vector;
 
 public class FireWorkBatteryBirthday extends FireWorkBattery {
 
-    private final FancyFirework plugin = FancyFirework.getPlugin();
+    private static final FancyFirework plugin = FancyFirework.getPlugin();
 
     public FireWorkBatteryBirthday() {
         super(new NamespacedKey(FancyFirework.getPlugin(), "battery_birthday"));
@@ -51,6 +51,7 @@ public class FireWorkBatteryBirthday extends FireWorkBattery {
     protected Permission createPermission() {
         Permission permission = new Permission("fancyfirework.use.battery_birthday");
         permission.setDefault(PermissionDefault.TRUE);
+        plugin.registerPermission(permission);
         return permission;
     }
 

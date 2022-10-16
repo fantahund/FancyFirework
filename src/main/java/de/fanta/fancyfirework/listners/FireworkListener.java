@@ -190,6 +190,11 @@ public class FireworkListener implements Listener {
                         if (fireworkStack != null) {
                             AbstractFireWork fireWork = plugin.getRegistry().getByItemStack(fireworkStack);
                             if (fireWork instanceof BlockFireWork blockFireWork) {
+                                if (!e.getPlayer().hasPermission(blockFireWork.getPermission())) {
+                                    ChatUtil.sendErrorMessage(e.getPlayer(), "You do not have the permission to use this firework here!");
+                                    e.setCancelled(true);
+                                    return;
+                                }
                                 if (!blockFireWork.hasActiveTask(player)) {
                                     blockFireWork.onLit(player, player);
                                     damageFNS(player, e.getHand());

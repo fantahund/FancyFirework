@@ -13,6 +13,8 @@ import org.bukkit.permissions.PermissionDefault;
 
 public class FireWorkBatteryPink extends FireWorkBattery {
 
+    private static final FancyFirework plugin = FancyFirework.getPlugin();
+
     public FireWorkBatteryPink() {
         super(new NamespacedKey(FancyFirework.getPlugin(), "battery_pink"));
     }
@@ -32,6 +34,7 @@ public class FireWorkBatteryPink extends FireWorkBattery {
     protected Permission createPermission() {
         Permission permission = new Permission("fancyfirework.use.battery_pink");
         permission.setDefault(PermissionDefault.TRUE);
+        plugin.registerPermission(permission);
         return permission;
     }
 

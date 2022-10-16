@@ -20,6 +20,8 @@ import org.bukkit.permissions.PermissionDefault;
 
 public class FlashBomb extends ItemFireWork {
 
+    private static final FancyFirework plugin = FancyFirework.getPlugin();
+
     public FlashBomb() {
         super(new NamespacedKey(FancyFirework.getPlugin(), "flash_bomb"));
     }
@@ -41,6 +43,7 @@ public class FlashBomb extends ItemFireWork {
     protected Permission createPermission() {
         Permission permission = new Permission("fancyfirework.use.flash_bomb");
         permission.setDefault(PermissionDefault.TRUE);
+        plugin.registerPermission(permission);
         return permission;
     }
 

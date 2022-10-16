@@ -21,7 +21,7 @@ import org.bukkit.permissions.PermissionDefault;
 
 public class SmokeBombColor extends ItemFireWork {
 
-    private final FancyFirework plugin = FancyFirework.getPlugin();
+    private static final FancyFirework plugin = FancyFirework.getPlugin();
 
     public SmokeBombColor() {
         super(new NamespacedKey(FancyFirework.getPlugin(), "smoke_bomb_color"));
@@ -44,6 +44,7 @@ public class SmokeBombColor extends ItemFireWork {
     protected Permission createPermission() {
         Permission permission = new Permission("fancyfirework.use.smoke_bomb_color");
         permission.setDefault(PermissionDefault.TRUE);
+        plugin.registerPermission(permission);
         return permission;
     }
 

@@ -33,6 +33,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class FireWorkFountainValentine extends FireWorkFountain {
 
+    private static final FancyFirework plugin = FancyFirework.getPlugin();
+
     public FireWorkFountainValentine() {
         super(new NamespacedKey(FancyFirework.getPlugin(), "fountain_valentine"));
     }
@@ -51,6 +53,7 @@ public class FireWorkFountainValentine extends FireWorkFountain {
     protected Permission createPermission() {
         Permission permission = new Permission("fancyfirework.use.fountain_valentine");
         permission.setDefault(PermissionDefault.TRUE);
+        plugin.registerPermission(permission);
         return permission;
     }
 

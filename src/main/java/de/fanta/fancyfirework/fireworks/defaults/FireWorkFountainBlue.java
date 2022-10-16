@@ -13,7 +13,7 @@ import org.bukkit.permissions.PermissionDefault;
 
 public class FireWorkFountainBlue extends FireWorkFountain {
 
-    private final FancyFirework plugin = FancyFirework.getPlugin();
+    private static final FancyFirework plugin = FancyFirework.getPlugin();
 
     public FireWorkFountainBlue() {
         super(new NamespacedKey(FancyFirework.getPlugin(), "fountain_blue"));
@@ -34,6 +34,7 @@ public class FireWorkFountainBlue extends FireWorkFountain {
     protected Permission createPermission() {
         Permission permission = new Permission("fancyfirework.use.fountain_blue");
         permission.setDefault(PermissionDefault.TRUE);
+        plugin.registerPermission(permission);
         return permission;
     }
 

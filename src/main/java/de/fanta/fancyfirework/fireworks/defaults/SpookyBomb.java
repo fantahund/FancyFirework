@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class SpookyBomb extends ItemFireWork {
 
-    private final FancyFirework plugin = FancyFirework.getPlugin();
+    private static final FancyFirework plugin = FancyFirework.getPlugin();
     private final ArrayList<UUID> spookyPlayers = new ArrayList<>();
 
     public SpookyBomb() {
