@@ -16,6 +16,8 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 
 public class SmokeBombColor extends ItemFireWork {
 
@@ -36,6 +38,13 @@ public class SmokeBombColor extends ItemFireWork {
             stack.setItemMeta(meta);
         }
         return stack;
+    }
+
+    @Override
+    protected Permission createPermission() {
+        Permission permission = new Permission("fancyfirework.use.smoke_bomb_color");
+        permission.setDefault(PermissionDefault.TRUE);
+        return permission;
     }
 
     @Override

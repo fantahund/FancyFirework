@@ -8,6 +8,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Firework;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -33,13 +35,17 @@ public abstract class AbstractFireWork implements Keyed {
 
     private final NamespacedKey key;
     protected final ItemStack itemStack;
+    protected final Permission permission;
 
     protected AbstractFireWork(@NotNull NamespacedKey key) {
         this.key = Objects.requireNonNull(key, "Key must not be null!");
         this.itemStack = initItemStack(Objects.requireNonNull(createItemStack(), "ItemStack must not be null!"));
+        this.permission = createPermission();
     }
 
     protected abstract ItemStack createItemStack();
+
+    protected abstract Permission createPermission();
 
     /**
      * Called when a minecraft firework, that includes the key of this Firework, explodes.
@@ -79,4 +85,7 @@ public abstract class AbstractFireWork implements Keyed {
         return key;
     }
 
+    public Permission getPermission() {
+        return permission;
+    }
 }

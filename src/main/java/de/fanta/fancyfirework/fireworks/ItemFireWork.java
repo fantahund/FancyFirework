@@ -4,6 +4,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.permissions.Permission;
 
 /**
  * This firework can be any kind of projectile (Egg, Snowball, etc.) and can be thrown by players.<br>

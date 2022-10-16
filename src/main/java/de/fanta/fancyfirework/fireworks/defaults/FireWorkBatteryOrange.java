@@ -8,6 +8,8 @@ import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 
 public class FireWorkBatteryOrange extends FireWorkBattery {
 
@@ -24,6 +26,13 @@ public class FireWorkBatteryOrange extends FireWorkBattery {
         meta.setLore(FancyFirework.getPlugin().getConfig().getStringList("itemlore"));
         itemStack.setItemMeta(meta);
         return itemStack;
+    }
+
+    @Override
+    protected Permission createPermission() {
+        Permission permission = new Permission("fancyfirework.use.battery_orange");
+        permission.setDefault(PermissionDefault.TRUE);
+        return permission;
     }
 
     @Override

@@ -11,9 +11,12 @@ import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.permissions.Permission;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.kitteh.vanish.VanishPlugin;
 
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -152,5 +155,13 @@ public final class FancyFirework extends JavaPlugin {
 
     public boolean isRedstonemode() {
         return redstonemode;
+    }
+
+    public void registerPermission(Permission permission) {
+        PluginManager pm = getServer().getPluginManager();
+        Set<Permission> permissions = pm.getPermissions();
+        if (!permissions.contains(permission)) {
+            pm.addPermission(permission);
+        }
     }
 }

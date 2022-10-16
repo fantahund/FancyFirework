@@ -10,6 +10,8 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 
 public class FireWorkBatteryBlue extends FireWorkBattery {
 
@@ -26,6 +28,13 @@ public class FireWorkBatteryBlue extends FireWorkBattery {
         meta.setLore(FancyFirework.getPlugin().getConfig().getStringList("itemlore")); //TODO for all fireworks later replace with language system
         itemStack.setItemMeta(meta);
         return itemStack;
+    }
+
+    @Override
+    protected Permission createPermission() {
+        Permission permission = new Permission("fancyfirework.use.battery_blue");
+        permission.setDefault(PermissionDefault.TRUE);
+        return permission;
     }
 
     @Override

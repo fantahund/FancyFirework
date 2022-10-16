@@ -9,6 +9,8 @@ import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 
 public class FireWorkFountainPride extends FireWorkFountain {
 
@@ -27,6 +29,13 @@ public class FireWorkFountainPride extends FireWorkFountain {
         meta.setLore(FancyFirework.getPlugin().getConfig().getStringList("itemlore"));
         itemStack.setItemMeta(meta);
         return itemStack;
+    }
+
+    @Override
+    protected Permission createPermission() {
+        Permission permission = new Permission("fancyfirework.use.fountain_pride");
+        permission.setDefault(PermissionDefault.TRUE);
+        return permission;
     }
 
     @Override

@@ -25,6 +25,8 @@ import org.bukkit.entity.Firework;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.util.Vector;
 
 public class FireWorkBatteryBirthday extends FireWorkBattery {
@@ -43,6 +45,13 @@ public class FireWorkBatteryBirthday extends FireWorkBattery {
         meta.setLore(FancyFirework.getPlugin().getConfig().getStringList("itemlore"));
         itemStack.setItemMeta(meta);
         return itemStack;
+    }
+
+    @Override
+    protected Permission createPermission() {
+        Permission permission = new Permission("fancyfirework.use.battery_birthday");
+        permission.setDefault(PermissionDefault.TRUE);
+        return permission;
     }
 
     @Override

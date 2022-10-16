@@ -18,6 +18,8 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -45,6 +47,14 @@ public class SpookyBomb extends ItemFireWork {
             stack.setItemMeta(meta);
         }
         return stack;
+    }
+
+    @Override
+    protected Permission createPermission() {
+        Permission permission = new Permission("fancyfirework.use.spooky_bomb");
+        permission.setDefault(PermissionDefault.TRUE);
+        plugin.registerPermission(permission);
+        return permission;
     }
 
     @Override

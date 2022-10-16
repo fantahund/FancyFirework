@@ -77,6 +77,11 @@ public class FireworkListener implements Listener {
             return;
         }
         if (fireWork instanceof BlockFireWork blockFireWork) {
+            if (!event.getPlayer().hasPermission(blockFireWork.getPermission())) {
+                ChatUtil.sendErrorMessage(event.getPlayer(), "You do not have the permission to use this firework here!");
+                event.setCancelled(true);
+                return;
+            }
             Block block = event.getBlockPlaced();
             blockFireWork.onPlace(block, blockFireWork.spawnAtBlock(block.getRelative(BlockFace.DOWN)), event.getPlayer());
             event.setCancelled(true);
@@ -99,6 +104,11 @@ public class FireworkListener implements Listener {
         }
 
         if (fireWork instanceof BlockFireWork blockFireWork) {
+            if (!event.getPlayer().hasPermission(blockFireWork.getPermission())) {
+                ChatUtil.sendErrorMessage(event.getPlayer(), "You do not have the permission to use this firework here!");
+                event.setCancelled(true);
+                return;
+            }
             if (!blockFireWork.hasActiveTask(entity)) {
                 ItemStack stack = event.getPlayer().getEquipment().getItem(event.getHand());
                 if (stack.getType().equals(Material.FLINT_AND_STEEL)) {
@@ -271,6 +281,11 @@ public class FireworkListener implements Listener {
                 fireWork = plugin.getRegistry().getByItemStack(player.getEquipment().getItemInOffHand());
             }
             if (fireWork instanceof ItemFireWork itemFireWork) {
+                if (!player.hasPermission(itemFireWork.getPermission())) {
+                    ChatUtil.sendErrorMessage(player, "You do not have the permission to use this firework here!");
+                    event.setCancelled(true);
+                    return;
+                }
                 fireWork.applyToEntity(entity);
                 itemFireWork.onLaunch(player, entity);
             }

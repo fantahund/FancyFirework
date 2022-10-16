@@ -8,6 +8,8 @@ import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 
 public class FireWorkFountainPink extends FireWorkFountain {
 
@@ -28,6 +30,12 @@ public class FireWorkFountainPink extends FireWorkFountain {
         return itemStack;
     }
 
+    @Override
+    protected Permission createPermission() {
+        Permission permission = new Permission("fancyfirework.use.fountain_pink");
+        permission.setDefault(PermissionDefault.TRUE);
+        return permission;
+    }
     @Override
     public Color randomColor() {
         java.awt.Color color = java.awt.Color.getHSBColor(0.83f, random.nextFloat(0.5f, 1), random.nextFloat(0.5f, 1));
