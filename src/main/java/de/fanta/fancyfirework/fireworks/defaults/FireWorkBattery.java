@@ -10,6 +10,7 @@ import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
@@ -34,17 +35,17 @@ public abstract class FireWorkBattery extends BlockFireWork {
     }
 
     @Override
-    public void onLit(ArmorStand stand, Player player) {
-        stand.getWorld().playSound(stand.getLocation(), Sound.ENTITY_CREEPER_PRIMED, SoundCategory.AMBIENT, 1f, 1f);
+    public void onLit(Entity entity, Player player) {
+        entity.getWorld().playSound(entity.getLocation(), Sound.ENTITY_CREEPER_PRIMED, SoundCategory.AMBIENT, 1f, 1f);
 
-        BatteryTask batteryTask = new BatteryTask(player, stand, 20 * 60, 20 * 5, 20, random.nextInt(20 * 5, 20 * 13));
-        batteryTask.setSpawnFireworkTask(task -> spawnRandomFirework(stand.getLocation()));
+        BatteryTask batteryTask = new BatteryTask(player, entity, 20 * 60, 20 * 5, 20, random.nextInt(20 * 5, 20 * 13));
+        batteryTask.setSpawnFireworkTask(task -> spawnRandomFirework(entity.getLocation()));
         batteryTask.setSpawnFountainTask(task -> {
             //Create fountain
             Fountain fountain = new Fountain(random.nextInt(20 * 6, 20 * 8), random.nextInt(5, 10));
             fountain.setCreateEffects(() -> {
                 //Create next fountain effect/s
-                stand.getWorld().playSound(stand.getLocation(), Sound.ENTITY_GHAST_SCREAM, SoundCategory.AMBIENT, 2f, 1.5f);
+                entity.getWorld().playSound(entity.getLocation(), Sound.ENTITY_GHAST_SCREAM, SoundCategory.AMBIENT, 2f, 1.5f);
 
                 FountainEffect effect = new FountainEffect(random.nextInt(6, 20), random.nextDouble(0.4, 1), random.nextDouble(359), random.nextDouble(6));
                 effect.setSpawnParticle(location -> location.getWorld().spawnParticle(Particle.REDSTONE, location, 6, new Particle.DustOptions(randomColor(), 1.5f)));
@@ -58,7 +59,7 @@ public abstract class FireWorkBattery extends BlockFireWork {
 
     @Override
     public void onTick(Task task, boolean active) {
-        Location loc = task.getArmorStand().getLocation().add(0, 1.5, 0);
+        Location loc = task.getEntity().getLocation().add(0, 1.5, 0);
         loc.getWorld().spawnParticle(Particle.FLAME, loc, 1, 0, 0, 0, 0.025);
 
         if (task instanceof BatteryTask batteryTask) {
@@ -92,8 +93,8 @@ public abstract class FireWorkBattery extends BlockFireWork {
         private int fountainCounter;
         private int fountainCooldown;
 
-        public BatteryTask(Player player, ArmorStand stand, long duration, int delay, int fireworkCooldown, int fountainCooldown) {
-            super(player, stand, duration, delay, 0, null);
+        public BatteryTask(Player player, Entity entity, long duration, int delay, int fireworkCooldown, int fountainCooldown) {
+            super(player, entity, duration, delay, 0, null);
             this.fireworkCooldown = fireworkCooldown;
             this.fountainCooldown = fountainCooldown;
             this.fireworkCounter = 0;

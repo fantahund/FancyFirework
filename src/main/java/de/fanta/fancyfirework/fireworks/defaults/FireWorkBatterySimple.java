@@ -9,6 +9,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -31,9 +32,9 @@ public class FireWorkBatterySimple extends FireWorkBattery {
     }
 
     @Override
-    public void onLit(ArmorStand stand, Player player) {
-        stand.getWorld().playSound(stand.getLocation(), Sound.ENTITY_CREEPER_PRIMED, SoundCategory.AMBIENT, 1f, 1f);
-        Task task = new Task(player, stand, 20 * 60, 20 * 5, 20, () -> spawnRandomFirework(stand.getLocation()));
+    public void onLit(Entity entity, Player player) {
+        entity.getWorld().playSound(entity.getLocation(), Sound.ENTITY_CREEPER_PRIMED, SoundCategory.AMBIENT, 1f, 1f);
+        Task task = new Task(player, entity, 20 * 60, 20 * 5, 20, () -> spawnRandomFirework(entity.getLocation()));
         task.start();
     }
 

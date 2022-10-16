@@ -7,7 +7,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
-import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
@@ -27,12 +27,12 @@ public abstract class FireWorkFountain extends FireWorkBattery {
     }
 
     @Override
-    public void onLit(ArmorStand stand, Player player) {
-        stand.getWorld().playSound(stand.getLocation(), Sound.ENTITY_CREEPER_PRIMED, SoundCategory.AMBIENT, 1f, 1f);
-        BatteryTask batteryTask = new BatteryTask(player, stand, 20 * 40, 20 * 5, 20, 1);
+    public void onLit(Entity entity, Player player) {
+        entity.getWorld().playSound(entity.getLocation(), Sound.ENTITY_CREEPER_PRIMED, SoundCategory.AMBIENT, 1f, 1f);
+        BatteryTask batteryTask = new BatteryTask(player, entity, 20 * 40, 20 * 5, 20, 1);
         batteryTask.setSpawnFireworkTask(task -> {
-            stand.getWorld().playSound(stand.getLocation(), Sound.ENTITY_GHAST_SCREAM, SoundCategory.AMBIENT, 2f, 1.5f);
-            spawnRandomFirework(task.getArmorStand().getLocation());
+            entity.getWorld().playSound(entity.getLocation(), Sound.ENTITY_GHAST_SCREAM, SoundCategory.AMBIENT, 2f, 1.5f);
+            spawnRandomFirework(task.getEntity().getLocation());
         });
         batteryTask.setSpawnFountainTask(task -> {
             //Create fountain
@@ -41,7 +41,7 @@ public abstract class FireWorkFountain extends FireWorkBattery {
                 //Create next fountain effect/s
                 var percentage = random.nextDouble();
                 if (percentage > 0.7) {
-                    stand.getWorld().playSound(stand.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, SoundCategory.AMBIENT, 1.5f, 0.6f);
+                    entity.getWorld().playSound(entity.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, SoundCategory.AMBIENT, 1.5f, 0.6f);
                 }
 
                 FountainEffect effect = new FountainEffect(random.nextInt(6, 20), random.nextDouble(0.4, 1), random.nextDouble(359), random.nextDouble(6));
@@ -56,7 +56,7 @@ public abstract class FireWorkFountain extends FireWorkBattery {
 
     @Override
     public void onTick(Task task, boolean active) {
-        Location loc = task.getArmorStand().getLocation().add(0, 1.5, 0);
+        Location loc = task.getEntity().getLocation().add(0, 1.5, 0);
         loc.getWorld().spawnParticle(Particle.FLAME, loc, 1, 0, 0, 0, 0.025);
         if (task instanceof BatteryTask batteryTask) {
             if (batteryTask.getFireworkCounter() == 0) {

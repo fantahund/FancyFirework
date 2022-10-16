@@ -13,7 +13,7 @@ import org.bukkit.block.data.type.Snow;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.EulerAngle;
 
@@ -30,7 +30,7 @@ import java.util.UUID;
  * There are a couple of methods that will be called on interactions or updates.
  * <ul>
  *     <li>{@link #onPlace(Block, ArmorStand, Player)} - Called when a player places the firework.</li>
- *     <li>{@link #onLit(ArmorStand, Player)} - Called when the firework is lit by a player using flint and steel.</li>
+ *     <li>{@link #onLit(Entity, Player)} - Called when the firework is lit by a player using flint and steel.</li>
  *     <li>{@link #onTick(Task, boolean)} - Called when a task of this firework executes a tick.</li>
  * </ul>
  */
@@ -45,8 +45,8 @@ public abstract class BlockFireWork extends AbstractFireWork {
     /**
      * Called when a player places the firework.
      *
-     * @param block The placed block.
-     * @param stand The spawned ArmorStand of the firework.
+     * @param block  The placed block.
+     * @param stand  The spawned ArmorStand of the firework.
      * @param player The player that placed the firework.
      */
     public abstract void onPlace(Block block, ArmorStand stand, Player player);
@@ -54,15 +54,15 @@ public abstract class BlockFireWork extends AbstractFireWork {
     /**
      * Called when the firework is lit by a player using flint and steel.
      *
-     * @param stand The ArmorStand of the firework, that was lit.
+     * @param entity The Entity of the firework, that was lit.
      * @param player The player that lit the firework.
      */
-    public abstract void onLit(ArmorStand stand, @Nullable Player player);
+    public abstract void onLit(Entity entity, @Nullable Player player);
 
     /**
      * Called when a task of this firework executes a tick.
      *
-     * @param task The task that executed the tick.
+     * @param task   The task that executed the tick.
      * @param active If the delay has passed and the task is actively running.
      */
     public abstract void onTick(Task task, boolean active);
@@ -109,17 +109,21 @@ public abstract class BlockFireWork extends AbstractFireWork {
     }
 
     /**
-     * Checks if the {@link ArmorStand} has an active task already running.
+     * Checks if the {@link Entity} has an active task already running.
      *
-     * @param stand The ArmorStand to check for a task.
+     * @param entity The Entity to check for a task.
      * @return True if there is already a task running; False otherwise.
      */
-    public boolean hasActiveTask(ArmorStand stand) {
-        return activeTasks.containsKey(stand.getUniqueId());
+    public boolean hasActiveTask(Entity entity) {
+        return activeTasks.containsKey(entity.getUniqueId());
+    }
+
+    public Task getActiveTask(Entity entity) {
+        return activeTasks.get(entity.getUniqueId());
     }
 
     private void addTask(Task task) {
-        UUID uuid = task.armorStand.getUniqueId();
+        UUID uuid = task.entity.getUniqueId();
         if (activeTasks.containsKey(uuid)) {
             activeTasks.get(uuid).stop();
         }
@@ -127,7 +131,7 @@ public abstract class BlockFireWork extends AbstractFireWork {
     }
 
     private void removeTask(Task task) {
-        activeTasks.remove(task.armorStand.getUniqueId());
+        activeTasks.remove(task.entity.getUniqueId());
     }
 
     /**
@@ -135,12 +139,12 @@ public abstract class BlockFireWork extends AbstractFireWork {
      * Like spawning particles or fireworks, etc.<br>
      * This default implementation has one {@link Runnable} that runs once everytime a period passes.
      * <br>
-     * Once the duration has been reached the task will stop and removes the {@link ArmorStand} from the world.
+     * Once the duration has been reached the task will stop and removes the {@link Entity} from the world.
      */
     public class Task {
 
         protected final Player player;
-        protected final ArmorStand armorStand;
+        protected final Entity entity;
 
         protected final long duration;
         protected final int delay;
@@ -155,16 +159,16 @@ public abstract class BlockFireWork extends AbstractFireWork {
         /**
          * Creates a new Task that runs for a specified duration after the specified delay has passed.
          *
-         * @param player The player that executed the task.
-         * @param armorStand The ArmorStand at which the task runs at.
-         * @param duration The duration in ticks.
-         * @param delay The delay in ticks.
-         * @param period The period between each task.
+         * @param player    The player that executed the task.
+         * @param entity    The Entity at which the task runs at.
+         * @param duration  The duration in ticks.
+         * @param delay     The delay in ticks.
+         * @param period    The period between each task.
          * @param taskToRun The task to run each period.
          */
-        public Task(Player player, ArmorStand armorStand, long duration, int delay, int period, Runnable taskToRun) {
+        public Task(Player player, Entity entity, long duration, int delay, int period, Runnable taskToRun) {
             this.player = player;
-            this.armorStand = armorStand;
+            this.entity = entity;
             addTask(this);
             this.duration = duration;
             this.delay = delay;
@@ -178,7 +182,7 @@ public abstract class BlockFireWork extends AbstractFireWork {
         /**
          * This method is called each tick, even while the delay hasn't passed yet.
          * Therefor the amount of times this method will be called is equal to <pre>duration + delay</pre>
-         *
+         * <p>
          * To check if the delay is over use {@link #isActive()}!
          */
         protected void onTick() {
@@ -204,7 +208,7 @@ public abstract class BlockFireWork extends AbstractFireWork {
             this.tick = 0;
             this.counter = 0;
             this.bukkitTask = Bukkit.getScheduler().runTaskTimer(FancyFirework.getPlugin(), () -> {
-                if (tick < duration + delay && armorStand.isValid()) {
+                if (tick < duration + delay && entity.isValid()) {
                     onTick();
                     tick++;
                 } else {
@@ -216,22 +220,33 @@ public abstract class BlockFireWork extends AbstractFireWork {
         /**
          * Stops the internal scheduler if it exists.
          * <br>
-         * This removes the ArmorStand entity from the world!
+         * This removes the entity from the world!
          */
         public void stop() {
-            if(bukkitTask != null) {
+            if (bukkitTask != null) {
                 bukkitTask.cancel();
                 bukkitTask = null;
                 this.tick = 0;
 
                 //Reset task & remove block + marker entity
                 removeTask(this);
-                armorStand.remove();
+                if (entity instanceof Player litPlayer) {
+                    ItemStack stack = litPlayer.getInventory().getHelmet();
+                    if (stack != null) {
+                        AbstractFireWork fireWork = FancyFirework.getPlugin().getRegistry().getByItemStack(stack);
+                        if (fireWork != null) {
+                            stack.setAmount(stack.getAmount() - 1);
+                            litPlayer.getInventory().setHelmet(stack);
+                        }
+                    }
+                } else {
+                    entity.remove();
+                }
             }
         }
 
-        public ArmorStand getArmorStand() {
-            return armorStand;
+        public Entity getEntity() {
+            return entity;
         }
 
         public long getTick() {

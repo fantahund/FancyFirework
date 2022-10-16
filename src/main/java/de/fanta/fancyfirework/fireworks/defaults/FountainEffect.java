@@ -35,7 +35,7 @@ public class FountainEffect {
     }
 
     public void spawn(BlockFireWork.Task task) {
-        Location location = task.getArmorStand().getLocation().add(0, 1.5, 0).add(getNextVector());
+        Location location = task.getEntity().getLocation().add(0, 1.5, 0).add(getNextVector());
         spawnParticle.accept(location);
     }
 

@@ -30,7 +30,7 @@ public class FireWorkBatteryBlue extends FireWorkBattery {
 
     @Override
     public void onTick(Task task, boolean active) {
-        Location loc = task.getArmorStand().getLocation().add(0, 1.5, 0);
+        Location loc = task.getEntity().getLocation().add(0, 1.5, 0);
         loc.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, loc, 1, 0, 0, 0, 0.025);
     }
 

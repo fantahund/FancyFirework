@@ -25,6 +25,7 @@ import org.bukkit.entity.WanderingTrader;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -32,8 +33,13 @@ import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.FireworkExplodeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerEggThrowEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
@@ -81,46 +87,138 @@ public class FireworkListener implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onInteract(PlayerInteractAtEntityEvent event) {
         Entity entity = event.getRightClicked();
-        if (entity instanceof ArmorStand stand) {
-            AbstractFireWork fireWork = plugin.getRegistry().getByEntity(stand);
+        AbstractFireWork fireWork = null;
+        if (entity instanceof ArmorStand) {
+            fireWork = plugin.getRegistry().getByEntity(entity);
+        }
+        if (entity instanceof Player player) {
+            ItemStack fireworkStack = player.getInventory().getHelmet();
+            if (fireworkStack != null) {
+                fireWork = plugin.getRegistry().getByItemStack(fireworkStack);
+            }
+        }
+
+        if (fireWork instanceof BlockFireWork blockFireWork) {
+            if (!blockFireWork.hasActiveTask(entity)) {
+                ItemStack stack = event.getPlayer().getEquipment().getItem(event.getHand());
+                if (stack.getType().equals(Material.FLINT_AND_STEEL)) {
+                    if (!plugin.canBuild(event.getPlayer(), entity.getLocation().add(0, 1.5, 0))) {
+                        return;
+                    }
+                    blockFireWork.onLit(entity, event.getPlayer());
+                    damageFNS(event.getPlayer(), event.getHand());
+                }
+            }
+        }
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onItemClick(InventoryClickEvent e) {
+        ItemStack stack = e.getCurrentItem();
+        if (stack != null) {
+            AbstractFireWork fireWork = plugin.getRegistry().getByItemStack(stack);
             if (fireWork instanceof BlockFireWork blockFireWork) {
-                if (!blockFireWork.hasActiveTask(stand)) {
-                    ItemStack stack = event.getPlayer().getEquipment().getItem(event.getHand());
-                    if (stack.getType().equals(Material.FLINT_AND_STEEL)) {
-                        if (!plugin.canBuild(event.getPlayer(), stand.getLocation().add(0, 1.5, 0))) {
-                            return;
+                if (blockFireWork.hasActiveTask(e.getWhoClicked())) {
+                    e.setCancelled(true);
+                }
+            }
+        }
+
+        if (e.getClick() == ClickType.NUMBER_KEY) {
+            int slot = e.getHotbarButton();
+            if (slot >= 0 && slot < 9) {
+                if (!e.getWhoClicked().getInventory().equals(e.getInventory())) {
+                    ItemStack swap = e.getWhoClicked().getInventory().getItem(slot);
+                    if (swap != null) {
+                        AbstractFireWork fireWork = plugin.getRegistry().getByItemStack(swap);
+                        if (fireWork instanceof BlockFireWork blockFireWork) {
+                            if (blockFireWork.hasActiveTask(e.getWhoClicked())) {
+                                e.setCancelled(true);
+                            }
                         }
-                        blockFireWork.onLit(stand, event.getPlayer());
-                        if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
-                            ItemMeta meta = stack.getItemMeta();
-                            int maxDurability = stack.getType().getMaxDurability();
-                            if (maxDurability > 0) {
-                                int durability = meta.getEnchantLevel(Enchantment.DURABILITY);
-                                if (durability <= 0 || RandomUtil.SHARED_RANDOM.nextInt(durability + 1) == 0) {
-                                    Damageable damageableMeta = (Damageable) meta;
-                                    int damageOld = damageableMeta.getDamage();
-                                    if (damageOld + 1 <= maxDurability) {
-                                        damageableMeta.setDamage(damageOld + 1);
-                                        stack.setItemMeta(meta);
-                                        if (event.getHand() == EquipmentSlot.HAND) {
-                                            event.getPlayer().getInventory().setItemInMainHand(stack);
-                                        } else {
-                                            event.getPlayer().getInventory().setItemInOffHand(stack);
-                                        }
-                                    } else {
-                                        event.getPlayer().getWorld().playSound(event.getPlayer().getLocation().add(0.5, 0.5, 0.5), Sound.ENTITY_ITEM_BREAK, SoundCategory.PLAYERS, 1 + (float) Math.random() * 0.1f, 1 + (float) Math.random() * 0.1f);
-                                        if (event.getHand() == EquipmentSlot.HAND) {
-                                            event.getPlayer().getInventory().setItemInMainHand(null);
-                                        } else {
-                                            event.getPlayer().getInventory().setItemInOffHand(null);
-                                        }
-                                    }
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        ItemStack stack = event.getPlayer().getInventory().getHelmet();
+        AbstractFireWork fireWork = plugin.getRegistry().getByItemStack(stack);
+        if (fireWork instanceof BlockFireWork blockFireWork) {
+            if (blockFireWork.hasActiveTask(event.getPlayer())) {
+                BlockFireWork.Task task = blockFireWork.getActiveTask(event.getPlayer());
+                if (task != null) {
+                    task.stop();
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onItemDrop(PlayerDropItemEvent e) {
+        ItemStack stack = e.getItemDrop().getItemStack();
+        AbstractFireWork fireWork = plugin.getRegistry().getByItemStack(stack);
+        if (fireWork instanceof BlockFireWork blockFireWork) {
+            if (blockFireWork.hasActiveTask(e.getPlayer())) {
+                e.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onInteractItem(PlayerInteractEvent e) {
+        if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            ItemStack stack = e.getItem();
+            if (stack != null) {
+                if (stack.getType() == Material.FLINT_AND_STEEL) {
+                    Player player = e.getPlayer();
+                    if (player.getLocation().getPitch() < -50) {
+                        ItemStack fireworkStack = player.getInventory().getHelmet();
+                        if (fireworkStack != null) {
+                            AbstractFireWork fireWork = plugin.getRegistry().getByItemStack(fireworkStack);
+                            if (fireWork instanceof BlockFireWork blockFireWork) {
+                                if (!blockFireWork.hasActiveTask(player)) {
+                                    blockFireWork.onLit(player, player);
+                                    damageFNS(player, e.getHand());
                                 }
                             }
                         }
                     }
                 }
-                event.setCancelled(true);
+            }
+        }
+    }
+
+    private void damageFNS(Player player, EquipmentSlot slot) {
+        ItemStack stack = player.getEquipment().getItem(slot);
+        if (player.getGameMode() != GameMode.CREATIVE) {
+            ItemMeta meta = stack.getItemMeta();
+            int maxDurability = stack.getType().getMaxDurability();
+            if (maxDurability > 0) {
+                int durability = meta.getEnchantLevel(Enchantment.DURABILITY);
+                if (durability <= 0 || RandomUtil.SHARED_RANDOM.nextInt(durability + 1) == 0) {
+                    Damageable damageableMeta = (Damageable) meta;
+                    int damageOld = damageableMeta.getDamage();
+                    if (damageOld + 1 <= maxDurability) {
+                        damageableMeta.setDamage(damageOld + 1);
+                        stack.setItemMeta(meta);
+                        if (slot == EquipmentSlot.HAND) {
+                            player.getInventory().setItemInMainHand(stack);
+                        } else {
+                            player.getInventory().setItemInOffHand(stack);
+                        }
+                    } else {
+                        player.getWorld().playSound(player.getLocation().add(0.5, 0.5, 0.5), Sound.ENTITY_ITEM_BREAK, SoundCategory.PLAYERS, 1 + (float) Math.random() * 0.1f, 1 + (float) Math.random() * 0.1f);
+                        if (slot == EquipmentSlot.HAND) {
+                            player.getInventory().setItemInMainHand(null);
+                        } else {
+                            player.getInventory().setItemInOffHand(null);
+                        }
+                    }
+                }
             }
         }
     }
