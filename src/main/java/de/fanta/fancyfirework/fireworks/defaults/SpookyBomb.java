@@ -81,13 +81,13 @@ public class SpookyBomb extends ItemFireWork {
                 if (spookyPlayer.isOnline()) {
                     spookyPlayers.add(spookyPlayer.getUniqueId());
                     spookyPlayer.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 85, 0, true));
-                    spookyPlayer.playSound(spookyPlayer, Sound.ENTITY_GHAST_HURT, 2, 1);
+                    spookyPlayer.playSound(spookyPlayer, Sound.ENTITY_GHAST_HURT, SoundCategory.AMBIENT, 2, 1);
                     AtomicInteger tick = new AtomicInteger();
                     Bukkit.getScheduler().runTaskTimer(plugin, bukkitTask -> {
                         if (spookyPlayer.isOnline()) {
                             if (tick.get() < 4) {
                                 tick.getAndIncrement();
-                                spookyPlayer.playSound(spookyPlayer, Sound.ENTITY_WARDEN_HEARTBEAT, 1, 1);
+                                spookyPlayer.playSound(spookyPlayer, Sound.ENTITY_WARDEN_HEARTBEAT, SoundCategory.AMBIENT, 1, 1);
                                 spookyPlayer.damage(1);
                             } else {
                                 spookyPlayers.remove(spookyPlayer.getUniqueId());
