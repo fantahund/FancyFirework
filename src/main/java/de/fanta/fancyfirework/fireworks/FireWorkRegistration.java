@@ -29,6 +29,7 @@ import de.fanta.fancyfirework.fireworks.defaults.FireWorkFountainYellow;
 import de.fanta.fancyfirework.fireworks.defaults.FlashBomb;
 import de.fanta.fancyfirework.fireworks.defaults.SmokeBomb;
 import de.fanta.fancyfirework.fireworks.defaults.SmokeBombColor;
+import de.fanta.fancyfirework.fireworks.defaults.SpookyBomb;
 
 public record FireWorkRegistration(FancyFirework plugin) {
 
@@ -63,5 +64,6 @@ public record FireWorkRegistration(FancyFirework plugin) {
         registry.register(new SmokeBomb());
         registry.register(new SmokeBombColor());
         registry.register(new FlashBomb());
+        registry.register(new SpookyBomb());
     }
 }
