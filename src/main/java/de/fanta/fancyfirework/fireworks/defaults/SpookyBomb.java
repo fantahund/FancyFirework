@@ -88,7 +88,6 @@ public class SpookyBomb extends ItemFireWork {
                             if (tick.get() < 4) {
                                 tick.getAndIncrement();
                                 spookyPlayer.playSound(spookyPlayer, Sound.ENTITY_WARDEN_HEARTBEAT, SoundCategory.AMBIENT, 1, 1);
-                                spookyPlayer.damage(1);
                             } else {
                                 spookyPlayers.remove(spookyPlayer.getUniqueId());
                                 bukkitTask.cancel();
