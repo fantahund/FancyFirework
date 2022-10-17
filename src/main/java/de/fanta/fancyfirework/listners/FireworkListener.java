@@ -119,8 +119,8 @@ public class FireworkListener implements Listener {
                     damageFNS(event.getPlayer(), event.getHand());
                 }
             }
+            event.setCancelled(true);
         }
-        event.setCancelled(true);
     }
 
     @EventHandler
