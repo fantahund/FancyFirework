@@ -96,7 +96,7 @@ public class FireworkListener implements Listener {
         if (entity instanceof ArmorStand) {
             fireWork = plugin.getRegistry().getByEntity(entity);
         }
-        if (entity instanceof Player player) {
+        if (plugin.getConfig().getBoolean("litplayer") && entity instanceof Player player) {
             ItemStack fireworkStack = player.getInventory().getHelmet();
             if (fireworkStack != null) {
                 fireWork = plugin.getRegistry().getByItemStack(fireworkStack);
@@ -189,7 +189,7 @@ public class FireworkListener implements Listener {
                         ItemStack fireworkStack = player.getInventory().getHelmet();
                         if (fireworkStack != null) {
                             AbstractFireWork fireWork = plugin.getRegistry().getByItemStack(fireworkStack);
-                            if (fireWork instanceof BlockFireWork blockFireWork) {
+                            if (plugin.getConfig().getBoolean("litplayer") && fireWork instanceof BlockFireWork blockFireWork) {
                                 if (!e.getPlayer().hasPermission(blockFireWork.getPermission())) {
                                     ChatUtil.sendErrorMessage(e.getPlayer(), "You do not have the permission to use this firework here!");
                                     e.setCancelled(true);
@@ -327,8 +327,8 @@ public class FireworkListener implements Listener {
         if (world == null) {
             return;
         }
-        Collection<Entity> entitys = world.getNearbyEntities(loc.add(0.5, 0.5, 0.5), 1.5, 1, 1.5);
-        for (Entity entity : entitys) {
+        Collection<Entity> entities = world.getNearbyEntities(loc.add(0.5, 0.5, 0.5), 1.5, 1, 1.5);
+        for (Entity entity : entities) {
             if (entity instanceof ArmorStand stand) {
                 AbstractFireWork fireWork = plugin.getRegistry().getByEntity(stand);
                 if (fireWork instanceof BlockFireWork blockFireWork) {

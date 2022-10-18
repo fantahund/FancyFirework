@@ -2,6 +2,7 @@ enabled: false
 spawnrate: 100
 votereward: false
 redstonemode: false
+litplayer: true
 #after X seconds the player is afk (default: 120 Sec = 2 Min
 maxAFKTime: 120
 loottable:
