@@ -50,6 +50,18 @@ loottable:
   enabled: false   # Toggle the loot table feature  
   chance: 0.5      # The chance of the item spawning. (e.g. 0.5 = 50%)
 ``` 
+
+## Redstone Mode 
+The fireworks can be activated with Redstone if it is active in the config.
+```yml 
+redstonemode: false # Toggle Redstone Mode
+```
+
+## Lit Player
+Fireworks can be lit on the head of players.
+```yml 
+litplayer: true # Toggle if players can lit.
+```
   
 # Commands  
 Main command: /fancyfirework or alias /ff  
