@@ -13,13 +13,15 @@ import java.util.*;
 public class FireWorksRegistry {
 
     private final Map<NamespacedKey, AbstractFireWork> fireWorkMap;
-    private final Map<NamespacedKey, AbstractFireWork> valentinefireWorkMap;
+    private final Map<NamespacedKey, AbstractFireWork> valentineFireWorkMap;
+    private final Map<NamespacedKey, AbstractFireWork> halloweenFireWorkMap;
 
     private final FancyFirework plugin;
 
     FireWorksRegistry(FancyFirework plugin) {
         this.fireWorkMap = new HashMap<>();
-        this.valentinefireWorkMap = new HashMap<>();
+        this.valentineFireWorkMap = new HashMap<>();
+        this.halloweenFireWorkMap = new HashMap<>();
         this.plugin = plugin;
     }
 
@@ -29,7 +31,11 @@ public class FireWorksRegistry {
         Preconditions.checkArgument(!fireWorkMap.containsKey(key), "A firework with the key " + key + " has already been registered!");
         fireWorkMap.put(key, fireWork);
         if (key.toString().contains("valentine")) {
-            valentinefireWorkMap.put(key, fireWork);
+            valentineFireWorkMap.put(key, fireWork);
+        }
+
+        if (key.toString().contains("halloween") || key.toString().contains("spooky")) {
+            halloweenFireWorkMap.put(key, fireWork);
         }
     }
 
@@ -72,7 +78,16 @@ public class FireWorksRegistry {
 
     public ItemStack getRandomValentineFireWorkItem() {
         Random rand = new Random();
-        List<NamespacedKey> list = List.copyOf(valentinefireWorkMap.keySet());
+        List<NamespacedKey> list = List.copyOf(valentineFireWorkMap.keySet());
+        NamespacedKey randomkey = list.get(rand.nextInt(list.size()));
+        AbstractFireWork fireWork = get(randomkey);
+        assert fireWork != null;
+        return fireWork.getItemStack().clone();
+    }
+
+    public ItemStack getRandomHalloweenFireWorkItem() {
+        Random rand = new Random();
+        List<NamespacedKey> list = List.copyOf(halloweenFireWorkMap.keySet());
         NamespacedKey randomkey = list.get(rand.nextInt(list.size()));
         AbstractFireWork fireWork = get(randomkey);
         assert fireWork != null;
