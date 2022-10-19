@@ -31,6 +31,7 @@ import de.fanta.fancyfirework.fireworks.defaults.FlashBomb;
 import de.fanta.fancyfirework.fireworks.defaults.SmokeBomb;
 import de.fanta.fancyfirework.fireworks.defaults.SmokeBombColor;
 import de.fanta.fancyfirework.fireworks.defaults.SpookyBomb;
+import org.bukkit.Bukkit;
 
 public record FireWorkRegistration(FancyFirework plugin) {
 
@@ -66,6 +67,8 @@ public record FireWorkRegistration(FancyFirework plugin) {
         registry.register(new SmokeBomb());
         registry.register(new SmokeBombColor());
         registry.register(new FlashBomb());
-        registry.register(new SpookyBomb());
+        if (Bukkit.getUnsafe().getDataVersion() >= 759) {
+            registry.register(new SpookyBomb());
+        }
     }
 }
