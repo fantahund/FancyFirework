@@ -40,14 +40,6 @@ public class FlashBomb extends ItemFireWork {
     }
 
     @Override
-    protected Permission createPermission() {
-        Permission permission = new Permission("fancyfirework.use.flash_bomb");
-        permission.setDefault(PermissionDefault.TRUE);
-        plugin.registerPermission(permission);
-        return permission;
-    }
-
-    @Override
     public void onLaunch(Player player, Projectile entity) {
 
     }

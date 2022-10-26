@@ -31,13 +31,6 @@ public class FireWorkFountainPink extends FireWorkFountain {
     }
 
     @Override
-    protected Permission createPermission() {
-        Permission permission = new Permission("fancyfirework.use.fountain_pink");
-        permission.setDefault(PermissionDefault.TRUE);
-        plugin.registerPermission(permission);
-        return permission;
-    }
-    @Override
     public Color randomColor() {
         java.awt.Color color = java.awt.Color.getHSBColor(0.83f, random.nextFloat(0.5f, 1), random.nextFloat(0.5f, 1));
         return Color.fromRGB(color.getRed(), color.getGreen(), color.getBlue());

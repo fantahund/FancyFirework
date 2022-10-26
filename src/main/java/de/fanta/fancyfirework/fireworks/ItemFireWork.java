@@ -1,10 +1,12 @@
 package de.fanta.fancyfirework.fireworks;
 
+import de.fanta.fancyfirework.FancyFirework;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 
 /**
  * This firework can be any kind of projectile (Egg, Snowball, etc.) and can be thrown by players.<br>
@@ -40,5 +42,13 @@ public abstract class ItemFireWork extends AbstractFireWork {
      * @param event The event that was called.
      */
     public abstract void onHit(Player player, ProjectileHitEvent event);
+
+    @Override
+    protected Permission createPermission() {
+        Permission permission = new Permission(this.getKey().getNamespace() + ".use." + this.getKey().getKey());
+        permission.setDefault(PermissionDefault.TRUE);
+        FancyFirework.getPlugin().registerPermission(permission);
+        return permission;
+    }
 
 }

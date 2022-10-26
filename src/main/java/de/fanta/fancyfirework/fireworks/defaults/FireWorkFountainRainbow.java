@@ -32,14 +32,6 @@ public class FireWorkFountainRainbow extends FireWorkFountain {
     }
 
     @Override
-    protected Permission createPermission() {
-        Permission permission = new Permission("fancyfirework.use.fountain_rainbow");
-        permission.setDefault(PermissionDefault.TRUE);
-        plugin.registerPermission(permission);
-        return permission;
-    }
-
-    @Override
     public Color randomColor() {
         return ColorUtils.getColor(plugin.getTime(), 0.1);
     }

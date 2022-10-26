@@ -53,14 +53,6 @@ public class FireWorkBatteryValentine extends FireWorkBattery {
     }
 
     @Override
-    protected Permission createPermission() {
-        Permission permission = new Permission("fancyfirework.use.battery_valentine");
-        permission.setDefault(PermissionDefault.TRUE);
-        plugin.registerPermission(permission);
-        return permission;
-    }
-
-    @Override
     public void onExplode(Firework firework) {
         Location location = firework.getLocation();
         spawn(location);

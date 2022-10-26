@@ -31,14 +31,6 @@ public class FireWorkBatteryPurple extends FireWorkBattery {
     }
 
     @Override
-    protected Permission createPermission() {
-        Permission permission = new Permission("fancyfirework.use.battery_purple");
-        permission.setDefault(PermissionDefault.TRUE);
-        plugin.registerPermission(permission);
-        return permission;
-    }
-
-    @Override
     public Color randomColor() {
         java.awt.Color color = java.awt.Color.getHSBColor(0.75f, random.nextFloat(0.5f, 1), random.nextFloat(0.5f, 1));
         return Color.fromRGB(color.getRed(), color.getGreen(), color.getBlue());

@@ -36,14 +36,6 @@ public class FireWorkBatterySimple extends FireWorkBattery {
     }
 
     @Override
-    protected Permission createPermission() {
-        Permission permission = new Permission("fancyfirework.use.battery_simple");
-        permission.setDefault(PermissionDefault.TRUE);
-        plugin.registerPermission(permission);
-        return permission;
-    }
-
-    @Override
     public void onLit(Entity entity, Player player) {
         entity.getWorld().playSound(entity.getLocation(), Sound.ENTITY_CREEPER_PRIMED, SoundCategory.AMBIENT, 1f, 1f);
         Task task = new Task(player, entity, 20 * 60, 20 * 5, 20, () -> spawnRandomFirework(entity.getLocation()));

@@ -31,14 +31,6 @@ public class FireWorkBatteryGreen extends FireWorkBattery {
     }
 
     @Override
-    protected Permission createPermission() {
-        Permission permission = new Permission("fancyfirework.use.battery_green");
-        permission.setDefault(PermissionDefault.TRUE);
-        plugin.registerPermission(permission);
-        return permission;
-    }
-
-    @Override
     public Color randomColor() {
         int red = (int) (Math.random() * 20);
         int green = (int) (Math.random() * 256);

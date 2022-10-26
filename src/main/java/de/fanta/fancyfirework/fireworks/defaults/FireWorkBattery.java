@@ -1,5 +1,6 @@
 package de.fanta.fancyfirework.fireworks.defaults;
 
+import de.fanta.fancyfirework.FancyFirework;
 import de.fanta.fancyfirework.fireworks.BlockFireWork;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -16,6 +17,7 @@ import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.util.Vector;
 
 import java.util.List;
@@ -68,6 +70,14 @@ public abstract class FireWorkBattery extends BlockFireWork {
                 batteryTask.fountainCooldown = random.nextInt(20 * 4, 20 * 8);
             }
         }
+    }
+
+    @Override
+    protected Permission createPermission() {
+        Permission permission = new Permission(this.getKey().getNamespace() + ".use." + this.getKey().getKey());
+        permission.setDefault(PermissionDefault.TRUE);
+        FancyFirework.getPlugin().registerPermission(permission);
+        return permission;
     }
 
     protected abstract Color randomColor();
@@ -167,7 +177,6 @@ public abstract class FireWorkBattery extends BlockFireWork {
             }
             FireWorkBattery.this.onTick(this, active); //Append some other custom things
         }
-
     }
 
 }

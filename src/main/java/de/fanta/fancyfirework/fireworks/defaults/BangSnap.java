@@ -38,13 +38,6 @@ public class BangSnap extends ItemFireWork {
     }
 
     @Override
-    protected Permission createPermission() {
-        Permission permission = new Permission("fancyfirework.use.bang_snap");
-        permission.setDefault(PermissionDefault.TRUE);
-        return permission;
-    }
-
-    @Override
     public void onLaunch(Player player, Projectile entity) {
 
     }

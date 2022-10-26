@@ -32,14 +32,6 @@ public class FireWorkBatteryPride extends FireWorkBattery {
     }
 
     @Override
-    protected Permission createPermission() {
-        Permission permission = new Permission("fancyfirework.use.battery_pride");
-        permission.setDefault(PermissionDefault.TRUE);
-        plugin.registerPermission(permission);
-        return permission;
-    }
-
-    @Override
     public Color randomColor() {
         return ColorUtils.getColor(plugin.getTime(), 2);
     }
