@@ -71,7 +71,9 @@ public class LootTableListener implements Listener {
                         freeSlots.add(i);
                     }
                 }
-                chest.setItem(freeSlots.get(random.nextInt(freeSlots.size())), randomFirework);
+                if (!freeSlots.isEmpty()) {
+                    chest.setItem(freeSlots.get(random.nextInt(freeSlots.size())), randomFirework);
+                }
             }, 1L);
         }
     }

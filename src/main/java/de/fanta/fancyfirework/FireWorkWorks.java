@@ -56,7 +56,7 @@ public class FireWorkWorks {
         Location toppos = world.getHighestBlockAt(loc.getBlockX(), loc.getBlockZ(), HeightMap.MOTION_BLOCKING).getLocation();
         boolean sky = loc.getBlockY() > toppos.getBlockY();
         PlayerInfo playerInfo = AFKListener.playerTimes.get(p);
-        if (sky && p.getGameMode() == GameMode.SURVIVAL && !FancyFirework.getPlugin().isVanish(p) && !playerInfo.afk) {
+        if (sky && (p.getGameMode() == GameMode.SURVIVAL || p.getGameMode() == GameMode.ADVENTURE) && !FancyFirework.getPlugin().isVanish(p) && !playerInfo.afk) {
             Firework firework = (Firework) world.spawnEntity(loc, EntityType.FIREWORK);
             firework.setVelocity(new Vector((rand.nextBoolean() ? 1 : -1) * rand.nextDouble(0.01), rand.nextDouble(0.5, 1.5), (rand.nextBoolean() ? 1 : -1) * rand.nextDouble(0.01)));
             FireworkMeta fireworkMeta = firework.getFireworkMeta();
