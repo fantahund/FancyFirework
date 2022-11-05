@@ -182,4 +182,16 @@
             </resource>
         </resources>
     </build>
+    <distributionManagement>
+        <repository>
+            <id>fantanexus</id>
+            <name>Releases</name>
+            <url>https://nexus.fantacs.de/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>fantanexus</id>
+            <name>Snapshot</name>
+            <url>https://nexus.fantacs.de/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>

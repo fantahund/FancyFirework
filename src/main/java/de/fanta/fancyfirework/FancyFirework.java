@@ -87,9 +87,6 @@ public final class FancyFirework extends JavaPlugin {
         this.time = 0;
         this.restartTask(1);
 
-        //AFK
-        AFKListener.maxIdleTime = Math.max(plugin.getConfig().getInt("maxAFKTime"), 2) * 1000;
-
         getServer().getScheduler().scheduleSyncRepeatingTask(this, AFKListener::onTimer, 2 * 20, 10);
 
         for (Player p : getServer().getOnlinePlayers()) {
@@ -147,10 +144,18 @@ public final class FancyFirework extends JavaPlugin {
         this.HAS_PLAYER_PROFILE_API = HAS_PLAYER_PROFILE_API;
     }
 
+    public void reloadFireworkConfig() {
+        reloadConfig();
+        loadConfig();
+    }
+
     public void loadConfig() {
         FileConfiguration cfg = getConfig();
         cfg.options().copyDefaults(true);
         redstonemode = cfg.getBoolean("redstonemode");
+
+        //AFK
+        AFKListener.maxIdleTime = Math.max(plugin.getConfig().getInt("maxAFKTime"), 2) * 1000;
     }
 
     public boolean isRedstonemode() {
