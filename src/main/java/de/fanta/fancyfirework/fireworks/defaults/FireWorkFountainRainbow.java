@@ -3,14 +3,13 @@ package de.fanta.fancyfirework.fireworks.defaults;
 import de.fanta.fancyfirework.FancyFirework;
 import de.fanta.fancyfirework.utils.ColorUtils;
 import de.fanta.fancyfirework.utils.CustomFireworkHeads;
-import java.util.UUID;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
+
+import java.util.UUID;
 
 public class FireWorkFountainRainbow extends FireWorkFountain {
 

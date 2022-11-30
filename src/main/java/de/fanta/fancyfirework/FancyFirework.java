@@ -6,7 +6,9 @@ import de.fanta.fancyfirework.listners.AFKListener;
 import de.fanta.fancyfirework.listners.EventRegistration;
 import de.fanta.fancyfirework.utils.ChatUtil;
 import de.fanta.fancyfirework.utils.WorldGuardHelper;
+import de.myzelyam.api.vanish.VanishAPI;
 import de.myzelyam.supervanish.SuperVanishPlugin;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -51,12 +53,8 @@ public final class FancyFirework extends JavaPlugin {
             vanishNoPacketPlugin = (VanishPlugin) plugin.getServer().getPluginManager().getPlugin("VanishNoPacket");
         }
 
-        //Super Vanish and Premium Vanish has not tested!
-        if (plugin.getServer().getPluginManager().getPlugin("SuperVanish") != null) {
-            superVanishPlugin = (SuperVanishPlugin) plugin.getServer().getPluginManager().getPlugin("SuperVanish");
-        }
-        if (plugin.getServer().getPluginManager().getPlugin("PremiumVanish") != null) {
-            superVanishPlugin = (SuperVanishPlugin) plugin.getServer().getPluginManager().getPlugin("PremiumVanish");
+        if (Bukkit.getPluginManager().isPluginEnabled("SuperVanish") || Bukkit.getPluginManager().isPluginEnabled("PremiumVanish")) {
+            superVanishPlugin = VanishAPI.getPlugin();
         }
 
         if (plugin.getServer().getPluginManager().getPlugin("WorldGuard") != null) {
