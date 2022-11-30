@@ -32,7 +32,7 @@ public final class FancyFirework extends JavaPlugin {
     private FireWorkWorks fireWorkWorks;
     private FireWorksRegistry registry;
     private VanishPlugin vanishNoPacketPlugin;
-    private boolean isSuperVanishPluginInstalled;
+    private boolean isSuperVanishPluginInstalled = false;
     private WorldGuardHelper worldGuardHelper;
     private long time;
     private int taskId;
