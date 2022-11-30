@@ -32,7 +32,7 @@ public final class FancyFirework extends JavaPlugin {
     private FireWorkWorks fireWorkWorks;
     private FireWorksRegistry registry;
     private VanishPlugin vanishNoPacketPlugin;
-    private SuperVanishPlugin superVanishPlugin;
+    private boolean isSuperVanishPluginInstalled;
     private WorldGuardHelper worldGuardHelper;
     private long time;
     private int taskId;
@@ -54,7 +54,7 @@ public final class FancyFirework extends JavaPlugin {
         }
 
         if (Bukkit.getPluginManager().isPluginEnabled("SuperVanish") || Bukkit.getPluginManager().isPluginEnabled("PremiumVanish")) {
-            superVanishPlugin = VanishAPI.getPlugin();
+            isSuperVanishPluginInstalled = true;
         }
 
         if (plugin.getServer().getPluginManager().getPlugin("WorldGuard") != null) {
@@ -108,8 +108,8 @@ public final class FancyFirework extends JavaPlugin {
     public boolean isVanish(Player p) {
         if (vanishNoPacketPlugin != null) {
             return vanishNoPacketPlugin.getManager().isVanished(p);
-        } else if (superVanishPlugin != null) {
-            return superVanishPlugin.getVanishStateMgr().isVanished(p.getUniqueId());
+        } else if (isSuperVanishPluginInstalled) {
+            return VanishAPI.isInvisible(p);
         } else {
             return false;
         }
