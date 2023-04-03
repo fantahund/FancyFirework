@@ -25,7 +25,6 @@ public class FireWorkWorks {
     private final FancyFirework plugin = FancyFirework.getPlugin();
     private boolean enabled;
     private final Random rand;
-    private final Map<UUID, CancellableTask> runningPlayerTasks = new HashMap<>();
 
     public FireWorkWorks() {
         this.enabled = plugin.getConfig().getBoolean("enabled");
@@ -43,26 +42,18 @@ public class FireWorkWorks {
     }
 
     public void disableTask() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            stopTaskFor(player);
-        }
         plugin.getLogger().log(Level.INFO, "Stopped spawning random firework.");
     }
 
     public void startTaskFor(Player player) {
         if (!enabled) return;
         plugin.getScheduler().runOnEntityAtFixedRate(player, task -> {
-            if (player == null || !player.isOnline()) {
+            if (player == null || !player.isOnline() || !enabled) {
                 task.cancel();
                 return;
             }
             if (rand.nextInt(getSpawnRate()) == 0) spawnFirework(player);
         }, 1L, 1L);
-    }
-
-    public void stopTaskFor(Player player) {
-        CancellableTask task = runningPlayerTasks.remove(player.getUniqueId());
-        if (task != null) task.cancel();
     }
 
     public void spawnFirework(Player p) {
