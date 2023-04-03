@@ -5,6 +5,7 @@ api-version: 1.17
 author: ${project.author}
 website: cubeside.de
 softdepend: [Votifier, TreasureChest, PlayerUUIDCache, VanishNoPacket, WorldGuard, SuperVanish, PremiumVanish]
+folia-supported: true
 commands:
   fancyfirework:
     aliases: ff

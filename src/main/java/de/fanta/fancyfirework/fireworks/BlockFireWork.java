@@ -1,8 +1,8 @@
 package de.fanta.fancyfirework.fireworks;
 
 import de.fanta.fancyfirework.FancyFirework;
+import de.fanta.fancyfirework.schedular.CancellableTask;
 import de.iani.cubesideutils.bukkit.items.ItemGroups;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -14,8 +14,6 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.permissions.Permission;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.EulerAngle;
 
 import javax.annotation.Nullable;
@@ -153,7 +151,7 @@ public abstract class BlockFireWork extends AbstractFireWork {
 
         protected long tick;
         protected int counter;
-        protected BukkitTask bukkitTask;
+        protected CancellableTask cancellableTask;
 
         protected final Runnable taskToRun;
 
@@ -177,7 +175,7 @@ public abstract class BlockFireWork extends AbstractFireWork {
             this.taskToRun = taskToRun;
 
             this.tick = 0;
-            this.bukkitTask = null;
+            this.cancellableTask = null;
         }
 
         /**
@@ -208,14 +206,14 @@ public abstract class BlockFireWork extends AbstractFireWork {
         public void start() {
             this.tick = 0;
             this.counter = 0;
-            this.bukkitTask = Bukkit.getScheduler().runTaskTimer(FancyFirework.getPlugin(), () -> {
+            this.cancellableTask = FancyFirework.getPlugin().getScheduler().runOnEntityAtFixedRate(entity, () -> {
                 if (tick < duration + delay && entity.isValid()) {
                     onTick();
                     tick++;
                 } else {
                     stop();
                 }
-            }, 0, 1);
+            }, 1, 1);
         }
 
         /**
@@ -224,9 +222,9 @@ public abstract class BlockFireWork extends AbstractFireWork {
          * This removes the entity from the world!
          */
         public void stop() {
-            if (bukkitTask != null) {
-                bukkitTask.cancel();
-                bukkitTask = null;
+            if (cancellableTask != null) {
+                cancellableTask.cancel();
+                cancellableTask = null;
                 this.tick = 0;
 
                 //Reset task & remove block + marker entity

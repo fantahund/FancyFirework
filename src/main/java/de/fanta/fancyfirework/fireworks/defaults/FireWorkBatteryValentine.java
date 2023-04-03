@@ -2,33 +2,24 @@ package de.fanta.fancyfirework.fireworks.defaults;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import de.fanta.fancyfirework.FancyFirework;
-import de.fanta.fancyfirework.fireworks.BlockFireWork;
 import de.fanta.fancyfirework.particle_effects.ISpawnParticle;
 import de.fanta.fancyfirework.particle_effects.ParticleEffect;
-import de.fanta.fancyfirework.particle_effects.Shape;
 import de.fanta.fancyfirework.particle_effects.ShapeHeart;
 import de.fanta.fancyfirework.utils.CustomFireworkHeads;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.util.Vector;
 
-import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -85,7 +76,8 @@ public class FireWorkBatteryValentine extends FireWorkBattery {
         double maxSize = random.nextDouble(0.15, 0.5);
         AtomicDouble size = new AtomicDouble(0.05);
         AtomicInteger counter = new AtomicInteger();
-        Bukkit.getScheduler().runTaskTimer(FancyFirework.getPlugin(), bukkitTask -> {
+
+        plugin.getScheduler().runLocalAtFixedRate(origin, task -> {
             if (counter.getAndIncrement() < 10) {
                 double currentSize = size.get();
                 if (currentSize < maxSize) {
@@ -94,7 +86,7 @@ public class FireWorkBatteryValentine extends FireWorkBattery {
                 ParticleEffect effect = new ParticleEffect(origin, rotation, new ShapeHeart(currentSize), spawnParticle);
                 effect.draw();
             } else {
-                bukkitTask.cancel();
+                task.cancel();
             }
         }, 1, 1);
     }

@@ -4,10 +4,12 @@ import de.fanta.fancyfirework.commands.CommandRegistration;
 import de.fanta.fancyfirework.fireworks.FireWorkRegistration;
 import de.fanta.fancyfirework.listners.AFKListener;
 import de.fanta.fancyfirework.listners.EventRegistration;
+import de.fanta.fancyfirework.schedular.BukkitScheduler;
+import de.fanta.fancyfirework.schedular.FoliaScheduler;
+import de.fanta.fancyfirework.schedular.Scheduler;
 import de.fanta.fancyfirework.utils.ChatUtil;
 import de.fanta.fancyfirework.utils.WorldGuardHelper;
 import de.myzelyam.api.vanish.VanishAPI;
-import de.myzelyam.supervanish.SuperVanishPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -35,10 +37,10 @@ public final class FancyFirework extends JavaPlugin {
     private boolean isSuperVanishPluginInstalled = false;
     private WorldGuardHelper worldGuardHelper;
     private long time;
-    private int taskId;
     private boolean redstonemode;
 
     private boolean HAS_PLAYER_PROFILE_API;
+    private Scheduler scheduler;
 
     public static FancyFirework getPlugin() {
         return plugin;
@@ -69,6 +71,15 @@ public final class FancyFirework extends JavaPlugin {
             setPlayerProfileAPI(false);
         }
 
+        try {
+            Class.forName("io.papermc.paper.threadedregions.scheduler.ScheduledTask");
+            getLogger().log(Level.INFO, "Folia found. Use Folia Scheduler");
+            scheduler = new FoliaScheduler(this);
+        } catch (Throwable ignored) {
+            getLogger().log(Level.INFO, hasPlayerProfileAPI() ? "Paper" : "Spigot" + " found. Use Bukkit Scheduler");
+            scheduler = new BukkitScheduler(this);
+        }
+
         new bStats(this).registerbStats();
 
         fireWorkWorks = new FireWorkWorks();
@@ -81,11 +92,10 @@ public final class FancyFirework extends JavaPlugin {
         loadConfig();
         saveConfig();
 
-        this.taskId = -1;
         this.time = 0;
-        this.restartTask(1);
+        this.startColorTimeTask(1);
 
-        getServer().getScheduler().scheduleSyncRepeatingTask(this, AFKListener::onTimer, 2 * 20, 10);
+        getScheduler().runGlobalAtFixedRate(AFKListener::onTimer, 2 * 20, 10);
 
         for (Player p : getServer().getOnlinePlayers()) {
             AFKListener.handleJoin(p);
@@ -115,11 +125,8 @@ public final class FancyFirework extends JavaPlugin {
         }
     }
 
-    public void restartTask(long l) {
-        if (this.taskId != -1) {
-            this.getServer().getScheduler().cancelTask(this.taskId);
-        }
-        this.taskId = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> FancyFirework.this.time++, 0L, l);
+    public void startColorTimeTask(long l) {
+        getScheduler().runGlobalAtFixedRate(() -> FancyFirework.this.time++, 1L, l);
     }
 
     public long getTime() {
@@ -166,5 +173,9 @@ public final class FancyFirework extends JavaPlugin {
         if (!permissions.contains(permission)) {
             pm.addPermission(permission);
         }
+    }
+
+    public Scheduler getScheduler() {
+        return scheduler;
     }
 }

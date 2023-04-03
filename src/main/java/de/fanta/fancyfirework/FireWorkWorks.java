@@ -1,6 +1,7 @@
 package de.fanta.fancyfirework;
 
 import de.fanta.fancyfirework.listners.AFKListener;
+import de.fanta.fancyfirework.schedular.CancellableTask;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -12,42 +13,56 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import java.util.logging.Level;
 
 public class FireWorkWorks {
-    private final Plugin plugin = FancyFirework.getPlugin();
+    private final FancyFirework plugin = FancyFirework.getPlugin();
     private boolean enabled;
-    private int taskID;
-    private Random rand;
+    private final Random rand;
+    private final Map<UUID, CancellableTask> runningPlayerTasks = new HashMap<>();
 
     public FireWorkWorks() {
-        enabled = plugin.getConfig().getBoolean("enabled");
+        this.enabled = plugin.getConfig().getBoolean("enabled");
+        this.rand = new Random();
         if (enabled) {
             enableTask();
         }
     }
 
     public void enableTask() {
-        rand = new Random();
-        taskID = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, this::randomFireworkRun, 1L, 1L);
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            startTaskFor(player);
+        }
         plugin.getLogger().log(Level.INFO, "Started spawning random firework.");
     }
 
     public void disableTask() {
-        plugin.getServer().getScheduler().cancelTask(taskID);
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            stopTaskFor(player);
+        }
         plugin.getLogger().log(Level.INFO, "Stopped spawning random firework.");
     }
 
-    public void randomFireworkRun() {
-        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            if (rand.nextInt(getSpawnRate()) == 0) {
-                spawnFirework(p);
+    public void startTaskFor(Player player) {
+        if (!enabled) return;
+        plugin.getScheduler().runOnEntityAtFixedRate(player, task -> {
+            if (player == null || !player.isOnline()) {
+                task.cancel();
+                return;
             }
-        }
+            if (rand.nextInt(getSpawnRate()) == 0) spawnFirework(player);
+        }, 1L, 1L);
+    }
+
+    public void stopTaskFor(Player player) {
+        CancellableTask task = runningPlayerTasks.remove(player.getUniqueId());
+        if (task != null) task.cancel();
     }
 
     public void spawnFirework(Player p) {
@@ -74,14 +89,14 @@ public class FireWorkWorks {
     }
 
     public void setEnabled(boolean enabled) {
-        if (enabled != this.enabled)
+        if (enabled != this.enabled) {
+            this.enabled = enabled;
             if (enabled) {
                 enableTask();
             } else {
                 disableTask();
             }
-
-        this.enabled = enabled;
+        }
         plugin.getConfig().set("enabled", enabled);
         plugin.saveConfig();
     }

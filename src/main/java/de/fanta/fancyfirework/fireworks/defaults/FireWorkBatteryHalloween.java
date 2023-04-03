@@ -13,7 +13,6 @@ import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -25,8 +24,6 @@ import org.bukkit.entity.Firework;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.util.Vector;
 
 public class FireWorkBatteryHalloween extends FireWorkBattery {
@@ -83,7 +80,8 @@ public class FireWorkBatteryHalloween extends FireWorkBattery {
         double maxSize = random.nextDouble(0.15, 0.5);
         AtomicDouble size = new AtomicDouble(0.05);
         AtomicInteger counter = new AtomicInteger();
-        Bukkit.getScheduler().runTaskTimer(FancyFirework.getPlugin(), bukkitTask -> {
+
+        plugin.getScheduler().runLocalAtFixedRate(origin, task -> {
             if (counter.getAndIncrement() < 11) {
                 double currentSize = size.get();
                 boolean maxSizeReached = false;
@@ -101,7 +99,7 @@ public class FireWorkBatteryHalloween extends FireWorkBattery {
                     effect.draw();
                 }
             } else {
-                bukkitTask.cancel();
+                task.cancel();
             }
         }, 1, 1);
     }

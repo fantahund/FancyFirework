@@ -1,7 +1,6 @@
 package de.fanta.fancyfirework.listners;
 
 import de.fanta.fancyfirework.FancyFirework;
-import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Entity;
@@ -64,7 +63,7 @@ public class LootTableListener implements Listener {
         boolean hasFireWork = random.nextDouble() < chance;
         if (hasFireWork) {
             ItemStack randomFirework = plugin.getRegistry().getRandomFireWorkItem();
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            plugin.getScheduler().runLocalDelayed(chest.getLocation(), () -> {
                 List<Integer> freeSlots = new ArrayList<>();
                 for (int i = 0; i < chest.getSize(); i++) {
                     if (chest.getItem(i) == null) {

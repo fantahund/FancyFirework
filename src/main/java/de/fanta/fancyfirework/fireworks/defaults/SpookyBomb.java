@@ -3,7 +3,6 @@ package de.fanta.fancyfirework.fireworks.defaults;
 import de.fanta.fancyfirework.FancyFirework;
 import de.fanta.fancyfirework.fireworks.ItemFireWork;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,8 +17,6 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -75,14 +72,15 @@ public class SpookyBomb extends ItemFireWork {
                     spookyPlayer.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 85, 0, true));
                     spookyPlayer.playSound(spookyPlayer, Sound.ENTITY_GHAST_HURT, SoundCategory.AMBIENT, 2, 1);
                     AtomicInteger tick = new AtomicInteger();
-                    Bukkit.getScheduler().runTaskTimer(plugin, bukkitTask -> {
+
+                    plugin.getScheduler().runOnEntityAtFixedRate(spookyPlayer, task -> {
                         if (spookyPlayer.isOnline()) {
                             if (tick.get() < 4) {
                                 tick.getAndIncrement();
                                 spookyPlayer.playSound(spookyPlayer, Sound.ENTITY_WARDEN_HEARTBEAT, SoundCategory.AMBIENT, 1, 1);
                             } else {
                                 spookyPlayers.remove(spookyPlayer.getUniqueId());
-                                bukkitTask.cancel();
+                                task.cancel();
                             }
                         } else {
                             spookyPlayers.remove(spookyPlayer.getUniqueId());
