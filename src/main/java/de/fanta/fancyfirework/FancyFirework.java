@@ -39,6 +39,8 @@ public final class FancyFirework extends JavaPlugin {
     private long time;
     private boolean redstonemode;
 
+    private boolean disableFireWorkUse = false;
+
     private boolean HAS_PLAYER_PROFILE_API;
     private Scheduler scheduler;
 
@@ -165,6 +167,14 @@ public final class FancyFirework extends JavaPlugin {
 
     public boolean isRedstonemode() {
         return redstonemode;
+    }
+
+    public boolean isDisableFireWorkUse() {
+        return disableFireWorkUse;
+    }
+
+    public void setDisableFireWorkUse(boolean disableFireWorkUse) {
+        this.disableFireWorkUse = disableFireWorkUse;
     }
 
     public void registerPermission(Permission permission) {

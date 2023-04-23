@@ -10,6 +10,8 @@ public record CommandRegistration(FancyFirework plugin) {
         fancyFireworkRouter.addCommandMapping(new FancyFireWorkCommand(plugin));
         fancyFireworkRouter.addCommandMapping(new EnableToggleCommand(plugin, true), "enable");
         fancyFireworkRouter.addCommandMapping(new EnableToggleCommand(plugin, false), "disable");
+        fancyFireworkRouter.addCommandMapping(new FancyFireworkDisableGlobalCommand(plugin, true), "use", "enable");
+        fancyFireworkRouter.addCommandMapping(new FancyFireworkDisableGlobalCommand(plugin, false), "use", "disable");
         fancyFireworkRouter.addCommandMapping(new SetSpawnRateCommand(plugin), "setSpawnRate");
         fancyFireworkRouter.addCommandMapping(new FireWorkGiveCommand(plugin), "give");
         fancyFireworkRouter.addCommandMapping(new FancyFireWorkReloadCommand(plugin), "reload");

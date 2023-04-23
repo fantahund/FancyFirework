@@ -82,6 +82,11 @@ public class FireworkListener implements Listener {
                 event.setCancelled(true);
                 return;
             }
+            if (plugin.isDisableFireWorkUse()) {
+                ChatUtil.sendErrorMessage(event.getPlayer(), "Fireworks can not currently be used!");
+                event.setCancelled(true);
+                return;
+            }
             Block block = event.getBlockPlaced();
             blockFireWork.onPlace(block, blockFireWork.spawnAtBlock(block.getRelative(BlockFace.DOWN)), event.getPlayer());
             event.setCancelled(true);
@@ -106,6 +111,11 @@ public class FireworkListener implements Listener {
         if (fireWork instanceof BlockFireWork blockFireWork) {
             if (!event.getPlayer().hasPermission(blockFireWork.getPermission())) {
                 ChatUtil.sendErrorMessage(event.getPlayer(), "You do not have the permission to use this firework here!");
+                event.setCancelled(true);
+                return;
+            }
+            if (plugin.isDisableFireWorkUse()) {
+                ChatUtil.sendErrorMessage(event.getPlayer(), "Fireworks can not currently be used!");
                 event.setCancelled(true);
                 return;
             }
@@ -192,6 +202,11 @@ public class FireworkListener implements Listener {
                             if (plugin.getConfig().getBoolean("litplayer") && fireWork instanceof BlockFireWork blockFireWork) {
                                 if (!e.getPlayer().hasPermission(blockFireWork.getPermission())) {
                                     ChatUtil.sendErrorMessage(e.getPlayer(), "You do not have the permission to use this firework here!");
+                                    e.setCancelled(true);
+                                    return;
+                                }
+                                if (plugin.isDisableFireWorkUse()) {
+                                    ChatUtil.sendErrorMessage(e.getPlayer(), "Fireworks can not currently be used!");
                                     e.setCancelled(true);
                                     return;
                                 }
@@ -288,6 +303,11 @@ public class FireworkListener implements Listener {
             if (fireWork instanceof ItemFireWork itemFireWork) {
                 if (!player.hasPermission(itemFireWork.getPermission())) {
                     ChatUtil.sendErrorMessage(player, "You do not have the permission to use this firework here!");
+                    event.setCancelled(true);
+                    return;
+                }
+                if (plugin.isDisableFireWorkUse()) {
+                    ChatUtil.sendErrorMessage(player, "Fireworks can not currently be used!");
                     event.setCancelled(true);
                     return;
                 }
