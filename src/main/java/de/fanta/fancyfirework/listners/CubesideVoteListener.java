@@ -7,6 +7,8 @@ import de.fanta.fancyfirework.utils.ChatUtil;
 import de.iani.playerUUIDCache.CachedPlayer;
 import de.iani.playerUUIDCache.PlayerUUIDCache;
 import de.iani.treasurechest.TreasureChest;
+import java.util.HashMap;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -15,16 +17,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.HashMap;
-import java.util.UUID;
-
 public class CubesideVoteListener implements Listener {
     private final FancyFirework plugin = FancyFirework.getPlugin();
 
     private static final long TWELVE_HOURS_IN_MILLIS = 1000L * 60 * 60 * 12;
     private final HashMap<UUID, HashMap<String, Long>> votes = new HashMap<>();
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerVote(VotifierEvent e) {
         PlayerUUIDCache playerUUIDCache = (PlayerUUIDCache) Bukkit.getPluginManager().getPlugin("PlayerUUIDCache");
         TreasureChest treasureChest = (TreasureChest) Bukkit.getPluginManager().getPlugin("TreasureChest");

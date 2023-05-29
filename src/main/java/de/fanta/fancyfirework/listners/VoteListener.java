@@ -4,6 +4,8 @@ import com.vexsoftware.votifier.model.Vote;
 import com.vexsoftware.votifier.model.VotifierEvent;
 import de.fanta.fancyfirework.FancyFirework;
 import de.fanta.fancyfirework.utils.ChatUtil;
+import java.util.HashMap;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,16 +13,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.UUID;
-
 public class VoteListener implements Listener {
     private final FancyFirework plugin = FancyFirework.getPlugin();
 
     private static final long TWELVE_HOURS_IN_MILLIS = 1000L * 60 * 60 * 12;
     private final HashMap<UUID, HashMap<String, Long>> votes = new HashMap<>();
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerVote(VotifierEvent e) {
         Vote vote = e.getVote();
         Player p = Bukkit.getPlayer(vote.getUsername());
