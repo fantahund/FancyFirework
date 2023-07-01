@@ -1,6 +1,7 @@
 package de.fanta.fancyfirework.listners;
 
 import de.fanta.fancyfirework.FancyFirework;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Entity;
@@ -18,6 +19,7 @@ import java.util.Random;
 
 public class LootTableListener implements Listener {
     private final FancyFirework plugin = FancyFirework.getPlugin();
+    private final List<Location> lootTableSaveList = new ArrayList<>();
 
     @EventHandler
     public void onPlayerUseLootChest(PlayerInteractEvent e) {
@@ -58,6 +60,10 @@ public class LootTableListener implements Listener {
     }
 
     public void addFireworktoLootChest(Inventory chest) {
+        if (lootTableSaveList.contains(chest.getLocation())) {
+            return;
+        }
+        lootTableSaveList.add(chest.getLocation());
         Random random = new Random();
         double chance = plugin.getConfig().getDouble("loottable.chance", 0.5);
         boolean hasFireWork = random.nextDouble() < chance;
