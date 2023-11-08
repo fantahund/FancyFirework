@@ -43,6 +43,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -159,6 +160,27 @@ public class FireworkListener implements Listener {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onEquip(PlayerInteractEvent e) {
+        ItemStack handStack = e.getItem();
+        if (handStack == null || e.getHand() == null) {
+            return;
+        }
+        final EquipmentSlot armorItemSlot = handStack.getType().getEquipmentSlot();
+        if (armorItemSlot != EquipmentSlot.HEAD) {
+            return;
+        }
+
+        final PlayerInventory inventory = e.getPlayer().getInventory();
+        final ItemStack headStack = inventory.getItem(armorItemSlot);
+        AbstractFireWork fireWork = plugin.getRegistry().getByItemStack(headStack);
+        if (fireWork instanceof BlockFireWork blockFireWork) {
+            if (blockFireWork.hasActiveTask(e.getPlayer())) {
+                e.setCancelled(true);
             }
         }
     }
