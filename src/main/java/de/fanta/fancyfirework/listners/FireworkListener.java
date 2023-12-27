@@ -1,5 +1,6 @@
 package de.fanta.fancyfirework.listners;
 
+import com.google.common.base.Objects;
 import de.fanta.fancyfirework.FancyFirework;
 import de.fanta.fancyfirework.events.FireworkDeathEvent;
 import de.fanta.fancyfirework.fireworks.AbstractFireWork;
@@ -15,6 +16,7 @@ import org.bukkit.SoundCategory;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.DoubleChest;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -35,12 +37,16 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerEggThrowEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.PlayerInventory;
@@ -412,5 +418,24 @@ public class FireworkListener implements Listener {
         recipe.addIngredient(new ItemStack(Material.EMERALD, minprice + random.nextInt(maxprice - minprice)));
         recipes.add(random.nextInt(recipes.size() + 1), recipe);
         trader.setRecipes(recipes);
+    }
+
+    @EventHandler
+    public void InventoryOpenEvent(InventoryOpenEvent e) {
+        InventoryHolder holder = e.getInventory().getHolder();
+        if (holder instanceof BlockInventoryHolder || holder instanceof DoubleChest || e.getInventory().getType() == InventoryType.ENDER_CHEST) {
+            int modifyCount = 0;
+            ItemStack[] storage = e.getInventory().getStorageContents();
+            for (int i = 0; i < storage.length; i++) {
+                ItemStack newStack = plugin.getFireWorkWorks().fixFirework(storage[i]);
+                if (!Objects.equal(storage[i], newStack)) {
+                    storage[i] = newStack;
+                    modifyCount++;
+                }
+            }
+            if (modifyCount > 0) {
+                e.getInventory().setStorageContents(storage);
+            }
+        }
     }
 }
