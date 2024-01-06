@@ -56,17 +56,6 @@
         </dependency>
         <dependency>
             <groupId>de.iani.cubeside</groupId>
-            <artifactId>CubesideUtilsBukkit</artifactId>
-            <version>1.16-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.bstats</groupId>
-            <artifactId>bstats-bukkit</artifactId>
-            <version>3.0.1</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.iani.cubeside</groupId>
             <artifactId>PlayerUUIDCache</artifactId>
             <version>1.5.1-SNAPSHOT</version>
             <scope>provided</scope>
@@ -119,18 +108,149 @@
             <version>3.9.0-brokko-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>3.0.1</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>build</id>
+            <dependencies>
+                <dependency>
+                    <groupId>de.iani.cubeside</groupId>
+                    <artifactId>CubesideUtilsBukkit</artifactId>
+                    <version>1.16-SNAPSHOT</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <version>3.2.0</version>
+                        <configuration>
+                            <finalName>${project.artifactId}</finalName>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>3.3.0</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <filters>
+                                        <filter>
+                                            <artifact>org.bstats:bstats-bukkit</artifact>
+                                            <excludes>
+                                                <exclude>META-INF/MANIFEST.MF</exclude>
+                                            </excludes>
+                                        </filter>
+                                    </filters>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                    <relocations>
+                                        <relocation>
+                                            <pattern>org.bstats</pattern>
+                                            <shadedPattern>de.fanta.fancyfirework.libs.bstats</shadedPattern>
+                                        </relocation>
+                                    </relocations>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+            </build>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+
+        <profile>
+            <id>shade</id>
+            <dependencies>
+                <dependency>
+                    <groupId>de.iani.cubeside</groupId>
+                    <artifactId>CubesideUtilsBukkit</artifactId>
+                    <version>1.16-SNAPSHOT</version>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <version>3.2.0</version>
+                        <configuration>
+                            <finalName>${project.artifactId}-shade</finalName>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>3.3.0</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <filters>
+                                        <filter>
+                                            <artifact>de.iani.cubeside:CubesideUtilsBukkit</artifact>
+                                            <excludes>
+                                                <exclude>plugin.yml</exclude>
+                                                <exclude>META-INF/MANIFEST.MF</exclude>
+                                            </excludes>
+                                        </filter>
+                                        <filter>
+                                            <artifact>org.bstats:bstats-bukkit</artifact>
+                                            <excludes>
+                                                <exclude>META-INF/MANIFEST.MF</exclude>
+                                            </excludes>
+                                        </filter>
+                                    </filters>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                    <relocations>
+                                        <relocation>
+                                            <pattern>de.iani.cubeside</pattern>
+                                            <shadedPattern>de.fanta.fancyfirework.libs.de.iani.cubesideutils
+                                            </shadedPattern>
+                                        </relocation>
+                                        <relocation>
+                                            <pattern>org.bstats</pattern>
+                                            <shadedPattern>de.fanta.fancyfirework.libs.bstats</shadedPattern>
+                                        </relocation>
+                                    </relocations>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
-                <configuration>
-                    <finalName>${project.artifactId}</finalName>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -138,47 +258,6 @@
                 <configuration>
                     <release>17</release>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.3.0</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <filters>
-                                <filter>
-                                    <artifact>org.bstats:bstats-bukkit</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/MANIFEST.MF</exclude>
-                                    </excludes>
-                                </filter>
-                                <filter>
-                                    <artifact>de.iani.cubeside:CubesideUtilsBukkit</artifact>
-                                    <excludes>
-                                        <exclude>plugin.yml</exclude>
-                                        <exclude>META-INF/MANIFEST.MF</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <relocations>
-                                <relocation>
-                                    <pattern>org.bstats</pattern>
-                                    <shadedPattern>de.fanta.fancyfirework.libs.bstats</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>de.iani.cubeside</pattern>
-                                    <shadedPattern>de.fanta.fancyfirework.libs.de.iani.cubesideutils</shadedPattern>
-                                </relocation>
-                            </relocations>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
         <resources>
@@ -188,6 +267,7 @@
             </resource>
         </resources>
     </build>
+
     <distributionManagement>
         <repository>
             <id>fantanexus</id>

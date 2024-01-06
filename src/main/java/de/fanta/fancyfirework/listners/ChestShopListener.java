@@ -25,11 +25,8 @@ public class ChestShopListener implements Listener {
         AbstractFireWork fireWork = plugin.getRegistry().getByItemStack(itemStack);
         if (fireWork != null) {
             String displayName = fireWork.getItemStack().getItemMeta().getDisplayName();
-            Bukkit.broadcastMessage(displayName);
             String convertColorName = StringUtil.revertColors(displayName);
-            Bukkit.broadcastMessage(convertColorName);
             String displayNameWithoutColor = StringUtil.stripColors(convertColorName);
-            Bukkit.broadcastMessage(displayNameWithoutColor);
             preShopCreationItemDisplayNameEvent.setDisplayName(displayNameWithoutColor, fancyFireworkPriorityItemDisplayNameShortener);
         }
     }
