@@ -20,6 +20,9 @@ public record EventRegistration(FancyFirework plugin) {
                 plugin.getLogger().log(Level.INFO, "Register Cubeside Vote Listener");
             }
         }
+        if (plugin.getServer().getPluginManager().isPluginEnabled("ChestShop")) {
+            pM.registerEvents(new ChestShopListener(plugin), plugin);
+        }
         pM.registerEvents(new FireworkListener(), plugin);
         pM.registerEvents(new LootTableListener(), plugin);
         pM.registerEvents(new AFKListener(), plugin);
