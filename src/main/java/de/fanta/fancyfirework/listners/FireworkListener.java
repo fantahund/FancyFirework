@@ -1,5 +1,6 @@
 package de.fanta.fancyfirework.listners;
 
+import com.destroystokyo.paper.event.entity.EntityAddToWorldEvent;
 import com.google.common.base.Objects;
 import de.fanta.fancyfirework.FancyFirework;
 import de.fanta.fancyfirework.events.FireworkDeathEvent;
@@ -435,6 +436,17 @@ public class FireworkListener implements Listener {
             }
             if (modifyCount > 0) {
                 e.getInventory().setStorageContents(storage);
+            }
+        }
+    }
+
+    @EventHandler
+    public void EntityAddToWorld(EntityAddToWorldEvent e) {
+        Entity entity = e.getEntity();
+        AbstractFireWork fireWork = plugin.getRegistry().getByEntity(entity);
+        if (fireWork instanceof BlockFireWork blockFireWork) {
+            if (blockFireWork.hasActiveTask(entity)) {
+                plugin.getScheduler().runOnEntityDelayed(entity, () -> blockFireWork.getActiveTask(entity).stop(), 1);
             }
         }
     }

@@ -54,4 +54,9 @@ public class BukkitScheduler implements Scheduler {
     public void runOnEntityAtFixedRate(Entity entity, Consumer<CancellableTask> taskConsumer, long delay, long period) {
         runLocalAtFixedRate(null, taskConsumer, delay, period);
     }
+
+    @Override
+    public void runOnEntityDelayed(Entity entity, Runnable task, long delay) {
+        runGlobalDelayed(task, delay);
+    }
 }

@@ -75,10 +75,10 @@ public final class FancyFirework extends JavaPlugin {
 
         try {
             Class.forName("io.papermc.paper.threadedregions.scheduler.ScheduledTask");
-            getLogger().log(Level.INFO, "Folia found. Use Folia Scheduler");
+            getLogger().log(Level.INFO, "Paper/Folia found. Use Folia Scheduler");
             scheduler = new FoliaScheduler(this);
         } catch (Throwable ignored) {
-            getLogger().log(Level.INFO, (hasPlayerProfileAPI() ? "Paper" : "Spigot") + " found. Use Bukkit Scheduler");
+            getLogger().log(Level.INFO, "Spigot found. Use Bukkit Scheduler");
             scheduler = new BukkitScheduler(this);
         }
 

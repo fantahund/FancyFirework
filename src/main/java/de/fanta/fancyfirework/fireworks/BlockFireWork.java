@@ -3,6 +3,7 @@ package de.fanta.fancyfirework.fireworks;
 import de.fanta.fancyfirework.FancyFirework;
 import de.fanta.fancyfirework.schedular.CancellableTask;
 import de.iani.cubesideutils.bukkit.items.ItemGroups;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -122,7 +123,7 @@ public abstract class BlockFireWork extends AbstractFireWork {
     }
 
     private void addTask(Task task) {
-        UUID uuid = task.entity.getUniqueId();
+        UUID uuid = task.entityUUID;
         if (activeTasks.containsKey(uuid)) {
             activeTasks.get(uuid).stop();
         }
@@ -130,7 +131,7 @@ public abstract class BlockFireWork extends AbstractFireWork {
     }
 
     private void removeTask(Task task) {
-        activeTasks.remove(task.entity.getUniqueId());
+        activeTasks.remove(task.entityUUID);
     }
 
     /**
@@ -143,7 +144,7 @@ public abstract class BlockFireWork extends AbstractFireWork {
     public class Task {
 
         protected final Player player;
-        protected final Entity entity;
+        protected final UUID entityUUID;
 
         protected final long duration;
         protected final int delay;
@@ -167,7 +168,7 @@ public abstract class BlockFireWork extends AbstractFireWork {
          */
         public Task(Player player, Entity entity, long duration, int delay, int period, Runnable taskToRun) {
             this.player = player;
-            this.entity = entity;
+            this.entityUUID = entity.getUniqueId();
             addTask(this);
             this.duration = duration;
             this.delay = delay;
@@ -206,6 +207,11 @@ public abstract class BlockFireWork extends AbstractFireWork {
         public void start() {
             this.tick = 0;
             this.counter = 0;
+            Entity entity = getEntity();
+            if (entity == null) {
+                stop();
+                return;
+            }
             this.cancellableTask = FancyFirework.getPlugin().getScheduler().runOnEntityAtFixedRate(entity, () -> {
                 if (tick < duration + delay && entity.isValid()) {
                     onTick();
@@ -222,6 +228,9 @@ public abstract class BlockFireWork extends AbstractFireWork {
          * This removes the entity from the world!
          */
         public void stop() {
+            Bukkit.getLogger().info("Tick Stop");
+            Entity entity = getEntity();
+
             if (cancellableTask != null) {
                 cancellableTask.cancel();
                 cancellableTask = null;
@@ -239,13 +248,16 @@ public abstract class BlockFireWork extends AbstractFireWork {
                         }
                     }
                 } else {
-                    entity.remove();
+                    if (entity != null) {
+                        entity.remove();
+                    }
                 }
             }
         }
 
+        @Nullable
         public Entity getEntity() {
-            return entity;
+            return Bukkit.getServer().getEntity(entityUUID);
         }
 
         public long getTick() {

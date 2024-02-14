@@ -30,4 +30,6 @@ public interface Scheduler {
     CancellableTask runOnEntityAtFixedRate(Entity entity, Runnable task, long delay, long period);
 
     void runOnEntityAtFixedRate(Entity entity, Consumer<CancellableTask> taskConsumer, long delay, long period);
+
+    void runOnEntityDelayed(Entity entity, Runnable task, long delay);
 }
