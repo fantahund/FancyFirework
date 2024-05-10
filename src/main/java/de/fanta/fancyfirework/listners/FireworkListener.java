@@ -257,7 +257,7 @@ public class FireworkListener implements Listener {
             ItemMeta meta = stack.getItemMeta();
             int maxDurability = stack.getType().getMaxDurability();
             if (maxDurability > 0) {
-                int durability = meta.getEnchantLevel(Enchantment.DURABILITY);
+                int durability = meta.getEnchantLevel(Enchantment.UNBREAKING);
                 if (durability <= 0 || RandomUtil.SHARED_RANDOM.nextInt(durability + 1) == 0) {
                     Damageable damageableMeta = (Damageable) meta;
                     int damageOld = damageableMeta.getDamage();

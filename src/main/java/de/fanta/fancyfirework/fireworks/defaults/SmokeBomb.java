@@ -49,7 +49,7 @@ public class SmokeBomb extends ItemFireWork {
         Location loc = event.getEntity().getLocation();
         World world = loc.getWorld();
         world.playSound(loc, Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.AMBIENT, 2f, 1f);
-        world.spawnParticle(Particle.SMOKE_LARGE, loc, 250, 2, 2, 2, 0.015, null, true);
+        world.spawnParticle(Particle.LARGE_SMOKE, loc, 250, 2, 2, 2, 0.015, null, true);
         world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc, 400, 2, 2, 2, 0.015, null, true);
         world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, loc, 40, 2, 2, 2, 0.015, null, true);
 

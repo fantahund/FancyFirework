@@ -57,9 +57,9 @@ public class SpookyBomb extends ItemFireWork {
         World world = loc.getWorld();
 
         world.playSound(loc, Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.AMBIENT, 2f, 1f);
-        world.spawnParticle(Particle.REDSTONE, loc, 80, 1, 1.5, 1, 0.008, new Particle.DustOptions(Color.fromRGB(22, 112, 90), 2.5f), true);
-        world.spawnParticle(Particle.REDSTONE, loc, 80, 1, 1.5, 1, 0.008, new Particle.DustOptions(Color.fromRGB(17, 51, 43), 2.5f), true);
-        world.spawnParticle(Particle.REDSTONE, loc, 80, 1, 1.5, 1, 0.008, new Particle.DustOptions(Color.fromRGB(69, 69, 69), 2.5f), true);
+        world.spawnParticle(Particle.DUST, loc, 80, 1, 1.5, 1, 0.008, new Particle.DustOptions(Color.fromRGB(22, 112, 90), 2.5f), true);
+        world.spawnParticle(Particle.DUST, loc, 80, 1, 1.5, 1, 0.008, new Particle.DustOptions(Color.fromRGB(17, 51, 43), 2.5f), true);
+        world.spawnParticle(Particle.DUST, loc, 80, 1, 1.5, 1, 0.008, new Particle.DustOptions(Color.fromRGB(69, 69, 69), 2.5f), true);
         world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc, 70, 0.5, 1.5, 0.5, 0.005, null, true);
 
         for (Entity entity : world.getNearbyEntities(loc, 3, 3, 3)) {

@@ -56,7 +56,7 @@ public class FireWorkBatteryHalloween extends FireWorkBattery {
     @Override
     protected void spawnRandomFirework(Location location) {
         Random rand = ThreadLocalRandom.current();
-        Firework firework = (Firework) location.getWorld().spawnEntity(location.add(0, 1.5, 0), EntityType.FIREWORK);
+        Firework firework = (Firework) location.getWorld().spawnEntity(location.add(0, 1.5, 0), EntityType.FIREWORK_ROCKET);
         firework.setVelocity(new Vector((rand.nextBoolean() ? 1 : -1) * rand.nextDouble(0.02), rand.nextDouble(0.5, 1.5), (rand.nextBoolean() ? 1 : -1) * rand.nextDouble(0.02)));
         FireworkMeta fireworkMeta = firework.getFireworkMeta();
         fireworkMeta.setPower(rand.nextInt(2) + 1);
@@ -73,9 +73,9 @@ public class FireWorkBatteryHalloween extends FireWorkBattery {
     public void spawn(Location origin) {
         Color color = randomColor();
         Vector rotation = new Vector(0, random.nextDouble(90), 0);
-        ISpawnParticle spawnParticle = location -> location.getWorld().spawnParticle(Particle.REDSTONE, location, 2, 0.2, 0.2, 0.2, 0, new Particle.DustOptions(color, 2), true);
-        ISpawnParticle spawnParticleGreen = location -> location.getWorld().spawnParticle(Particle.REDSTONE, location, 2, 0.2, 0.2, 0.2, 0, new Particle.DustOptions(Color.GREEN, 2), true);
-        ISpawnParticle spawnParticleWhite = location -> location.getWorld().spawnParticle(Particle.REDSTONE, location, 2, 0.2, 0.2, 0.2, 0, new Particle.DustOptions(Color.WHITE, 2), true);
+        ISpawnParticle spawnParticle = location -> location.getWorld().spawnParticle(Particle.DUST, location, 2, 0.2, 0.2, 0.2, 0, new Particle.DustOptions(color, 2), true);
+        ISpawnParticle spawnParticleGreen = location -> location.getWorld().spawnParticle(Particle.DUST, location, 2, 0.2, 0.2, 0.2, 0, new Particle.DustOptions(Color.GREEN, 2), true);
+        ISpawnParticle spawnParticleWhite = location -> location.getWorld().spawnParticle(Particle.DUST, location, 2, 0.2, 0.2, 0.2, 0, new Particle.DustOptions(Color.WHITE, 2), true);
 
         double maxSize = random.nextDouble(0.15, 0.5);
         AtomicDouble size = new AtomicDouble(0.05);

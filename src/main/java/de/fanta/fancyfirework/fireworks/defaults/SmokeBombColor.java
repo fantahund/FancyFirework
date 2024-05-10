@@ -50,7 +50,7 @@ public class SmokeBombColor extends ItemFireWork {
         Location loc = event.getEntity().getLocation();
         World world = loc.getWorld();
         world.playSound(loc, Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.AMBIENT, 2f, 1f);
-        world.spawnParticle(Particle.REDSTONE, loc, 150, 1, 1.5, 1, 0.008, new Particle.DustOptions(ColorUtils.getColor(plugin.getTime(), 2), 2.5f), true);
+        world.spawnParticle(Particle.DUST, loc, 150, 1, 1.5, 1, 0.008, new Particle.DustOptions(ColorUtils.getColor(plugin.getTime(), 2), 2.5f), true);
         world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc, 250, 0.5, 1.5, 0.5, 0.005, null, true);
 
     }
