@@ -1,5 +1,6 @@
 package de.fanta.fancyfirework.events;
 
+import org.bukkit.damage.DamageSource;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -11,8 +12,8 @@ public class FireworkDeathEvent extends EntityDeathEvent implements Cancellable 
 
     private boolean cancelled;
 
-    public FireworkDeathEvent(ArmorStand stand, List<ItemStack> drops) {
-        super(stand, drops);
+    public FireworkDeathEvent(ArmorStand stand, List<ItemStack> drops, DamageSource damageSource) {
+        super(stand, damageSource, drops);
     }
 
     @Override

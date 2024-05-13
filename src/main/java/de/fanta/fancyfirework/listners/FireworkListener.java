@@ -18,6 +18,8 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.DoubleChest;
+import org.bukkit.damage.DamageSource;
+import org.bukkit.damage.DamageType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -253,7 +255,7 @@ public class FireworkListener implements Listener {
 
     private void damageFNS(Player player, EquipmentSlot slot) {
         ItemStack stack = player.getEquipment().getItem(slot);
-        if (player.getGameMode() != GameMode.CREATIVE) {
+        if (player.getGameMode() != GameMode.CREATIVE || stack.getItemMeta().isUnbreakable()) {
             ItemMeta meta = stack.getItemMeta();
             int maxDurability = stack.getType().getMaxDurability();
             if (maxDurability > 0) {
@@ -307,7 +309,8 @@ public class FireworkListener implements Listener {
                 List<ItemStack> stackList = new ArrayList<>();
                 stackList.add(stack);
                 stand.setLastDamageCause(e);
-                FireworkDeathEvent fireworkDeathEvent = new FireworkDeathEvent(stand, stackList);
+                DamageSource damageSource = DamageSource.builder(DamageType.PLAYER_ATTACK).withCausingEntity(player).withDirectEntity(player).withDamageLocation(stand.getLocation()).build();
+                FireworkDeathEvent fireworkDeathEvent = new FireworkDeathEvent(stand, stackList, damageSource);
                 player.getServer().getPluginManager().callEvent(fireworkDeathEvent);
                 if (fireworkDeathEvent.isCancelled()) {
                     e.setCancelled(true);
