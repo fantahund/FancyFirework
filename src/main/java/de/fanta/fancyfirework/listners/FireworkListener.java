@@ -309,8 +309,7 @@ public class FireworkListener implements Listener {
                 List<ItemStack> stackList = new ArrayList<>();
                 stackList.add(stack);
                 stand.setLastDamageCause(e);
-                DamageSource damageSource = DamageSource.builder(DamageType.PLAYER_ATTACK).withCausingEntity(player).withDirectEntity(player).withDamageLocation(stand.getLocation()).build();
-                FireworkDeathEvent fireworkDeathEvent = new FireworkDeathEvent(stand, stackList, damageSource);
+                FireworkDeathEvent fireworkDeathEvent = new FireworkDeathEvent(stand, stackList, e.getDamageSource());
                 player.getServer().getPluginManager().callEvent(fireworkDeathEvent);
                 if (fireworkDeathEvent.isCancelled()) {
                     e.setCancelled(true);
