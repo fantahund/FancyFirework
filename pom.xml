@@ -103,9 +103,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.acrobot.chestshop</groupId>
-            <artifactId>chestshop</artifactId>
-            <version>3.9.0-brokko-SNAPSHOT</version>
+            <groupId>de.cubeside.chestshop</groupId>
+            <artifactId>chestshop-brokko</artifactId>
+            <version>4.0.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
