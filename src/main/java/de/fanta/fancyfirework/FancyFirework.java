@@ -4,8 +4,7 @@ import de.fanta.fancyfirework.commands.CommandRegistration;
 import de.fanta.fancyfirework.fireworks.FireWorkRegistration;
 import de.fanta.fancyfirework.listners.AFKListener;
 import de.fanta.fancyfirework.listners.EventRegistration;
-import de.fanta.fancyfirework.schedular.BukkitScheduler;
-import de.fanta.fancyfirework.schedular.FoliaScheduler;
+import de.fanta.fancyfirework.schedular.GlobalScheduler;
 import de.fanta.fancyfirework.schedular.Scheduler;
 import de.fanta.fancyfirework.utils.ChatUtil;
 import de.fanta.fancyfirework.utils.WorldGuardHelper;
@@ -14,14 +13,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.kitteh.vanish.VanishPlugin;
 
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public final class FancyFirework extends JavaPlugin {
@@ -65,23 +62,7 @@ public final class FancyFirework extends JavaPlugin {
             worldGuardHelper = new WorldGuardHelper(getServer().getPluginManager().getPlugin("WorldGuard"));
         }
 
-        try {
-            SkullMeta.class.getDeclaredMethod("getPlayerProfile");
-            setPlayerProfileAPI(true);
-        } catch (Exception e) {
-            getLogger().log(Level.INFO, "Server version spigot. We recommend to use Paper.");
-            setPlayerProfileAPI(false);
-        }
-
-        try {
-            Class.forName("io.papermc.paper.threadedregions.scheduler.ScheduledTask");
-            getLogger().log(Level.INFO, "Paper/Folia found. Use Folia Scheduler");
-            scheduler = new FoliaScheduler(this);
-        } catch (Throwable ignored) {
-            getLogger().log(Level.INFO, "Spigot found. Use Bukkit Scheduler");
-            scheduler = new BukkitScheduler(this);
-        }
-
+        scheduler = new GlobalScheduler(this);
         new bStats(this).registerbStats();
 
         fireWorkWorks = new FireWorkWorks();
@@ -141,14 +122,6 @@ public final class FancyFirework extends JavaPlugin {
         } else {
             return worldGuardHelper.canBuild(player, loc);
         }
-    }
-
-    public boolean hasPlayerProfileAPI() {
-        return HAS_PLAYER_PROFILE_API;
-    }
-
-    public void setPlayerProfileAPI(boolean HAS_PLAYER_PROFILE_API) {
-        this.HAS_PLAYER_PROFILE_API = HAS_PLAYER_PROFILE_API;
     }
 
     public void reloadFireworkConfig() {

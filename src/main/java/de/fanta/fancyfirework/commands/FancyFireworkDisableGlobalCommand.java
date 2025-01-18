@@ -2,13 +2,12 @@ package de.fanta.fancyfirework.commands;
 
 import de.fanta.fancyfirework.FancyFirework;
 import de.fanta.fancyfirework.utils.ChatUtil;
-import de.iani.cubesideutils.bukkit.commands.SubCommand;
+import de.iani.cubesideutils.bukkit.commands.PlayerSubCommand;
 import de.iani.cubesideutils.commands.ArgsParser;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class FancyFireworkDisableGlobalCommand extends SubCommand {
+public class FancyFireworkDisableGlobalCommand extends PlayerSubCommand {
 
     private final FancyFirework plugin;
     private final boolean enable;
@@ -19,12 +18,7 @@ public class FancyFireworkDisableGlobalCommand extends SubCommand {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String alias, String commandString, ArgsParser args) {
-        if (!(sender instanceof Player player)) {
-            ChatUtil.sendErrorMessage(sender, "You are not a Player :>");
-            return true;
-        }
-
+    public boolean onCommand(Player player, Command command, String alias, String commandString, ArgsParser args) {
         if (enable) {
             if (plugin.isDisableFireWorkUse()) {
                 plugin.setDisableFireWorkUse(false);

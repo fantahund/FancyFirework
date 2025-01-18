@@ -8,11 +8,11 @@ import org.bukkit.entity.Entity;
 
 import java.util.function.Consumer;
 
-public class FoliaScheduler implements Scheduler {
+public class GlobalScheduler implements Scheduler {
 
     private final FancyFirework plugin;
 
-    public FoliaScheduler(FancyFirework plugin) {
+    public GlobalScheduler(FancyFirework plugin) {
         this.plugin = plugin;
     }
 
