@@ -16,6 +16,14 @@ jobs:
         run: mvn clean install -Pshade
       - uses: actions/upload-artifact@v4
         with:
-          name: Release
+          name: FancyFirework
           path: target/*
           if-no-files-found: error
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: false
+          title: FancyFirework
+          files: |
+            target/fancyfirework-shade.jar
