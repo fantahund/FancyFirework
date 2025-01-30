@@ -18,8 +18,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.DoubleChest;
-import org.bukkit.damage.DamageSource;
-import org.bukkit.damage.DamageType;
+import org.bukkit.block.data.Directional;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -31,6 +30,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -49,21 +49,26 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.BlockVector;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class FireworkListener implements Listener {
 
     private final FancyFirework plugin = FancyFirework.getPlugin();
+
+    private final ConcurrentHashMap<BlockVector, Long> dispenserPlaceTimes = new ConcurrentHashMap<>();
 
     @EventHandler
     public void onFireworkExplode(FireworkExplodeEvent e) {
@@ -102,6 +107,63 @@ public class FireworkListener implements Listener {
             event.setCancelled(true);
             stack.setAmount(stack.getAmount() - 1);
         }
+    }
+
+    @EventHandler
+    public void onFireWorkPlaceByDispenser(BlockDispenseEvent event) {
+        if (!plugin.isDispenserMode()) {
+            return;
+        }
+
+        ItemStack stack = event.getItem();
+        AbstractFireWork fireWork = plugin.getRegistry().getByItemStack(stack);
+        if (!(fireWork instanceof BlockFireWork blockFireWork)) {
+            return;
+        }
+
+        if (plugin.isDisableFireWorkUse()) {
+            return;
+        }
+
+        Block block = event.getBlock();
+        if (!(block.getState() instanceof org.bukkit.block.Dispenser dispenser)) {
+            return;
+        }
+        event.setCancelled(true);
+
+        plugin.getScheduler().runLocalDelayed(event.getBlock().getLocation(), () -> {
+            BlockVector blockVector = block.getLocation().toVector().toBlockVector();
+            long lastPlaceTime = dispenserPlaceTimes.getOrDefault(blockVector, 0L);
+
+            if (System.currentTimeMillis() - lastPlaceTime < (plugin.getDispenserDelaSeconds() * 1000L)) {
+                return;
+            }
+            dispenserPlaceTimes.remove(blockVector);
+
+            Inventory dispenserInventory = dispenser.getInventory();
+            for (int i = 0; i < dispenserInventory.getSize(); i++) {
+                ItemStack item = dispenserInventory.getItem(i);
+
+                if (item != null && item.isSimilar(stack)) {
+                    if (item.getAmount() > 1) {
+                        item.setAmount(item.getAmount() - 1);
+                        dispenserInventory.setItem(i, item);
+                    } else {
+                        dispenserInventory.setItem(i, null);
+                    }
+                    break;
+                }
+            }
+
+            //Spawn and lit firework
+            if (block.getBlockData() instanceof Directional directional) {
+                Block placeBlock = block.getRelative(directional.getFacing());
+                ArmorStand armorStand = blockFireWork.spawnAtBlock(placeBlock.getRelative(BlockFace.DOWN));
+                blockFireWork.onDispenserPlace(placeBlock, armorStand);
+                blockFireWork.onLit(armorStand, null);
+                dispenserPlaceTimes.put(blockVector, System.currentTimeMillis());
+            }
+        }, 1L);
     }
 
     @EventHandler(priority = EventPriority.LOW)

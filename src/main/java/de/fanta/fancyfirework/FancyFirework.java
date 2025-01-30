@@ -35,6 +35,8 @@ public final class FancyFirework extends JavaPlugin {
     private WorldGuardHelper worldGuardHelper;
     private long time;
     private boolean redstonemode;
+    private boolean dispenserMode;
+    private int dispenserDelaSeconds;
 
     private boolean disableFireWorkUse = false;
 
@@ -132,7 +134,9 @@ public final class FancyFirework extends JavaPlugin {
     public void loadConfig() {
         FileConfiguration cfg = getConfig();
         cfg.options().copyDefaults(true);
-        redstonemode = cfg.getBoolean("redstonemode");
+        redstonemode = cfg.getBoolean("redstonemode", false);
+        dispenserMode = cfg.getBoolean("dispenserMode", true);
+        dispenserDelaSeconds = cfg.getInt("dispenserDelaSeconds", 30);
 
         //AFK
         AFKListener.maxIdleTime = Math.max(plugin.getConfig().getInt("maxAFKTime"), 2) * 1000;
@@ -140,6 +144,14 @@ public final class FancyFirework extends JavaPlugin {
 
     public boolean isRedstonemode() {
         return redstonemode;
+    }
+
+    public boolean isDispenserMode() {
+        return dispenserMode;
+    }
+
+    public int getDispenserDelaSeconds() {
+        return dispenserDelaSeconds;
     }
 
     public boolean isDisableFireWorkUse() {

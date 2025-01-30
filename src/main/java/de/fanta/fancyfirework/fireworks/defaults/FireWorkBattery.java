@@ -38,6 +38,11 @@ public abstract class FireWorkBattery extends BlockFireWork {
     }
 
     @Override
+    public void onDispenserPlace(Block block, ArmorStand stand) {
+        //Nothing
+    }
+
+    @Override
     public void onLit(Entity entity, Player player) {
         entity.getWorld().playSound(entity.getLocation(), Sound.ENTITY_CREEPER_PRIMED, SoundCategory.AMBIENT, 1f, 1f);
 

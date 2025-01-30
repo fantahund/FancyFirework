@@ -30,6 +30,7 @@ import java.util.UUID;
  * There are a couple of methods that will be called on interactions or updates.
  * <ul>
  *     <li>{@link #onPlace(Block, ArmorStand, Player)} - Called when a player places the firework.</li>
+ *     <li>{@link #onDispenserPlace(Block, ArmorStand)}  Called when a dispenser places the firework.</li>
  *     <li>{@link #onLit(Entity, Player)} - Called when the firework is lit by a player using flint and steel.</li>
  *     <li>{@link #onTick(Task, boolean)} - Called when a task of this firework executes a tick.</li>
  * </ul>
@@ -50,6 +51,14 @@ public abstract class BlockFireWork extends AbstractFireWork {
      * @param player The player that placed the firework.
      */
     public abstract void onPlace(Block block, ArmorStand stand, Player player);
+
+    /**
+     * Called when a dispenser places the firework.
+     *
+     * @param block  The placed block.
+     * @param stand  The spawned ArmorStand of the firework.
+     */
+    public abstract void onDispenserPlace(Block block, ArmorStand stand);
 
     /**
      * Called when the firework is lit by a player using flint and steel.
@@ -228,7 +237,6 @@ public abstract class BlockFireWork extends AbstractFireWork {
          * This removes the entity from the world!
          */
         public void stop() {
-            Bukkit.getLogger().info("Tick Stop");
             Entity entity = getEntity();
 
             if (cancellableTask != null) {
