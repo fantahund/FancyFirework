@@ -29,7 +29,7 @@ public class CubesideVoteListener implements Listener {
         TreasureChest treasureChest = (TreasureChest) Bukkit.getPluginManager().getPlugin("TreasureChest");
         Vote vote = e.getVote();
 
-        ItemStack customfirework = plugin.getRegistry().getRandomHalloweenFireWorkItem();
+        ItemStack customfirework = plugin.getRegistry().getRandomValentineFireWorkItem();
         if (!plugin.getConfig().getBoolean("votereward")) {
             return;
         }
