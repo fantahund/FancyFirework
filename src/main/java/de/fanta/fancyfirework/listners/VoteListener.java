@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
 public class VoteListener implements Listener {
     private final FancyFirework plugin = FancyFirework.getPlugin();
 
-    private static final long TWELVE_HOURS_IN_MILLIS = 1000L * 60 * 60 * 12;
+    private static final long TWO_HOURS_IN_MILLIS = 1000L * 60 * 60 * 2;
     private final HashMap<UUID, HashMap<String, Long>> votes = new HashMap<>();
 
     @EventHandler(priority = EventPriority.NORMAL)
@@ -34,7 +34,7 @@ public class VoteListener implements Listener {
                 votes.put(p.getUniqueId(), lastVotes);
             }
             Long lastTime = lastVotes.get(vote.getServiceName());
-            if (lastTime != null && lastTime + TWELVE_HOURS_IN_MILLIS > System.currentTimeMillis()) {
+            if (lastTime != null && lastTime + TWO_HOURS_IN_MILLIS > System.currentTimeMillis()) {
                 return;
             }
             lastVotes.put(vote.getServiceName(), System.currentTimeMillis());
