@@ -9,6 +9,11 @@ import de.fanta.fancyfirework.fireworks.BlockFireWork;
 import de.fanta.fancyfirework.fireworks.ItemFireWork;
 import de.fanta.fancyfirework.utils.ChatUtil;
 import de.iani.cubesideutils.RandomUtil;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -57,12 +62,6 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.BlockVector;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class FireworkListener implements Listener {
 
@@ -370,7 +369,6 @@ public class FireworkListener implements Listener {
                 ItemStack stack = blockFireWork.getItemStack();
                 List<ItemStack> stackList = new ArrayList<>();
                 stackList.add(stack);
-                stand.setLastDamageCause(e);
                 FireworkDeathEvent fireworkDeathEvent = new FireworkDeathEvent(stand, stackList, e.getDamageSource());
                 player.getServer().getPluginManager().callEvent(fireworkDeathEvent);
                 if (fireworkDeathEvent.isCancelled()) {
