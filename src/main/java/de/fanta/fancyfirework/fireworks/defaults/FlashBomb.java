@@ -3,6 +3,7 @@ package de.fanta.fancyfirework.fireworks.defaults;
 import de.fanta.fancyfirework.FancyFirework;
 import de.fanta.fancyfirework.fireworks.ItemFireWork;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -15,8 +16,6 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
 
 public class FlashBomb extends ItemFireWork {
 
@@ -49,6 +48,6 @@ public class FlashBomb extends ItemFireWork {
         Location loc = event.getEntity().getLocation();
         World world = loc.getWorld();
         world.playSound(loc, Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.AMBIENT, 2f, 1f);
-        world.spawnParticle(Particle.FLASH, loc, 15, 1.5, 1, 1.5, 0, null, true);
+        world.spawnParticle(Particle.FLASH, loc, 15, 1.5, 1, 1.5, 0, Color.WHITE, true);
     }
 }
