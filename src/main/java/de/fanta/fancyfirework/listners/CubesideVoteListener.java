@@ -4,11 +4,14 @@ import com.vexsoftware.votifier.model.Vote;
 import com.vexsoftware.votifier.model.VotifierEvent;
 import de.fanta.fancyfirework.FancyFirework;
 import de.fanta.fancyfirework.utils.ChatUtil;
+import de.iani.cubesideutils.bukkit.plugin.CubesideUtilsBukkit;
 import de.iani.playerUUIDCache.CachedPlayer;
 import de.iani.playerUUIDCache.PlayerUUIDCache;
 import de.iani.treasurechest.TreasureChest;
 import java.util.HashMap;
 import java.util.UUID;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -59,7 +62,9 @@ public class CubesideVoteListener implements Listener {
             displayItem.setItemMeta(displayItemMeta);
 
             treasureChest.addItem(cp.getName(), displayItem, new ItemStack[] { customfirework.clone() }, 0);
-            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "tell " + cp.getName() + " " + FancyFirework.PREFIX + ChatUtil.GREEN + " Du hast " + customfirework.getItemMeta().getDisplayName() + ChatUtil.GREEN + " erhalten und kannst diese in der Schatztruhe am Spawn abholen!");
+            CubesideUtilsBukkit.getInstance().getGlobalDataHelper().sendActionBarMessage(CubesideUtilsBukkit.getInstance().getGlobalDataHelper().getPlayer(cp.getUniqueId()),
+                    Component.text("Du hast ", NamedTextColor.GREEN).append(customfirework.getItemMeta().displayName()).append(Component.text(" in der Schatztruhe erhalten!")));
+            // Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "tell " + cp.getName() + " " + FancyFirework.PREFIX + ChatUtil.GREEN + " Du hast " + customfirework.getItemMeta().getDisplayName() + ChatUtil.GREEN + " erhalten und kannst diese in der Schatztruhe am Spawn abholen!");
         }
     }
 }

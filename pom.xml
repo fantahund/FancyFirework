@@ -120,6 +120,12 @@
                     <version>1.16-SNAPSHOT</version>
                     <scope>provided</scope>
                 </dependency>
+                <dependency>
+                    <groupId>de.cubeside</groupId>
+                    <artifactId>globalconnectionbukkit</artifactId>
+                    <version>0.0.1-SNAPSHOT</version>
+                    <scope>provided</scope>
+                </dependency>
             </dependencies>
             <build>
                 <plugins>
