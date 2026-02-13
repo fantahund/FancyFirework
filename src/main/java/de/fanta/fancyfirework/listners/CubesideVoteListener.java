@@ -2,6 +2,7 @@ package de.fanta.fancyfirework.listners;
 
 import com.vexsoftware.votifier.model.Vote;
 import com.vexsoftware.votifier.model.VotifierEvent;
+import de.cubeside.connection.GlobalPlayer;
 import de.fanta.fancyfirework.FancyFirework;
 import de.fanta.fancyfirework.utils.ChatUtil;
 import de.iani.cubesideutils.bukkit.plugin.CubesideUtilsBukkit;
@@ -62,9 +63,12 @@ public class CubesideVoteListener implements Listener {
             displayItem.setItemMeta(displayItemMeta);
 
             treasureChest.addItem(cp.getName(), displayItem, new ItemStack[] { customfirework.clone() }, 0);
-            CubesideUtilsBukkit.getInstance().getGlobalDataHelper().sendActionBarMessage(CubesideUtilsBukkit.getInstance().getGlobalDataHelper().getPlayer(cp.getUniqueId()),
-                    Component.text("Du hast ", NamedTextColor.GREEN).append(customfirework.getItemMeta().displayName()).append(Component.text(" in der Schatztruhe erhalten!")));
-            // Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "tell " + cp.getName() + " " + FancyFirework.PREFIX + ChatUtil.GREEN + " Du hast " + customfirework.getItemMeta().getDisplayName() + ChatUtil.GREEN + " erhalten und kannst diese in der Schatztruhe am Spawn abholen!");
+            GlobalPlayer globalPlayer = CubesideUtilsBukkit.getInstance().getGlobalDataHelper().getPlayer(cp.getUniqueId());
+            if (globalPlayer != null) {
+                CubesideUtilsBukkit.getInstance().getGlobalDataHelper().sendActionBarMessage(globalPlayer,
+                        Component.text("Du hast ", NamedTextColor.GREEN).append(customfirework.getItemMeta().displayName()).append(Component.text(" in der Schatztruhe erhalten!")));
+                // Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "tell " + cp.getName() + " " + FancyFirework.PREFIX + ChatUtil.GREEN + " Du hast " + customfirework.getItemMeta().getDisplayName() + ChatUtil.GREEN + " erhalten und kannst diese in der Schatztruhe am Spawn abholen!");
+            }
         }
     }
 }
